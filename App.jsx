@@ -6,7 +6,6 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
   ScrollView,
   StatusBar,
@@ -24,11 +23,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
+function Section({ children, title }) {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -54,7 +49,7 @@ function Section({children, title}: SectionProps): React.JSX.Element {
   );
 }
 
-function App(): React.JSX.Element {
+function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -80,8 +75,8 @@ function App(): React.JSX.Element {
       />
       <ScrollView
         style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
-          <Header/>
+        <View style={{ paddingRight: safePadding }}>
+          <Header />
         </View>
         <View
           style={{
