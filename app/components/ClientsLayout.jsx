@@ -2,26 +2,22 @@ import { colors } from '../theme';
 import { Platform, Keyboard, ScrollView, StyleSheet, SafeAreaView, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 
 const ClientsLayout = ({
+    dark,
     Screen,
     Scroll,
     children,
+    backgroundColor,
     contentContainerStyle,
     Keyboard: KeyboardMode,
     showsVerticalScrollIndicator = false,
 }) => {
-    const mode = KeyboardMode ? 'keyboard' : Scroll ? 'scroll' : 'screen';
     const props = KeyboardMode || Scroll || Screen;
+    const propArray = Array.isArray(props) ? props : [props];
+    const gap = propArray.find(p => p === 'gap' || p?.gap !== undefined);
+    const mode = KeyboardMode ? 'keyboard' : Scroll ? 'scroll' : 'screen';
+    const customStyle = propArray.find(p => typeof p === 'object' && !p?.gap);
 
-    let gap, style;
-    (Array.isArray(props) ? props : [props]).forEach(item => {
-        if (item === 'gap') { gap = true; }
-        else if (item?.gap !== undefined) { gap = item.gap; }
-        else if (item) { style = item; }
-    });
-
-    const gapStyle = typeof gap === 'number' ? { gap } : gap ? styles.defaultGap : null;
-
-    const content = (
+    const layoutContent = (
         <ScrollView
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={contentContainerStyle}
@@ -37,13 +33,17 @@ const ClientsLayout = ({
             keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
             behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
-            {content}
+            {layoutContent}
         </KeyboardAvoidingView>
-    ) : mode === 'scroll' ? content : children;
+    ) : mode === 'scroll' ? layoutContent : children;
+
+    const background = backgroundColor ?? (dark ? colors.black : colors.white);
+    const gapStyle =
+        typeof gap === 'number' ? { gap } : gap === 'gap' || gap?.gap ? styles.defaultGap : null;
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <SafeAreaView style={[styles.base, gapStyle, style]}>
+        <TouchableWithoutFeedback accessible={false} onPress={Keyboard.dismiss}>
+            <SafeAreaView style={[gapStyle, styles.base, customStyle, { backgroundColor: background }]}>
                 {layout}
             </SafeAreaView>
         </TouchableWithoutFeedback>
@@ -53,9 +53,8 @@ const ClientsLayout = ({
 const styles = StyleSheet.create({
     base: {
         flex: 1,
-        paddingVertical: 40,
+        paddingTop: 20,
         paddingHorizontal: 20,
-        backgroundColor: colors.black,
     },
     flex: { flex: 1 },
     defaultGap: { gap: 40 },
