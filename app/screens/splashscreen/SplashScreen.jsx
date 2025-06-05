@@ -1,10 +1,9 @@
-import { colors } from '@/theme';
+import { fonts, colors } from '@/theme';
 import { useRef, useEffect } from 'react';
 import ClientsButton from '@/components/ClientsButton';
-import ClientsLayout from '@/components/ClientsLayout';
-import { View, Animated, StyleSheet, ImageBackground } from 'react-native';
+import { Text, View, Animated, StyleSheet, ImageBackground } from 'react-native';
 
-const Onboarding = ({ navigation }) => {
+const SplashScreen = ({ navigation }) => {
     const translateY = useRef(new Animated.Value(100)).current;
 
     useEffect(() => {
@@ -16,22 +15,32 @@ const Onboarding = ({ navigation }) => {
     }, [translateY]);
 
     return (
-        <ClientsLayout dark Screen={[styles.container]}>
+        <View style={styles.container}>
+            <Animated.Image source={require('@/assets/images/logo.png')} style={styles.logo} />
+            <ImageBackground source={require('@/assets/images/gavel.png')} style={styles.bg}>
+                <Animated.Image source={require('@/assets/images/logo.png')} style={styles.logo} />
+            </ImageBackground>
+            <ImageBackground source={require('@/assets/images/advocate.png')} style={styles.bg}>
+                <Animated.Image source={require('@/assets/images/brand.png')} />
+                <Text style={styles.text}>Account For Lawyers</Text>
+            </ImageBackground>
             <ImageBackground source={require('@/assets/images/account.png')} style={styles.bg}>
-                <Animated.Image source={require('@/assets/images/logo.png')} style={[styles.logo, { transform: [{ translateY }] }]} />
+                <Animated.Image source={require('@/assets/images/brand.png')} style={[styles.brand, { transform: [{ translateY }] }]} />
                 <View style={styles.form}>
                     <ClientsButton text="Sign In" bgColor={colors.white} textColor={colors.black} extraStyle={styles.button} />
                     <ClientsButton outline space={20} text="Create Account" extraStyle={styles.button} onPress={() => navigation.navigate('CreateAccount')} />
                 </View>
             </ImageBackground>
-        </ClientsLayout>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 0,
-        paddingHorizontal: 0,
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: colors.black,
     },
     bg: {
         flex: 1,
@@ -40,8 +49,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     logo: {
+        width: 80,
+        height: 80,
+    },
+    brand: {
         top: 200,
         position: 'absolute',
+    },
+    text: {
+        marginTop: 50,
+        ...fonts.bold(24),
+        color: colors.white,
     },
     form: {
         width: '100%',
@@ -54,4 +72,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Onboarding;
+export default SplashScreen;
