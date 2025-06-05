@@ -1,21 +1,27 @@
-import { fonts, colors } from '@/theme';
+import { colors } from '@/theme';
+import { useRef, useEffect } from 'react';
 import ClientsLayout from '@/components/ClientsLayout';
-import { Text, View, Image, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
+import ClientsButton from '@/components/ClientsButton';
+import { View, Animated, StyleSheet, ImageBackground } from 'react-native';
 
 const Onboarding = () => {
+    const translateY = useRef(new Animated.Value(100)).current;
+
+    useEffect(() => {
+        Animated.timing(translateY, {
+            toValue: 0,
+            duration: 1000,
+            useNativeDriver: true,
+        }).start();
+    }, [translateY]);
+
     return (
-        <ClientsLayout>
-            <ImageBackground source={require('@/assets/images/logoImg.png')} style={styles.bg}>
-                <View style={styles.container}>
-                    <Image source={require('@/assets/images/logo.png')} style={styles.logo} />
-                    <View style={styles.container}>
-                        <TouchableOpacity style={styles.buttonOutline}>
-                            <Text style={styles.buttonOutlineText}>Log In</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.button}>
-                            <Text style={styles.buttonText}>Create Account</Text>
-                        </TouchableOpacity>
-                    </View>
+        <ClientsLayout dark Screen={[styles.container]}>
+            <ImageBackground source={require('@/assets/images/account.png')} style={styles.bg}>
+                <Animated.Image source={require('@/assets/images/logo.png')} style={[styles.logo, { transform: [{ translateY }] }]} />
+                <View style={styles.form}>
+                    <ClientsButton text="Sign In" bgColor={colors.white} textColor={colors.black} extraStyle={styles.button} />
+                    <ClientsButton outline space={20} text="Create Account" extraStyle={styles.button} />
                 </View>
             </ImageBackground>
         </ClientsLayout>
@@ -23,57 +29,28 @@ const Onboarding = () => {
 };
 
 const styles = StyleSheet.create({
+    container: {
+        paddingTop: 0,
+        paddingHorizontal: 0,
+    },
     bg: {
         flex: 1,
-        resizeMode: 'cover',
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'center',
+        width: '100%',
         alignItems: 'center',
-        padding: 20,
+        justifyContent: 'center',
     },
     logo: {
-        width: 120,
-        height: 120,
-        marginBottom: 20,
-        resizeMode: 'contain',
+        top: 200,
+        position: 'absolute',
     },
-    title: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#fff',
-        marginBottom: 10,
-    },
-    subtitle: {
-        fontSize: 16,
-        color: '#eee',
-        marginBottom: 30,
-        textAlign: 'center',
+    form: {
+        width: '100%',
+        marginTop: 185,
+        paddingHorizontal: 20,
     },
     button: {
-        backgroundColor: '#fff',
-        padding: 15,
-        width: '100%',
-        borderRadius: 10,
-        marginBottom: 10,
-    },
-    buttonText: {
-        textAlign: 'center',
-        color: colors.white,
-        ...fonts.regular(20),
-    },
-    buttonOutline: {
-        borderColor: '#fff',
-        borderWidth: 1,
-        padding: 15,
-        width: '100%',
-        borderRadius: 10,
-    },
-    buttonOutlineText: {
-        textAlign: 'center',
-        color: colors.white,
-        ...fonts.regular(20),
+        borderRadius: 15,
+        boxShadow: '5px 5px 4px 0px rgba(255, 255, 255, 0.25)',
     },
 });
 

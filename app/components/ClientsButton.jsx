@@ -4,35 +4,35 @@ import { Text, View, Image, StyleSheet, TouchableOpacity, ActivityIndicator } fr
 
 const ClientsButton = ({
     text,
+    space,
     onPress,
     leftIcon,
     leftText,
     rightIcon,
     rightText,
     extraStyle,
-    space = false,
     iconSize = 20,
     extraTextStyle,
-    rounded = true,
+    rounded = false,
     outline = false,
     loading = false,
     fitContent = false,
     iconType = 'ionicon',
-    bgColor = colors.yellow,
-    textColor = colors.black,
+    bgColor = colors.black,
+    textColor = colors.white,
     ...rest
 }) => {
     const containerStyle = [
-        extraStyle,
-        styles.container,
         {
-            marginTop: space ? 40 : 0,
             borderWidth: outline ? 1 : 0,
-            borderRadius: rounded ? 40 : 8,
+            borderRadius: rounded ? 50 : 8,
+            ...(space ? { marginTop: space } : {}),
             alignSelf: fitContent ? 'flex-start' : 'stretch',
             borderColor: outline ? textColor : 'transparent',
             backgroundColor: outline ? 'transparent' : bgColor,
         },
+        styles.container,
+        extraStyle,
     ];
 
     const renderIcon = (icon, position) => {
@@ -55,13 +55,13 @@ const ClientsButton = ({
                 <ActivityIndicator size="small" color={textColor} />
             ) : leftText && rightText ? (
                 <View style={styles.dualText}>
-                    <Text style={[{ ...fonts.bold(16) }, { color: textColor }, extraTextStyle]}>{leftText}</Text>
-                    <Text style={[{ ...fonts.bold(16) }, { color: textColor }, extraTextStyle]}>{rightText}</Text>
+                    <Text style={[{ ...fonts.medium(16) }, { color: textColor }, extraTextStyle]}>{leftText}</Text>
+                    <Text style={[{ ...fonts.medium(16) }, { color: textColor }, extraTextStyle]}>{rightText}</Text>
                 </View>
             ) : (
                 <View style={styles.inner}>
                     {renderIcon(leftIcon, 'left')}
-                    <Text style={[{ ...fonts.bold(16) }, { color: textColor }, extraTextStyle]}>{text}</Text>
+                    <Text style={[{ ...fonts.medium(16) }, { color: textColor }, extraTextStyle]}>{text}</Text>
                     {renderIcon(rightIcon, 'right')}
                 </View>
             )}
