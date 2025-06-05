@@ -1,10 +1,10 @@
 import { colors } from '@/theme';
 import { useRef, useEffect } from 'react';
-import ClientsLayout from '@/components/ClientsLayout';
 import ClientsButton from '@/components/ClientsButton';
+import ClientsLayout from '@/components/ClientsLayout';
 import { View, Animated, StyleSheet, ImageBackground } from 'react-native';
 
-const Onboarding = () => {
+const Onboarding = ({ navigation }) => {
     const translateY = useRef(new Animated.Value(100)).current;
 
     useEffect(() => {
@@ -21,7 +21,7 @@ const Onboarding = () => {
                 <Animated.Image source={require('@/assets/images/logo.png')} style={[styles.logo, { transform: [{ translateY }] }]} />
                 <View style={styles.form}>
                     <ClientsButton text="Sign In" bgColor={colors.white} textColor={colors.black} extraStyle={styles.button} />
-                    <ClientsButton outline space={20} text="Create Account" extraStyle={styles.button} />
+                    <ClientsButton outline space={20} text="Create Account" extraStyle={styles.button} onPress={() => navigation.navigate('CreateAccount')} />
                 </View>
             </ImageBackground>
         </ClientsLayout>

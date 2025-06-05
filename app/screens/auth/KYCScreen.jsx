@@ -5,7 +5,7 @@ import ClientsLayout from '@/components/ClientsLayout';
 const KYCScreen = () => {
 
     return (
-        <ClientsLayout>
+        <ClientsLayout dark>
             <Text style={styles.heading}/>
         </ClientsLayout>
     );

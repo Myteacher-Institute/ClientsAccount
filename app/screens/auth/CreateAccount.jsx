@@ -1,12 +1,13 @@
 import { fonts, colors } from '@/theme';
 import { Text, StyleSheet } from 'react-native';
+import ClientsButton from '@/components/ClientsButton';
 import ClientsLayout from '@/components/ClientsLayout';
 
-const CreateAccount = () => {
+const CreateAccount = ({ navigation }) => {
 
     return (
-        <ClientsLayout>
-            <Text style={styles.heading}/>
+        <ClientsLayout Scroll>
+            <ClientsButton space={20} text="Continue" onPress={() => navigation.navigate('KYCScreen')} />
         </ClientsLayout>
     );
 };
