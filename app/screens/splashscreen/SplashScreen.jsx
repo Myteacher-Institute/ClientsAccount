@@ -9,7 +9,8 @@ const DUR_EL = 1200;
 
 const AnimatedImageBackground = Animated.createAnimatedComponent(ImageBackground);
 const animateParallel = (anime) => new Promise((resolve) => Animated.parallel(anime).start(resolve));
-const fadeTo = (anim, toValue, duration = DUR_EL, delay = 0) => Animated.timing(anim, { toValue, duration, delay, useNativeDriver: true });
+const fadeTo = (anim, toValue, duration = DUR_EL, delay = 0) =>
+    Animated.timing(anim, { toValue, duration, delay, useNativeDriver: true });
 
 const SplashScreen = ({ navigation }) => {
     const [allowInteraction, setAllowInteraction] = useState(false);
@@ -24,10 +25,8 @@ const SplashScreen = ({ navigation }) => {
     const logoTranslateX = useRef(new Animated.Value(0)).current;
     const logoTranslateY = useRef(new Animated.Value(0)).current;
 
-    const screen2TextOpacity = useRef(new Animated.Value(0)).current;
+    const screen2BrandScale = 1;
     const screen2BrandOpacity = useRef(new Animated.Value(0)).current;
-    const screen2BrandScale = useRef(new Animated.Value(0.5)).current;
-    const screen2BrandTranslateY = useRef(new Animated.Value(0)).current;
 
     const screen3BrandOpacity = useRef(new Animated.Value(0)).current;
     const screen3ButtonsOpacity = useRef(new Animated.Value(0)).current;
@@ -50,12 +49,11 @@ const SplashScreen = ({ navigation }) => {
             await animateParallel([
                 fadeTo(screen1, 0, DUR_BG, DUR_BG * 0.2),
                 fadeTo(screen2, 1, DUR_BG),
-                fadeTo(logoOpacity, 0, DUR_EL * 0.7),
-                fadeTo(logoScale, 0.8, DUR_EL * 0.7),
-                fadeTo(screen2BrandOpacity, 1, DUR_EL, DUR_EL * 0.2),
-                fadeTo(screen2BrandScale, 1, DUR_EL, DUR_EL * 0.2),
-                fadeTo(screen2BrandTranslateY, 0),
-                fadeTo(screen2TextOpacity, 1, DUR_EL, DUR_EL * 0.5),
+                fadeTo(logoScale, 1.2, DUR_EL * 0.7),
+                fadeTo(logoTranslateY, -33, DUR_EL * 0.7),
+                fadeTo(logoTranslateX, -52, DUR_EL * 0.7),
+                fadeTo(logoOpacity, 0, 500),
+                fadeTo(screen2BrandOpacity, 1, 500),
             ]);
             await new Promise((r) => setTimeout(r, HOLD));
 
@@ -63,10 +61,10 @@ const SplashScreen = ({ navigation }) => {
                 fadeTo(screen2, 0, DUR_BG, DUR_BG * 0.2),
                 fadeTo(screen3, 1, DUR_BG),
                 fadeTo(screen2BrandOpacity, 0, DUR_BG * 0.8),
-                fadeTo(screen2TextOpacity, 0, DUR_BG * 0.8),
                 fadeTo(screen3BrandTranslateY, -50),
                 fadeTo(screen3BrandOpacity, 1),
                 fadeTo(screen3ButtonsOpacity, 1, DUR_EL, DUR_EL * 0.5),
+                fadeTo(logoTranslateX, 0, DUR_BG * 0.8),
             ]);
 
             setAllowInteraction(true);
@@ -85,12 +83,9 @@ const SplashScreen = ({ navigation }) => {
         logoOpacity,
         logoTranslateX,
         logoTranslateY,
-        screen2BrandScale,
-        screen2TextOpacity,
         screen2BrandOpacity,
         screen3BrandOpacity,
         screen3ButtonsOpacity,
-        screen2BrandTranslateY,
         screen3BrandTranslateY,
     ]);
 
@@ -105,10 +100,7 @@ const SplashScreen = ({ navigation }) => {
         },
         screen2Brand: {
             opacity: screen2BrandOpacity,
-            transform: [
-                { scale: screen2BrandScale },
-                { translateY: screen2BrandTranslateY },
-            ],
+            transform: [{ scale: screen2BrandScale }],
         },
         screen3Brand: {
             opacity: screen3BrandOpacity,
@@ -131,13 +123,9 @@ const SplashScreen = ({ navigation }) => {
 
             <AnimatedImageBackground source={require('@/assets/images/account.png')} style={[styles.bg, styles.screen3, { opacity: screen3 }]}>
                 <Animated.Image source={require('@/assets/images/brand.png')} style={[styles.brand, animatedStyles.screen3Brand]} />
+
                 <View style={styles.form}>
-                    <ClientsButton
-                        text="Sign In"
-                        bgColor={colors.white}
-                        textColor={colors.black}
-                        extraStyle={styles.button}
-                    />
+                    <ClientsButton text="Sign In" bgColor={colors.white} textColor={colors.black} extraStyle={styles.button} />
                     <ClientsButton
                         outline
                         text="Create Account"
