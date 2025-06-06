@@ -3,12 +3,14 @@ import { View, Text, StyleSheet, Animated, StatusBar, ImageBackground } from 're
 import ClientsButton from '@/components/ClientsButton';
 import { fonts, colors } from '@/theme';
 
+const HOLD = 1000;
 const DUR_BG = 1000;
 const DUR_EL = 1200;
-const HOLD = 1000;
 
 const fadeTo = (anim, toValue, duration = DUR_EL, delay = 0) =>
     Animated.timing(anim, { toValue, duration, delay, useNativeDriver: true });
+
+const AnimatedImageBackground = Animated.createAnimatedComponent(ImageBackground);
 
 const animateParallel = (anims) => new Promise((resolve) => Animated.parallel(anims).start(resolve));
 
@@ -20,10 +22,10 @@ const SplashScreen = ({ navigation }) => {
     const screen2 = useRef(new Animated.Value(0)).current;
     const screen3 = useRef(new Animated.Value(0)).current;
 
-    const logoMainScale = useRef(new Animated.Value(1)).current;
-    const logoMainOpacity = useRef(new Animated.Value(0)).current;
-    const logoMainTranslateX = useRef(new Animated.Value(0)).current;
-    const logoMainTranslateY = useRef(new Animated.Value(0)).current;
+    const logoScale = useRef(new Animated.Value(1)).current;
+    const logoOpacity = useRef(new Animated.Value(0)).current;
+    const logoTranslateX = useRef(new Animated.Value(0)).current;
+    const logoTranslateY = useRef(new Animated.Value(0)).current;
 
     const screen2TextOpacity = useRef(new Animated.Value(0)).current;
     const screen2BrandOpacity = useRef(new Animated.Value(0)).current;
@@ -38,21 +40,21 @@ const SplashScreen = ({ navigation }) => {
         StatusBar.setHidden(true);
 
         const sequence = async () => {
-            await animateParallel([fadeTo(logoMainOpacity, 1)]);
+            await animateParallel([fadeTo(logoOpacity, 1)]);
             await new Promise((r) => setTimeout(r, HOLD));
 
             await animateParallel([
                 fadeTo(screen0, 0, DUR_BG, DUR_BG * 0.2),
                 fadeTo(screen1, 1, DUR_BG),
-                fadeTo(logoMainScale, 1.5),
+                fadeTo(logoScale, 1.5),
             ]);
             await new Promise((r) => setTimeout(r, HOLD));
 
             await animateParallel([
                 fadeTo(screen1, 0, DUR_BG, DUR_BG * 0.2),
                 fadeTo(screen2, 1, DUR_BG),
-                fadeTo(logoMainOpacity, 0, DUR_EL * 0.7),
-                fadeTo(logoMainScale, 0.8, DUR_EL * 0.7),
+                fadeTo(logoOpacity, 0, DUR_EL * 0.7),
+                fadeTo(logoScale, 0.8, DUR_EL * 0.7),
                 fadeTo(screen2BrandOpacity, 1, DUR_EL, DUR_EL * 0.2),
                 fadeTo(screen2BrandScale, 1, DUR_EL, DUR_EL * 0.2),
                 fadeTo(screen2BrandTranslateY, 0),
@@ -81,12 +83,12 @@ const SplashScreen = ({ navigation }) => {
         screen1,
         screen2,
         screen3,
+        logoScale,
         navigation,
-        logoMainScale,
-        logoMainOpacity,
+        logoOpacity,
+        logoTranslateX,
+        logoTranslateY,
         screen2BrandScale,
-        logoMainTranslateX,
-        logoMainTranslateY,
         screen2TextOpacity,
         screen2BrandOpacity,
         screen3BrandOpacity,
@@ -97,11 +99,11 @@ const SplashScreen = ({ navigation }) => {
 
     const animatedStyles = {
         logo: {
-            opacity: logoMainOpacity,
+            opacity: logoOpacity,
             transform: [
-                { scale: logoMainScale },
-                { translateX: logoMainTranslateX },
-                { translateY: logoMainTranslateY },
+                { scale: logoScale },
+                { translateX: logoTranslateX },
+                { translateY: logoTranslateY },
             ],
         },
         screen2Brand: {
@@ -119,55 +121,34 @@ const SplashScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container} pointerEvents={allowInteraction ? 'auto' : 'none'}>
-            <Animated.Image
-                source={require('@/assets/images/logo.png')}
-                style={[styles.logo, animatedStyles.logo]}
-                resizeMode="contain"
-            />
+            <Animated.Image source={require('@/assets/images/logo.png')} style={[styles.logo, animatedStyles.logo]} />
 
             <Animated.View style={{ opacity: screen0 }} />
-            <Animated.View style={[StyleSheet.absoluteFill, { opacity: screen1 }]}>
-                <ImageBackground
-                    source={require('@/assets/images/gavel.png')}
-                    style={styles.bg}
-                    resizeMode="cover"
-                />
-            </Animated.View>
 
-            <Animated.View style={[StyleSheet.absoluteFill, { opacity: screen2 }]}>
-                <ImageBackground source={require('@/assets/images/advocate.png')} style={styles.bg}>
-                    <Animated.Image
-                        source={require('@/assets/images/brand.png')}
-                        style={animatedStyles.screen2Brand}
-                        resizeMode="contain"
-                    />
-                    <Text style={styles.text}>Account For Lawyers</Text>
-                </ImageBackground>
-            </Animated.View>
+            <AnimatedImageBackground source={require('@/assets/images/gavel.png')} style={[styles.bg, { opacity: screen1 }]} />
 
-            <Animated.View style={[StyleSheet.absoluteFill, styles.screen3, { opacity: screen3 }]}>
-                <ImageBackground source={require('@/assets/images/account.png')} style={styles.bg}>
-                    <Animated.Image
-                        source={require('@/assets/images/brand.png')}
-                        style={[styles.brand, animatedStyles.screen3Brand]}
-                        resizeMode="contain"
+            <AnimatedImageBackground source={require('@/assets/images/advocate.png')} style={[styles.bg, { opacity: screen2 }]}>
+                <Animated.Image source={require('@/assets/images/brand.png')} style={animatedStyles.screen2Brand} />
+                <Text style={styles.text}>Account For Lawyers</Text>
+            </AnimatedImageBackground>
+
+            <AnimatedImageBackground source={require('@/assets/images/account.png')} style={[styles.bg, styles.screen3, { opacity: screen3 }]}>
+                <Animated.Image source={require('@/assets/images/brand.png')} style={[styles.brand, animatedStyles.screen3Brand]} />
+                <View style={styles.form}>
+                    <ClientsButton
+                        text="Sign In"
+                        bgColor={colors.white}
+                        textColor={colors.black}
+                        extraStyle={styles.button}
                     />
-                    <View style={styles.form}>
-                        <ClientsButton
-                            text="Sign In"
-                            bgColor={colors.white}
-                            textColor={colors.black}
-                            extraStyle={styles.button}
-                        />
-                        <ClientsButton
-                            outline
-                            text="Create Account"
-                            extraStyle={styles.button}
-                            onPress={() => navigation.navigate('CreateAccount')}
-                        />
-                    </View>
-                </ImageBackground>
-            </Animated.View>
+                    <ClientsButton
+                        outline
+                        text="Create Account"
+                        extraStyle={styles.button}
+                        onPress={() => navigation.navigate('CreateAccount')}
+                    />
+                </View>
+            </AnimatedImageBackground>
         </View>
     );
 };
@@ -183,6 +164,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '100%',
+        position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
     },
