@@ -1,16 +1,14 @@
 import { fonts, colors } from '@/theme';
 import { useRef, useState, useEffect } from 'react';
 import ClientsButton from '@/components/ClientsButton';
-import { View, Text, Animated, StatusBar, StyleSheet, ImageBackground } from 'react-native';
+import { Text, View, Easing, Animated, StatusBar, StyleSheet, ImageBackground } from 'react-native';
 
-const HOLD = 1000;
-const DUR_BG = 1000;
-const DUR_EL = 1200;
-
+const HOLD = 300, DUR_BG = 400, DUR_EL = 600;
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const AnimatedImageBackground = Animated.createAnimatedComponent(ImageBackground);
 const animateParallel = (anime) => new Promise((resolve) => Animated.parallel(anime).start(resolve));
-const fadeTo = (anim, toValue, duration = DUR_EL, delay = 0) =>
-    Animated.timing(anim, { toValue, duration, delay, useNativeDriver: true });
+const fadeTo = (anim, to, duration = DUR_EL, delay = 0, easing = Easing.inOut(Easing.ease)) =>
+    Animated.timing(anim, { toValue: to, duration, delay, easing, useNativeDriver: true });
 
 const SplashScreen = ({ navigation }) => {
     const [allowInteraction, setAllowInteraction] = useState(false);
@@ -25,9 +23,7 @@ const SplashScreen = ({ navigation }) => {
     const logoTranslateX = useRef(new Animated.Value(0)).current;
     const logoTranslateY = useRef(new Animated.Value(0)).current;
 
-    const screen2BrandScale = 1;
     const screen2BrandOpacity = useRef(new Animated.Value(0)).current;
-
     const screen3BrandOpacity = useRef(new Animated.Value(0)).current;
     const screen3ButtonsOpacity = useRef(new Animated.Value(0)).current;
     const screen3BrandTranslateY = useRef(new Animated.Value(50)).current;
@@ -35,16 +31,16 @@ const SplashScreen = ({ navigation }) => {
     useEffect(() => {
         StatusBar.setHidden(true);
 
-        const sequence = async () => {
+        const run = async () => {
             await animateParallel([fadeTo(logoOpacity, 1)]);
-            await new Promise((r) => setTimeout(r, HOLD));
+            await wait(HOLD);
 
             await animateParallel([
                 fadeTo(screen0, 0, DUR_BG, DUR_BG * 0.2),
                 fadeTo(screen1, 1, DUR_BG),
                 fadeTo(logoScale, 2),
             ]);
-            await new Promise((r) => setTimeout(r, HOLD));
+            await wait(HOLD);
 
             await animateParallel([
                 fadeTo(screen1, 0, DUR_BG, DUR_BG * 0.2),
@@ -55,7 +51,7 @@ const SplashScreen = ({ navigation }) => {
                 fadeTo(logoOpacity, 0, 500),
                 fadeTo(screen2BrandOpacity, 1, 500),
             ]);
-            await new Promise((r) => setTimeout(r, HOLD));
+            await wait(HOLD);
 
             await animateParallel([
                 fadeTo(screen2, 0, DUR_BG, DUR_BG * 0.2),
@@ -70,8 +66,7 @@ const SplashScreen = ({ navigation }) => {
             setAllowInteraction(true);
         };
 
-        sequence();
-
+        run();
         return () => StatusBar.setHidden(false);
     }, [
         screen0,
@@ -79,7 +74,6 @@ const SplashScreen = ({ navigation }) => {
         screen2,
         screen3,
         logoScale,
-        navigation,
         logoOpacity,
         logoTranslateX,
         logoTranslateY,
@@ -89,43 +83,80 @@ const SplashScreen = ({ navigation }) => {
         screen3BrandTranslateY,
     ]);
 
-    const animatedStyles = {
-        logo: {
-            opacity: logoOpacity,
-            transform: [
-                { scale: logoScale },
-                { translateX: logoTranslateX },
-                { translateY: logoTranslateY },
-            ],
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: colors.black,
         },
-        screen2Brand: {
-            opacity: screen2BrandOpacity,
-            transform: [{ scale: screen2BrandScale }],
+        bg: {
+            flex: 1,
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
         },
-        screen3Brand: {
-            opacity: screen3BrandOpacity,
-            transform: [{ translateY: screen3BrandTranslateY }],
+        logo: { width: 80, height: 80, zIndex: 4 },
+        brand: { top: '30%', position: 'absolute' },
+        text: {
+            marginTop: 35,
+            ...fonts.bold(24),
+            color: colors.white,
         },
+        screen3: { zIndex: 5 },
+        form: {
+            gap: 20,
+            width: '100%',
+            marginTop: 190,
+            paddingHorizontal: 20,
+        },
+        button: {
+            elevation: 5,
+            shadowRadius: 4,
+            borderRadius: 15,
+            shadowOpacity: 1,
+            shadowOffset: { width: 5, height: 5 },
+            shadowColor: 'rgba(255, 255, 255, 0.25)',
+            boxShadow: '5px 5px 4px 0px rgba(255, 255, 255, 0.25)',
+        },
+    });
+
+    const logoStyle = {
+        opacity: logoOpacity,
+        transform: [
+            { scale: logoScale },
+            { translateX: logoTranslateX },
+            { translateY: logoTranslateY },
+        ],
     };
 
     return (
         <View style={styles.container} pointerEvents={allowInteraction ? 'auto' : 'none'}>
-            <Animated.Image source={require('@/assets/images/logo.png')} style={[styles.logo, animatedStyles.logo]} />
+            <Animated.Image source={require('@/assets/images/logo.png')} style={[styles.logo, logoStyle]} />
 
             <Animated.View style={{ opacity: screen0 }} />
 
             <AnimatedImageBackground source={require('@/assets/images/gavel.png')} style={[styles.bg, { opacity: screen1 }]} />
 
             <AnimatedImageBackground source={require('@/assets/images/advocate.png')} style={[styles.bg, { opacity: screen2 }]}>
-                <Animated.Image source={require('@/assets/images/brand.png')} style={animatedStyles.screen2Brand} />
+                <Animated.Image source={require('@/assets/images/brand.png')} style={{ opacity: screen2BrandOpacity, transform: [{ scale: 1 }] }} />
                 <Text style={styles.text}>Account For Lawyers</Text>
             </AnimatedImageBackground>
 
             <AnimatedImageBackground source={require('@/assets/images/account.png')} style={[styles.bg, styles.screen3, { opacity: screen3 }]}>
-                <Animated.Image source={require('@/assets/images/brand.png')} style={[styles.brand, animatedStyles.screen3Brand]} />
-
+                <Animated.Image
+                    source={require('@/assets/images/brand.png')}
+                    style={{ ...styles.brand, opacity: screen3BrandOpacity, transform: [{ translateY: screen3BrandTranslateY }] }}
+                />
                 <View style={styles.form}>
-                    <ClientsButton text="Sign In" bgColor={colors.white} textColor={colors.black} extraStyle={styles.button} />
+                    <ClientsButton
+                        text="Sign In"
+                        bgColor={colors.white}
+                        textColor={colors.black}
+                        extraStyle={styles.button}
+                    />
                     <ClientsButton
                         outline
                         text="Create Account"
@@ -137,52 +168,5 @@ const SplashScreen = ({ navigation }) => {
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: colors.black,
-    },
-    bg: {
-        flex: 1,
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    logo: {
-        width: 80,
-        zIndex: 4,
-        height: 80,
-    },
-    brand: {
-        top: '30%',
-        position: 'absolute',
-    },
-    text: {
-        marginTop: 35,
-        ...fonts.bold(24),
-        color: colors.white,
-    },
-    screen3: { zIndex: 5 },
-    form: {
-        gap: 20,
-        width: '100%',
-        marginTop: 190,
-        paddingHorizontal: 20,
-    },
-    button: {
-        elevation: 5,
-        shadowRadius: 4,
-        borderRadius: 15,
-        shadowOpacity: 1,
-        shadowOffset: { width: 5, height: 5 },
-        shadowColor: 'rgba(255, 255, 255, 0.25)',
-        boxShadow: '5px 5px 4px 0px rgba(255, 255, 255, 0.25)',
-    },
-});
 
 export default SplashScreen;
