@@ -2861,7 +2861,6 @@ __metadata:
     react-native-safe-area-context: ^5.4.1
     react-native-screens: ^4.11.1
     react-native-vector-icons: ^10.2.0
-    react-native-video: ^6.14.1
     react-test-renderer: 19.0.0
   languageName: unknown
   linkType: soft
@@ -7939,16 +7938,6 @@ __metadata:
     fa6-upgrade: bin/fa6-upgrade.sh
     generate-icon: bin/generate-icon.js
   checksum: fda930df4e63f12533268f5b339ebe4c77c691eae43503328466b3087ed868a06a4593fd246e75ac6b5ec955543eec35608c7922191bdcc3b3a94ed7f3575ef0
-  languageName: node
-  linkType: hard
-
-"react-native-video@npm:^6.14.1":
-  version: 6.14.1
-  resolution: "react-native-video@npm:6.14.1"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: fff267341cfb6c063ae0d34095177b3aa18fcd61e411a28740f4ce145cf08115cf4cc188389cd43445e1c84dd5159adcb94be645585300bcee9ca03a8b4e6fa1
   languageName: node
   linkType: hard
 

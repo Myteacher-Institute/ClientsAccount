@@ -43,7 +43,7 @@ const SplashScreen = ({ navigation }) => {
             await animateParallel([
                 fadeTo(screen0, 0, DUR_BG, DUR_BG * 0.2),
                 fadeTo(screen1, 1, DUR_BG),
-                fadeTo(logoScale, 1.5),
+                fadeTo(logoScale, 2),
             ]);
             await new Promise((r) => setTimeout(r, HOLD));
 
