@@ -1,18 +1,15 @@
-import { useRef, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Animated, StatusBar, ImageBackground } from 'react-native';
-import ClientsButton from '@/components/ClientsButton';
 import { fonts, colors } from '@/theme';
+import { useRef, useState, useEffect } from 'react';
+import ClientsButton from '@/components/ClientsButton';
+import { View, Text, Animated, StatusBar, StyleSheet, ImageBackground } from 'react-native';
 
 const HOLD = 1000;
 const DUR_BG = 1000;
 const DUR_EL = 1200;
 
-const fadeTo = (anim, toValue, duration = DUR_EL, delay = 0) =>
-    Animated.timing(anim, { toValue, duration, delay, useNativeDriver: true });
-
 const AnimatedImageBackground = Animated.createAnimatedComponent(ImageBackground);
-
-const animateParallel = (anims) => new Promise((resolve) => Animated.parallel(anims).start(resolve));
+const animateParallel = (anime) => new Promise((resolve) => Animated.parallel(anime).start(resolve));
+const fadeTo = (anim, toValue, duration = DUR_EL, delay = 0) => Animated.timing(anim, { toValue, duration, delay, useNativeDriver: true });
 
 const SplashScreen = ({ navigation }) => {
     const [allowInteraction, setAllowInteraction] = useState(false);
