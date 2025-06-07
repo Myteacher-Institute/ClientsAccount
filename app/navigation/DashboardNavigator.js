@@ -1,5 +1,5 @@
+import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from '@/screens/dashboard/HomeScreen';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // Placeholder screens
@@ -39,7 +39,7 @@ const screenOptions = ({ route }) => ({
                 iconName = 'ellipse-outline';
         }
 
-        return <Ionicons name={iconName} size={size} color={color} />;
+        return <Icon name={iconName} size={size} color={color} />;
     },
     tabBarLabelStyle: {
         fontSize: 12,

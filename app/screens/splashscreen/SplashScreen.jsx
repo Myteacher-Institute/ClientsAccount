@@ -30,7 +30,7 @@ const SplashScreen = ({ navigation }) => {
     const screen3BrandTranslateY = useRef(new Animated.Value(50)).current;
 
     useEffect(() => {
-        StatusBar.setHidden(true);
+        StatusBar.setHidden(true, 'fade');
 
         const run = async () => {
             await RNBootSplash.hide({ fade: true });
@@ -46,8 +46,8 @@ const SplashScreen = ({ navigation }) => {
                 fadeTo(screen1, 0, DUR_BG, DUR_BG * 0.2),
                 fadeTo(screen2, 1, DUR_BG),
                 fadeTo(logoScale, 1.2, DUR_EL * 0.7),
-                fadeTo(logoTranslateY, -33, DUR_EL * 0.7),
-                fadeTo(logoTranslateX, -52, DUR_EL * 0.7),
+                fadeTo(logoTranslateY, -10, DUR_EL * 0.7),
+                fadeTo(logoTranslateX, -51, DUR_EL * 0.7),
                 fadeTo(logoOpacity, 0, 500),
                 fadeTo(screen2BrandOpacity, 1, 500),
             ]);
@@ -64,11 +64,12 @@ const SplashScreen = ({ navigation }) => {
                 fadeTo(logoTranslateX, 0, DUR_BG * 0.8),
             ]);
 
+            StatusBar.setHidden(false, 'fade');
             setAllowInteraction(true);
         };
 
         run();
-        return () => StatusBar.setHidden(false);
+        return () => StatusBar.setHidden(false, 'fade');
     }, [
         screen1,
         screen2,
@@ -108,7 +109,6 @@ const SplashScreen = ({ navigation }) => {
             paddingHorizontal: 20,
         },
         button: {
-            elevation: 5,
             shadowRadius: 4,
             borderRadius: 15,
             shadowOpacity: 1,

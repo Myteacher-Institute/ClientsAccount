@@ -1,5 +1,5 @@
 import { fonts, colors } from '@/theme';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { Text, View, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 const ClientsButton = ({
@@ -40,7 +40,7 @@ const ClientsButton = ({
         const iconStyle = { position: 'absolute', [position]: 15 };
         return iconType === 'image'
             ? <Image source={icon} style={[styles.iconImage, iconStyle]} />
-            : <Ionicons name={icon} size={iconSize} color={textColor} style={iconStyle} />;
+            : <Icon name={icon} size={iconSize} color={textColor} style={iconStyle} />;
     };
 
     return (

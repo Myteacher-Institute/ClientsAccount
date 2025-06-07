@@ -1,13 +1,12 @@
 import { fonts, colors } from '@/theme';
-import { Text, StyleSheet } from 'react-native';
-import ClientsLayout from '@/components/ClientsLayout';
+import { Text, View, StyleSheet } from 'react-native';
 
 const SigninScreen = () => {
 
     return (
-        <ClientsLayout>
+        <View>
             <Text style={styles.heading}/>
-        </ClientsLayout>
+        </View>
     );
 };
 
