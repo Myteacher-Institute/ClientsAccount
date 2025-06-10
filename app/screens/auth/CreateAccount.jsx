@@ -2,31 +2,18 @@ import { useState } from 'react';
 import { fonts, colors } from '@/theme';
 import ClientsInput from '@/components/ClientsInput';
 import ClientsButton from '@/components/ClientsButton';
-import ClientsHeader from '@/components/ClientsHeader';
+import ClientsLayout from '@/components/ClientsLayout';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { ScrollView, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const CreateAccount = ({ navigation }) => {
-    const [hasChamberName, setHasChamberName] = useState(null); // 'yes' or 'no' or null
+    const [hasChamberName, setHasChamberName] = useState(null);
     const [selectedGender, setSelectedGender] = useState(null);
 
-    const onPressChamber = (choice) => {
-        if (hasChamberName !== choice) {
-            setHasChamberName(choice);
-        }
-    };
+    const onPressChamber = choice => hasChamberName !== choice && setHasChamberName(choice);
 
     return (
-        <ScrollView
-            keyboardDismissMode="on-drag"
-            keyboardShouldPersistTaps="handled"
-            stickyHeaderIndices={[0]} // Sticky header at index 0
-            showsVerticalScrollIndicator={false} // Hide scrollbar
-            contentContainerStyle={styles.contentContainer}
-            style={styles.container}
-        >
-            <ClientsHeader label="Create Account" />
-
+        <ClientsLayout title="Create Account">
             <ClientsInput label="Full Name" placeholder="Enter your full name" />
 
             <Text style={styles.questionText}>
@@ -88,19 +75,11 @@ const CreateAccount = ({ navigation }) => {
             <ClientsInput isPassword label="Create Password" placeholder="Create a password" />
 
             <ClientsButton text="Continue" onPress={() => navigation.navigate('KYCScreen')} />
-        </ScrollView>
+        </ClientsLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.background,
-    },
-    contentContainer: {
-        paddingHorizontal: 20,
-        paddingBottom: 40, // extra space at bottom for better UI
-    },
     questionText: {
         ...fonts.regular(14),
         color: colors.text,

@@ -4,46 +4,27 @@ import { useNavigation } from '@react-navigation/native';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
 const ClientsHeader = ({
-    label,
-    style,
-    onPress,
-    textStyle,
-    iconSize = 22,
-    showLeft = true,
-    rightIcon = null,
-    showRight = false,
-    onRightPress = null,
-    centerContent = null,
-    leftIcon = 'arrow-back',
-    iconColor = colors.black,
-    backgroundColor = '#fff', // default white background
-    navigation: navigationProp,
+    title,
+    rightIcon,
+    onBackPress,
+    onRightPress,
 }) => {
-    const navigation = useNavigation() || navigationProp;
-    const handleLeftPress = () => (onPress ? onPress() : navigation.goBack());
+    const navigation = useNavigation();
+
+    const handleBack = () => onBackPress ? onBackPress() : navigation.goBack();
 
     return (
-        <View style={[styles.container, { backgroundColor }, style]}>
-            {showLeft ? (
-                <TouchableOpacity onPress={handleLeftPress} style={styles.iconButton}>
-                    <Icon name={leftIcon} size={iconSize} color={iconColor} />
-                </TouchableOpacity>
-            ) : (
-                <View style={styles.iconButton} />
-            )}
+        <View style={styles.container}>
+            <TouchableOpacity onPress={handleBack}>
+                <Icon name="arrow-back" size={20} color={colors.black} />
+            </TouchableOpacity>
 
-            {centerContent ? (
-                centerContent
-            ) : (
-                label && <Text style={[styles.text, styles.center, textStyle]}>{label}</Text>
-            )}
+            <Text style={styles.title}>{title ?? ''}</Text>
 
-            {showRight && rightIcon ? (
-                <TouchableOpacity onPress={onRightPress} style={styles.iconButton}>
-                    <Icon name={rightIcon} size={iconSize} color={iconColor} />
+            {rightIcon && (
+                <TouchableOpacity onPress={onRightPress}>
+                    <Icon name={rightIcon} size={20} color={colors.black} />
                 </TouchableOpacity>
-            ) : (
-                <View style={styles.iconButton} />
             )}
         </View>
     );
@@ -51,21 +32,17 @@ const ClientsHeader = ({
 
 const styles = StyleSheet.create({
     container: {
-        height: 56,
+        height: 60,
+        alignItems: 'center',
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        paddingHorizontal: '5%',
+        backgroundColor: colors.white,
+        boxShadow: '0px 1px 2px 0px rgba(0, 0, 0, 0.05)',
     },
-    iconButton: {
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    center: {
+    title: {
         flex: 1,
+        color: colors.grey3,
         textAlign: 'center',
-    },
-    text: {
-        color: colors.black,
         ...fonts.medium(18),
     },
 });
