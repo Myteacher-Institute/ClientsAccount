@@ -1,10 +1,10 @@
-import { colors } from '@/theme';
+import { fonts, colors } from '@/theme';
 import RNBootSplash from 'react-native-bootsplash';
 import { useRef, useState, useEffect } from 'react';
 import ClientsButton from '@/components/ClientsButton';
-import { View, Easing, Animated, StatusBar, StyleSheet, ImageBackground } from 'react-native';
+import { View, Easing, Animated, StatusBar, StyleSheet, ImageBackground, Text } from 'react-native';
 
-const HOLD = 300, DUR_BG = 400, DUR_EL = 600;
+const HOLD = 700, DUR_BG = 900, DUR_EL = 1000;
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const AnimatedImageBackground = Animated.createAnimatedComponent(ImageBackground);
 const animateParallel = (anime) => new Promise((resolve) => Animated.parallel(anime).start(resolve));
@@ -100,6 +100,12 @@ const SplashScreen = ({ navigation }) => {
             alignItems: 'center',
             justifyContent: 'center',
         },
+        text: {
+            bottom: '5%',
+            color: colors.white,
+            ...fonts.medium(16),
+            position: 'absolute',
+        },
         logo: { width: 80, height: 80, zIndex: 4 },
         brand: { top: '40%', position: 'absolute' },
         form: {
@@ -135,6 +141,7 @@ const SplashScreen = ({ navigation }) => {
 
             <AnimatedImageBackground source={require('@/assets/images/advocate.png')} style={[styles.bg, { opacity: screen2 }]}>
                 <Animated.Image source={require('@/assets/images/brand.png')} style={{ opacity: screen2BrandOpacity, transform: [{ scale: 1 }] }} />
+                <Text style={styles.text}>Account For Lawyers</Text>
             </AnimatedImageBackground>
 
             <Animated.View style={[styles.bg, { opacity: screen3 }]}>
