@@ -106,7 +106,6 @@ const ClientsInput = ({
 
 const styles = StyleSheet.create({
     label: {
-        marginBottom: 5,
         ...fonts.medium(),
         color: colors.grey1,
     },

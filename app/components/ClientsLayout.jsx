@@ -5,22 +5,21 @@ import { View, StyleSheet, ScrollView, useColorScheme } from 'react-native';
 const ClientsLayout = ({
     children,
     title = null,
-    showBack = false,
     rightIcon = null,
+    showHeader = false,
     onRightPress = null,
     customHeader = null,
 }) => {
     const isDark = useColorScheme() === 'dark';
-    const shouldShowBack = showBack || Boolean(title);
+    const shouldShowBack = showHeader || Boolean(title);
     const backgroundColor = isDark ? colors.offWhite : colors.offWhite;
 
     return (
         <View style={[styles.container, { backgroundColor }]}>
-            {customHeader ? customHeader : (
+            {customHeader ? customHeader : shouldShowBack && (
                 <ClientsHeader
                     title={title}
                     rightIcon={rightIcon}
-                    showLeft={shouldShowBack}
                     onRightPress={onRightPress}
                     backgroundColor={backgroundColor}
                 />

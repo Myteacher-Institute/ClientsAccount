@@ -1,23 +1,25 @@
-import Icon from 'react-native-vector-icons/Ionicons';
-import HomeScreen from '@/screens/dashboard/HomeScreen';
+import { fonts, colors } from '@/theme';
+import HomeNavigator from './HomeNavigator';
+import StorageNavigator from './StorageNavigator';
+import AccountNavigator from './AccountNavigator';
+import ResourcesNavigator from './ResourcesNavigator';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import DashboardHeader from '@/components/DashboardHeader';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-// Placeholder screens
-const BrowseScreen = () => null;
-const OrderScreen = () => null;
-const AccountScreen = () => null;
 
 const Tab = createBottomTabNavigator();
 
 const screenOptions = ({ route }) => ({
-    headerShown: false,
-    tabBarActiveTintColor: '#fff',
-    tabBarInactiveTintColor: '#888',
+    header: () => <DashboardHeader />,
+    tabBarActiveTintColor: colors.grey1,
+    tabBarInactiveTintColor: colors.grey8,
+    tabBarLabelStyle: { ...fonts.regular(12) },
     tabBarStyle: {
-        height: 70,
-        paddingBottom: 10,
-        borderTopColor: '#111',
-        backgroundColor: '#000',
+        height: 60,
+        elevation: 0,
+        shadowOpacity: 0,
+        borderTopWidth: 0,
+        backgroundColor: colors.white,
     },
     tabBarIcon: ({ color, size, focused }) => {
         let iconName;
@@ -26,11 +28,11 @@ const screenOptions = ({ route }) => ({
             case 'Home':
                 iconName = focused ? 'home' : 'home-outline';
                 break;
-            case 'Browse':
-                iconName = focused ? 'compass' : 'compass-outline';
-                break;
-            case 'Order':
+            case 'Storage':
                 iconName = focused ? 'cart' : 'cart-outline';
+                break;
+            case 'Resources':
+                iconName = focused ? 'search' : 'search-outline';
                 break;
             case 'Account':
                 iconName = focused ? 'person' : 'person-outline';
@@ -39,21 +41,17 @@ const screenOptions = ({ route }) => ({
                 iconName = 'ellipse-outline';
         }
 
-        return <Icon name={iconName} size={size} color={color} />;
-    },
-    tabBarLabelStyle: {
-        fontSize: 12,
-        marginTop: 2,
+        return <Ionicons name={iconName} size={size} color={color} />;
     },
 });
 
 const DashboardNavigator = () => {
     return (
         <Tab.Navigator screenOptions={screenOptions}>
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Browse" component={BrowseScreen} />
-            <Tab.Screen name="Order" component={OrderScreen} />
-            <Tab.Screen name="Account" component={AccountScreen} />
+            <Tab.Screen name="Home" component={HomeNavigator} />
+            <Tab.Screen name="Storage" component={StorageNavigator} />
+            <Tab.Screen name="Resources" component={ResourcesNavigator} />
+            <Tab.Screen name="Account" component={AccountNavigator} />
         </Tab.Navigator>
     );
 };

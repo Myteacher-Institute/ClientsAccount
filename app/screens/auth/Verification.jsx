@@ -1,20 +1,23 @@
 import { fonts, colors } from '@/theme';
+import ClientsLayout from '@/components/ClientsLayout';
 import { Text, View, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const Verification = () => {
+const Verification = ({ navigation }) => {
 
     return (
-        <View>
-            <Text style={styles.heading}/>
-        </View>
+        <ClientsLayout title="Verification">
+            <View>
+                <Text>Hello World!</Text>
+            </View>
+        </ClientsLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    heading: {
-        padding: 20,
-        color: colors.white,
-        ...fonts.regular(20),
+    section: {
+        gap: 15,
+        paddingBottom: '10%',
     },
 });
 

@@ -159,6 +159,7 @@ const SplashScreen = ({ navigation }) => {
                         bgColor={colors.white}
                         textColor={colors.black}
                         extraStyle={styles.button}
+                        onPress={() => navigation.navigate('SigninScreen')}
                     />
                     <ClientsButton
                         outline

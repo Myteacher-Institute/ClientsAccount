@@ -3,12 +3,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
-const ClientsHeader = ({
-    title,
-    rightIcon,
-    onBackPress,
-    onRightPress,
-}) => {
+const ClientsHeader = ({ title, rightIcon, onBackPress, onRightPress }) => {
     const navigation = useNavigation();
 
     const handleBack = () => onBackPress ? onBackPress() : navigation.goBack();
