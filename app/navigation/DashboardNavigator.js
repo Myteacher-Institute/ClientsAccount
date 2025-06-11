@@ -3,17 +3,17 @@ import HomeNavigator from './HomeNavigator';
 import StorageNavigator from './StorageNavigator';
 import AccountNavigator from './AccountNavigator';
 import ResourcesNavigator from './ResourcesNavigator';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import DashboardHeader from '@/components/DashboardHeader';
+import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator();
 
 const screenOptions = ({ route }) => ({
     header: () => <DashboardHeader />,
-    tabBarActiveTintColor: colors.grey1,
-    tabBarInactiveTintColor: colors.grey8,
-    tabBarLabelStyle: { ...fonts.regular(12) },
+    tabBarActiveTintColor: colors.blue1,
+    tabBarInactiveTintColor: colors.grey4,
+    tabBarLabelStyle: { ...fonts.medium(12) },
     tabBarStyle: {
         height: 60,
         elevation: 0,
@@ -21,7 +21,7 @@ const screenOptions = ({ route }) => ({
         borderTopWidth: 0,
         backgroundColor: colors.white,
     },
-    tabBarIcon: ({ color, size, focused }) => {
+    tabBarIcon: ({ color, focused }) => {
         let iconName;
 
         switch (route.name) {
@@ -29,19 +29,19 @@ const screenOptions = ({ route }) => ({
                 iconName = focused ? 'home' : 'home-outline';
                 break;
             case 'Storage':
-                iconName = focused ? 'cart' : 'cart-outline';
+                iconName = focused ? 'folder-open' : 'folder-open-outline';
                 break;
             case 'Resources':
-                iconName = focused ? 'search' : 'search-outline';
+                iconName = focused ? 'text-box' : 'text-box-outline';
                 break;
             case 'Account':
-                iconName = focused ? 'person' : 'person-outline';
+                iconName = focused ? 'account' : 'account-outline';
                 break;
             default:
                 iconName = 'ellipse-outline';
         }
 
-        return <Ionicons name={iconName} size={size} color={color} />;
+        return <Ionicons name={iconName} size={24} color={color} />;
     },
 });
 
