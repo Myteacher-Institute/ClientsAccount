@@ -19,7 +19,7 @@ const maskTypeMap = {
     cac: { type: 'custom', options: { mask: 'BN/999999' } },
     nin: { type: 'custom', options: { mask: '99999999999' } },
     phone: { type: 'cel-phone', options: { withDDD: true, dddMask: '(999) ' } },
-    currency: { type: 'money', options: { precision: 2, separator: '.', delimiter: ',', unit: '₦', suffixUnit: '' } },
+    currency: { type: 'money', options: { unit: '₦', precision: 2, separator: '.', delimiter: ',', suffixUnit: '' } },
 };
 
 const ClientsInput = ({
@@ -27,11 +27,12 @@ const ClientsInput = ({
     value,
     leftIcon,
     rightIcon,
+    darkLabel,
     isPassword,
     placeholder,
     onChangeText,
-    extraTextStyle,
     type = 'default',
+    darkMode = false,
     extraContainerStyle,
     iconPosition = 'left',
     ...props
@@ -39,39 +40,27 @@ const ClientsInput = ({
     const [secureTextEntry, setSecureTextEntry] = useState(isPassword || false);
 
     const toggleSecureEntry = () => setSecureTextEntry(!secureTextEntry);
+    const renderNamedIcon = name => name ? <Icon name={name} size={20} color={colors.grey2} /> : null;
+
     const maskConfig = maskTypeMap[type];
     const isMasked = !!maskConfig;
 
-    const renderLeftIcon = () => {
-        if (!leftIcon || isPassword) { return null; }
-        return <View style={styles.iconContainer}>{leftIcon}</View>;
-    };
-
-    const renderRightIcon = () => {
-        if (isPassword) {
-            return (
-                <Pressable style={styles.iconContainer} onPress={toggleSecureEntry}>
-                    <Icon size={20} color={colors.grey2} name={secureTextEntry ? 'eye-off' : 'eye'} />
-                </Pressable>
-            );
-        }
-        if (rightIcon && !isPassword) {
-            return <View style={styles.iconContainer}>{rightIcon}</View>;
-        }
-        return null;
-    };
+    const resolvedLabel = darkLabel || label;
+    const inputBackground = darkMode ? colors.black : colors.offWhite;
+    const labelColor = { ...fonts.medium(), color: darkLabel ? colors.grey1 : colors.white };
 
     return (
         <View style={extraContainerStyle}>
-            {label && <Text style={styles.label}>{label}</Text>}
+            {resolvedLabel && <Text style={labelColor}>{resolvedLabel}</Text>}
 
-            <View style={styles.inputContainer}>
-                {iconPosition === 'left' && renderLeftIcon()}
+            <View style={[styles.inputContainer, { backgroundColor: inputBackground }]}>
+                {iconPosition === 'left' && renderNamedIcon(leftIcon)}
 
                 {isMasked ? (
                     <TextInputMask
                         {...props}
                         value={value}
+                        style={styles.input}
                         type={maskConfig.type}
                         keyboardType="numeric"
                         placeholder={placeholder}
@@ -79,18 +68,16 @@ const ClientsInput = ({
                         options={maskConfig.options}
                         secureTextEntry={secureTextEntry}
                         placeholderTextColor={colors.grey2}
-                        style={[styles.input, extraTextStyle]}
                     />
                 ) : (
                     <TextInput
                         {...props}
                         value={value}
+                        style={styles.input}
                         placeholder={placeholder}
-                        cursorColor={colors.grey2}
                         onChangeText={onChangeText}
                         secureTextEntry={secureTextEntry}
                         placeholderTextColor={colors.grey2}
-                        style={[styles.input, extraTextStyle]}
                         textContentType={props.textContentType}
                         autoCorrect={props.autoCorrect ?? false}
                         autoCapitalize={props.autoCapitalize || 'none'}
@@ -98,17 +85,18 @@ const ClientsInput = ({
                     />
                 )}
 
-                {iconPosition === 'right' || isPassword ? renderRightIcon() : null}
+                {(isPassword || iconPosition === 'right') &&
+                    (isPassword ? (
+                        <Pressable onPress={toggleSecureEntry}>
+                            <Icon size={20} color={colors.grey2} name={secureTextEntry ? 'eye-off' : 'eye'} />
+                        </Pressable>
+                    ) : renderNamedIcon(rightIcon))}
             </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    label: {
-        ...fonts.medium(),
-        color: colors.grey1,
-    },
     inputContainer: {
         borderWidth: 1,
         borderRadius: 8,
@@ -123,11 +111,6 @@ const styles = StyleSheet.create({
         color: colors.grey2,
         paddingVertical: 12,
         ...fonts.regular(16),
-    },
-    iconContainer: {
-        padding: 6,
-        alignItems: 'center',
-        justifyContent: 'center',
     },
 });
 

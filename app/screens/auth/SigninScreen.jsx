@@ -1,39 +1,41 @@
 import { fonts, colors } from '@/theme';
 import ClientsInput from '@/components/ClientsInput';
 import ClientsButton from '@/components/ClientsButton';
-import { Text, View, Image, StyleSheet, ImageBackground } from 'react-native';
+import { Text, View, Image, Keyboard, StyleSheet, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 
 const SigninScreen = ({ navigation }) => {
 
     return (
-        <ImageBackground source={require('@/assets/images/advocate.png')} style={styles.container}>
-            <View style={styles.header}>
-                <Text style={[styles.text, styles.headerText]}>Sign In</Text>
-                <Text style={[styles.text, styles.helpText]}>Help</Text>
-            </View>
-            <View style={styles.section}>
-                <Image source={require('@/assets/images/brand.png')} style={styles.brand} />
-
-                <ClientsInput type="email" name="mail" label="Email Address" placeholder="you@email.com" />
-                <ClientsInput isPassword label="Password" placeholder="Enter your password" />
-
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <ImageBackground source={require('@/assets/images/advocate.png')} style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={[styles.text, styles.optionText]}>Remember me</Text>
-                    <Text style={[styles.text, styles.helpText]}>Forgot?</Text>
+                    <Text style={[styles.text, styles.headerText]}>Sign In</Text>
+                    <Text style={[styles.text, styles.helpText]}>Help</Text>
                 </View>
+                <View style={styles.section}>
+                    <Image source={require('@/assets/images/brand.png')} style={styles.brand} />
 
-                <ClientsButton
-                    text="Sign In"
-                    bgColor={colors.white}
-                    textColor={colors.black}
-                    onPress={() => navigation.navigate('Dashboard')}
-                />
-            </View>
-            <View style={styles.footer}>
-                <Text style={[styles.text, styles.footerText]}>Don't have an account?</Text>
-                <Text style={[styles.text, styles.signText]} onPress={() => navigation.navigate('CreateAccount')}>Sign Up</Text>
-            </View>
-        </ImageBackground>
+                    <ClientsInput type="email" name="mail" label="Email Address" placeholder="you@email.com" leftIcon="mail-outline" />
+                    <ClientsInput isPassword label="Password" placeholder="Enter your password" leftIcon="lock-closed-outline" />
+
+                    <View style={styles.header}>
+                        <Text style={[styles.text, styles.optionText]}>Remember me</Text>
+                        <Text style={[styles.text, styles.helpText]}>Forgot?</Text>
+                    </View>
+
+                    <ClientsButton
+                        text="Sign In"
+                        bgColor={colors.white}
+                        textColor={colors.black}
+                        onPress={() => navigation.navigate('Dashboard')}
+                    />
+                </View>
+                <View style={styles.footer}>
+                    <Text style={[styles.text, styles.footerText]}>Don't have an account?</Text>
+                    <Text style={[styles.text, styles.signText]} onPress={() => navigation.navigate('CreateAccount')}>Sign Up</Text>
+                </View>
+            </ImageBackground>
+        </TouchableWithoutFeedback>
     );
 };
 
