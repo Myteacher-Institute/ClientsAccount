@@ -38,7 +38,7 @@ const screenOptions = ({ route }) => ({
                 iconName = focused ? 'account' : 'account-outline';
                 break;
             default:
-                iconName = 'ellipse-outline';
+                iconName = 'circle-half-full';
         }
 
         return <Ionicons name={iconName} size={24} color={color} />;

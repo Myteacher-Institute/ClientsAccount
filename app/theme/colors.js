@@ -1,6 +1,8 @@
 const colors = {
     red: '#FF2F2F',
     blue: '#276EF1',
+    blue1: '#4F46E5',
+    blue2: '#E6EFFA',
     grey1: '#374151',
     grey2: '#ADAEBC',
     grey3: '#111827',
@@ -9,7 +11,6 @@ const colors = {
     grey6: '#888888',
     black: '#000000',
     green: '#34C759',
-    blue1: '#4F46E5',
     white: '#ffffff',
     yellow: '#FFCC00',
     offWhite: '#F8F9FB',

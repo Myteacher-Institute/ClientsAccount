@@ -1,20 +1,21 @@
 import { fonts, colors } from '@/theme';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Text, View, Image, Pressable, StyleSheet } from 'react-native';
 
 const DashboardHeader = () => {
     const navigation = useNavigation();
 
     return (
         <View style={styles.container}>
-            <View style={styles.profile}>
-                <Text style={styles.name}>Hi, Charles</Text>
-            </View>
+            <Pressable style={styles.profile} onPress={() => navigation.navigate('Account')}>
+                <Image source={require('@/assets/images/profile.png')} style={styles.profileImg} />
+                <Text style={styles.profileName}>Hi, Charles</Text>
+            </Pressable>
 
-            <TouchableOpacity onPress={() => navigation.navigate('KYCScreen')}>
-                <Icon name="notifications" size={20} color={colors.black} />
-            </TouchableOpacity>
+            <Pressable onPress={() => navigation.navigate('KYCScreen')}>
+                <Icon name="bell-badge-outline" size={24} color={colors.black} />
+            </Pressable>
         </View>
     );
 };
@@ -31,8 +32,18 @@ const styles = StyleSheet.create({
     },
     profile: {
         gap: 10,
+        alignItems: 'center',
+        flexDirection: 'row',
     },
-    name: {
+    profileImg: {
+        width: 40,
+        height: 40,
+        borderWidth: 2,
+        borderRadius: 50,
+        resizeMode: 'cover',
+        borderColor: colors.blue2,
+    },
+    profileName: {
         color: colors.grey5,
         ...fonts.medium(18),
     },
