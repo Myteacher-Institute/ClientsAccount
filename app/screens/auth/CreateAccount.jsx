@@ -1,16 +1,22 @@
 import { useState } from 'react';
 import { fonts, colors } from '@/theme';
 import ClientsInput from '@/components/ClientsInput';
-import { Text, View, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import ClientsButton from '@/components/ClientsButton';
 import ClientsLayout from '@/components/ClientsLayout';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
 const CreateAccount = ({ navigation }) => {
     const [selectedGender, setSelectedGender] = useState(null);
 
+    const genderOptions = [
+        { key: 'male', label: 'Male', icon: 'male', color: colors.blue4 },
+        { key: 'female', label: 'Female', icon: 'female', color: colors.red2 },
+        { key: 'other', label: 'Other', icon: 'ellipse-outline', color: colors.grey4 },
+    ];
+
     return (
         <ClientsLayout title="Create Account">
-
             <View style={styles.section}>
                 <ClientsInput darkLabel="Full Name" placeholder="Enter your full name" />
                 <ClientsInput placeholder="Enter a Chamber Name" darkLabel="Enter a desired/registered Chamber Name?" />
@@ -18,18 +24,17 @@ const CreateAccount = ({ navigation }) => {
 
                 <Text style={styles.text}>Gender</Text>
                 <View style={styles.gender}>
-                    {['male', 'female', 'other'].map((gender) => {
-                        const isSelected = selectedGender === gender;
-                        const genderSymbols = { male: '♂', female: '♀', other: '○' };
+                    {genderOptions.map(({ key, icon, color, label }) => {
+                        const isSelected = selectedGender === key;
                         return (
-                            <ClientsButton
-                                outline
-                                key={gender}
-                                text={gender}
-                                onPress={() => setSelectedGender(gender)}
-                                extraStyle={[styles.genderButton, isSelected && styles.genderButtonSelected]}
-                                extraTextStyle={[styles.genderText, isSelected && styles.genderTextSelected]}
-                            />
+                            <TouchableOpacity
+                                key={key}
+                                onPress={() => setSelectedGender(key)}
+                                style={[styles.genderOption, isSelected && styles.genderOptionSelected]}
+                            >
+                                <Icon name={icon} size={15} color={color} />
+                                <Text style={[styles.genderLabel, isSelected && styles.genderLabelSelected]}>{label}</Text>
+                            </TouchableOpacity>
                         );
                     })}
                 </View>
@@ -52,26 +57,35 @@ const styles = StyleSheet.create({
     },
     text: {
         ...fonts.medium(),
+        marginBottom: -15,
         color: colors.grey1,
     },
     gender: {
-        gap: 10,
+        gap: 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    genderButton: {
+    genderOption: {
+        gap: 5,
         flex: 1,
+        height: 45,
+        borderWidth: 1,
+        borderRadius: 8,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
         borderColor: colors.grey2,
     },
-    genderButtonSelected: {
+    genderOptionSelected: {
         borderColor: colors.primary,
         backgroundColor: colors.yellow,
     },
-    genderText: {
+    genderLabel: {
+        marginTop: 4,
         ...fonts.regular(),
         color: colors.grey1,
     },
-    genderTextSelected: {
+    genderLabelSelected: {
         color: colors.white,
     },
 });

@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { fonts, colors } from '@/theme';
 import ClientsInput from '@/components/ClientsInput';
-import Icon from 'react-native-vector-icons/Ionicons';
 import ClientsButton from '@/components/ClientsButton';
 import ClientsLayout from '@/components/ClientsLayout';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Text, View, Pressable, StyleSheet } from 'react-native';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 const KYCScreen = ({ navigation }) => {
     const [terms, setTerms] = useState(false);
@@ -13,20 +15,42 @@ const KYCScreen = ({ navigation }) => {
         <ClientsLayout title="KYC Verification">
             <View style={styles.section}>
                 <View style={styles.header}>
-                    <Icon name="briefcase" size={22} color={colors.yellow} />
+                    <Ionicons name="briefcase" size={22} color={colors.yellow} />
                     <Text style={styles.headerText}>Verify CAC Documents</Text>
                 </View>
 
                 <ClientsInput type="cac" darkLabel="CAC Registration Number" placeholder="e.g. RC1234567" />
 
+                <View style={styles.upload}>
+                    <Text style={styles.uploadText}>Upload Call to Bar Certificate (PDF)</Text>
+                    <Pressable style={styles.button}>
+                        <FontAwesome6 name="upload" size={15} color={colors.white} />
+                        <Text style={styles.buttonText}>Choose File</Text>
+                    </Pressable>
+                </View>
+                <View style={styles.upload}>
+                    <Text style={styles.uploadText}>Upload CAC Certificate (PDF, JPG, PNG)</Text>
+                    <Pressable style={styles.button}>
+                        <FontAwesome6 name="upload" size={15} color={colors.white} />
+                        <Text style={styles.buttonText}>Choose File</Text>
+                    </Pressable>
+                </View>
+                <View style={styles.upload}>
+                    <Text style={styles.uploadText}>Upload Recent Photo</Text>
+                    <Pressable style={styles.button}>
+                        <FontAwesome name="photo" size={15} color={colors.white} />
+                        <Text style={styles.buttonText}>Upload Photo</Text>
+                    </Pressable>
+                </View>
+
                 <Pressable onPress={() => setTerms(prev => !prev)} style={styles.terms}>
                     <View style={[styles.termsCircle, terms && styles.termsChecked]}>
-                        {terms && <Icon name="checkmark" size={12} color={colors.white} />}
+                        {terms && <Ionicons name="checkmark" size={12} color={colors.white} />}
                     </View>
-                    <Text style={styles.termsText}>I accept terms and privacy policy</Text>
+                    <Text style={styles.termsText}>I accept the terms and privacy policy</Text>
                 </Pressable>
 
-                <ClientsButton space={20} leftIcon="help-circle-outline" text="Submit for Verification" onPress={() => navigation.navigate('Verification')} />
+                <ClientsButton leftIcon="help-circle-outline" text="Submit for Verification" onPress={() => navigation.navigate('Verification')} />
             </View>
             <Text style={styles.footer}>© 2025 Clients Account. All rights reserved.</Text>
         </ClientsLayout>
@@ -53,6 +77,24 @@ const styles = StyleSheet.create({
         ...fonts.medium(18),
         color: colors.grey3,
     },
+    upload: { gap: 2, marginTop: 10 },
+    uploadText: {
+        ...fonts.medium(),
+        color: colors.grey1,
+    },
+    button: {
+        gap: 8,
+        height: 45,
+        borderRadius: 8,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        backgroundColor: colors.grey6,
+    },
+    buttonText: {
+        ...fonts.medium(),
+        color: colors.white,
+    },
     terms: {
         gap: 6,
         alignItems: 'center',
@@ -74,7 +116,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.blue1,
     },
     footer: {
-        marginTop: 80,
+        marginTop: 60,
         ...fonts.light(12),
         textAlign: 'center',
         color: colors.grey4,

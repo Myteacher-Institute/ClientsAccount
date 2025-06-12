@@ -17,7 +17,7 @@ const ClientsButton = ({
     outline = false,
     loading = false,
     fitContent = false,
-    iconType = 'ionicon',
+    iconType = 'ionIcon',
     bgColor = colors.black,
     textColor = colors.white,
     ...rest
