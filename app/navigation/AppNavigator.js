@@ -14,9 +14,9 @@ const AppNavigator = () => {
         <NavigationContainer>
             <Stack.Navigator initialRouteName="SplashScreen" screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="KYCScreen" component={KYCScreen} />
-                <Stack.Screen name="Verification" component={Verification} />
                 <Stack.Screen name="SplashScreen" component={SplashScreen} />
                 <Stack.Screen name="SigninScreen" component={SigninScreen} />
+                <Stack.Screen name="Verification" component={Verification} />
                 <Stack.Screen name="CreateAccount" component={CreateAccount} />
                 <Stack.Screen name="Dashboard" component={DashboardNavigator} />
             </Stack.Navigator>

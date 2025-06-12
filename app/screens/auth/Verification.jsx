@@ -1,11 +1,14 @@
 import { fonts, colors } from '@/theme';
-import ClientsLayout from '@/components/ClientsLayout';
 import { Text, View, StyleSheet } from 'react-native';
+import ClientsLayout from '@/components/ClientsLayout';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Verification = () => {
+const Verification = ({ navigation }) => {
     return (
-        <ClientsLayout title="Verification">
+        <ClientsLayout
+            title="Verification"
+            onBackPress={() => navigation.reset({ routes: [{ name: 'SplashScreen', params: { skipAnimation: true } }] })}
+        >
             <View style={styles.shield}>
                 <Icon name="shield-half-full" size={30} color={colors.yellow} />
             </View>

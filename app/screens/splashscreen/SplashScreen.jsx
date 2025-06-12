@@ -11,7 +11,8 @@ const animateParallel = (anime) => new Promise((resolve) => Animated.parallel(an
 const fadeTo = (anim, to, duration = DUR_EL, delay = 0, easing = Easing.inOut(Easing.ease)) =>
     Animated.timing(anim, { toValue: to, duration, delay, easing, useNativeDriver: true });
 
-const SplashScreen = ({ navigation }) => {
+const SplashScreen = ({ route, navigation }) => {
+    const skipAnimation = route?.params?.skipAnimation ?? false;
     const [allowInteraction, setAllowInteraction] = useState(false);
 
     const screen1 = useRef(new Animated.Value(0)).current;
@@ -34,6 +35,25 @@ const SplashScreen = ({ navigation }) => {
 
         const run = async () => {
             await RNBootSplash.hide({ fade: true });
+
+            if (skipAnimation) {
+                logoOpacity.setValue(0);
+                screen1.setValue(0);
+                screen2.setValue(0);
+                screen3.setValue(1);
+                logoScale.setValue(1.2);
+                logoTranslateX.setValue(0);
+                logoTranslateY.setValue(-10);
+                screen2BrandOpacity.setValue(0);
+                screen3BrandTranslateY.setValue(-50);
+                screen3BrandOpacity.setValue(1);
+                screen3BrandScale.setValue(0.8);
+                screen3ButtonsOpacity.setValue(1);
+
+                StatusBar.setHidden(false, 'fade');
+                setAllowInteraction(true);
+                return;
+            }
 
             await animateParallel([
                 fadeTo(logoOpacity, 1),
@@ -76,6 +96,7 @@ const SplashScreen = ({ navigation }) => {
         screen3,
         logoScale,
         logoOpacity,
+        skipAnimation,
         logoTranslateX,
         logoTranslateY,
         screen3BrandScale,

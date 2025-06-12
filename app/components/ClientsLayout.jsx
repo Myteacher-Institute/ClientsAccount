@@ -7,6 +7,7 @@ const ClientsLayout = ({
     title = null,
     rightIcon = null,
     showHeader = false,
+    onBackPress = null,
     onRightPress = null,
     customHeader = null,
 }) => {
@@ -20,6 +21,7 @@ const ClientsLayout = ({
                 <ClientsHeader
                     title={title}
                     rightIcon={rightIcon}
+                    onBackPress={onBackPress}
                     onRightPress={onRightPress}
                     backgroundColor={backgroundColor}
                 />
