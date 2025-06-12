@@ -16,12 +16,9 @@ const SigninScreen = ({ navigation }) => {
                     <Image source={require('@/assets/images/brand.png')} style={styles.brand} />
 
                     <ClientsInput type="email" name="mail" label="Email Address" placeholder="you@email.com" leftIcon="mail-outline" />
-                    <ClientsInput isPassword label="Password" placeholder="Enter your password" leftIcon="lock-closed-outline" />
+                    <ClientsInput isPassword label="Password" placeholder="Enter your password" leftIcon="lock-closed" />
 
-                    <View style={styles.header}>
-                        <Text style={[styles.text, styles.optionText]}>Remember me</Text>
-                        <Text style={[styles.text, styles.helpText]}>Forgot?</Text>
-                    </View>
+                    <Text style={[styles.text, styles.helpText]}>Forgot Password?</Text>
 
                     <ClientsButton
                         text="Sign In"
@@ -50,21 +47,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    text: { color: colors.white },
-    headerText: { ...fonts.semiBold(18) },
-    helpText: { ...fonts.medium(12) },
-    section: {
-        gap: 20,
-    },
-    brand: { marginBottom: 80, alignSelf: 'center' },
-    optionText: { ...fonts.light(12) },
     footer: {
         gap: 5,
         flexDirection: 'row',
         justifyContent: 'center',
     },
-    footerText: { ...fonts.light(12), color: colors.grey4 },
+    section: { gap: 20 },
+    text: { color: colors.white },
+    helpText: { ...fonts.medium(12) },
     signText: { ...fonts.regular(12) },
+    headerText: { ...fonts.semiBold(18) },
+    brand: { marginBottom: 80, alignSelf: 'center' },
+    footerText: { ...fonts.light(12), color: colors.grey4 },
 });
 
 export default SigninScreen;

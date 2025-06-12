@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
 
 const screenOptions = ({ route }) => ({
     header: () => <DashboardHeader />,
-    tabBarActiveTintColor: colors.blue1,
+    tabBarActiveTintColor: colors.blue2,
     tabBarInactiveTintColor: colors.grey4,
     tabBarLabelStyle: { ...fonts.medium(12) },
     tabBarStyle: {

@@ -47,7 +47,7 @@ const ClientsInput = ({
 
     const resolvedLabel = darkLabel || label;
     const inputBackground = darkMode ? colors.black : colors.offWhite;
-    const labelColor = { ...fonts.medium(), color: darkLabel ? colors.grey1 : colors.white };
+    const labelColor = { ...fonts.medium(), marginBottom: 2, color: darkLabel ? colors.grey1 : colors.white };
 
     return (
         <View style={extraContainerStyle}>

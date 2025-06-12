@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 50,
         resizeMode: 'cover',
-        borderColor: colors.blue2,
+        borderColor: colors.blue3,
     },
     profileName: {
         color: colors.grey5,

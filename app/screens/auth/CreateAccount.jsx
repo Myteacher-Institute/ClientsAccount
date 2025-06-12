@@ -1,67 +1,35 @@
 import { useState } from 'react';
 import { fonts, colors } from '@/theme';
 import ClientsInput from '@/components/ClientsInput';
+import { Text, View, StyleSheet } from 'react-native';
 import ClientsButton from '@/components/ClientsButton';
 import ClientsLayout from '@/components/ClientsLayout';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
 const CreateAccount = ({ navigation }) => {
-    const [hasChamberName, setHasChamberName] = useState(null);
     const [selectedGender, setSelectedGender] = useState(null);
-
-    const onPressChamber = choice => hasChamberName !== choice && setHasChamberName(choice);
 
     return (
         <ClientsLayout title="Create Account">
 
             <View style={styles.section}>
                 <ClientsInput darkLabel="Full Name" placeholder="Enter your full name" />
-
-                <Text style={styles.questionText}>
-                    Do you have an already existing/registered Chamber Name?
-                </Text>
-
-                <View style={styles.radioGroupContainer}>
-                    {['yes', 'no'].map((value) => {
-                        const isSelected = hasChamberName === value;
-                        const label = value === 'yes' ? 'Yes' : 'No';
-                        return (
-                            <TouchableOpacity
-                                key={value}
-                                activeOpacity={0.7}
-                                onPress={() => onPressChamber(value)}
-                                style={[styles.radioButton, isSelected && styles.radioButtonSelected]}
-                            >
-                                <Icon
-                                    size={22}
-                                    color={isSelected ? colors.primary : '#777'}
-                                    name={isSelected ? 'radio-button-checked' : 'radio-button-unchecked'}
-                                />
-                                <Text style={[styles.radioText, isSelected && styles.radioTextSelected]}>{label}</Text>
-                            </TouchableOpacity>
-                        );
-                    })}
-                </View>
-
-                <ClientsInput placeholder="Enter a Chamber Name" />
+                <ClientsInput placeholder="Enter a Chamber Name" darkLabel="Enter a desired/registered Chamber Name?" />
                 <ClientsInput type="scn" placeholder="Enter SCN Number" darkLabel="Supreme Court Enrollment Number" />
 
-                <Text style={styles.genderLabel}>Gender</Text>
-                <View style={styles.genderRadioGroup}>
+                <Text style={styles.text}>Gender</Text>
+                <View style={styles.gender}>
                     {['male', 'female', 'other'].map((gender) => {
                         const isSelected = selectedGender === gender;
                         const genderSymbols = { male: '♂', female: '♀', other: '○' };
                         return (
-                            <TouchableOpacity
+                            <ClientsButton
+                                outline
                                 key={gender}
-                                style={[styles.genderRadioButton, isSelected && styles.genderRadioButtonSelected]}
+                                text={gender}
                                 onPress={() => setSelectedGender(gender)}
-                            >
-                                <Text style={[styles.genderRadioText, isSelected && styles.genderRadioTextSelected]}>
-                                    {genderSymbols[gender]} {gender.charAt(0).toUpperCase() + gender.slice(1)}
-                                </Text>
-                            </TouchableOpacity>
+                                extraStyle={[styles.genderButton, isSelected && styles.genderButtonSelected]}
+                                extraTextStyle={[styles.genderText, isSelected && styles.genderTextSelected]}
+                            />
                         );
                     })}
                 </View>
@@ -82,66 +50,29 @@ const styles = StyleSheet.create({
         gap: 15,
         paddingBottom: '10%',
     },
-    questionText: {
-        color: colors.black,
-        ...fonts.regular(10),
+    text: {
+        ...fonts.medium(),
+        color: colors.grey1,
     },
-    radioGroupContainer: {
-        gap: 10,
-        flexDirection: 'row',
-    },
-    radioButton: {
-        gap: 5,
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: colors.gray,
-        backgroundColor: colors.background,
-    },
-    radioButtonSelected: {
-        borderColor: colors.primary,
-        backgroundColor: colors.lightPrimary,
-    },
-    radioText: {
-        color: colors.black,
-        ...fonts.regular(),
-    },
-    radioTextSelected: {
-        color: colors.primary,
-    },
-    genderLabel: {
-        ...fonts.regular(),
-        color: colors.black,
-    },
-    genderRadioGroup: {
+    gender: {
         gap: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    genderRadioButton: {
+    genderButton: {
         flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 10,
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: colors.gray,
-        backgroundColor: colors.background,
-        justifyContent: 'center',
+        borderColor: colors.grey2,
     },
-    genderRadioButtonSelected: {
+    genderButtonSelected: {
         borderColor: colors.primary,
-        backgroundColor: colors.lightPrimary,
+        backgroundColor: colors.yellow,
     },
-    genderRadioText: {
+    genderText: {
         ...fonts.regular(),
-        color: colors.black,
+        color: colors.grey1,
     },
-    genderRadioTextSelected: {
-        color: colors.primary,
+    genderTextSelected: {
+        color: colors.white,
     },
 });
 
