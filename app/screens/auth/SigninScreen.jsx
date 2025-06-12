@@ -20,12 +20,7 @@ const SigninScreen = ({ navigation }) => {
 
                     <Text style={[styles.text, styles.helpText]}>Forgot Password?</Text>
 
-                    <ClientsButton
-                        text="Sign In"
-                        bgColor={colors.white}
-                        textColor={colors.black}
-                        onPress={() => navigation.navigate('Dashboard')}
-                    />
+                    <ClientsButton isLight text="Sign In" onPress={() => navigation.navigate('Dashboard')} />
                 </View>
                 <View style={styles.footer}>
                     <Text style={[styles.text, styles.footerText]}>Don't have an account?</Text>

@@ -176,9 +176,8 @@ const SplashScreen = ({ route, navigation }) => {
                 />
                 <View style={styles.form}>
                     <ClientsButton
+                        isLight
                         text="Sign In"
-                        bgColor={colors.white}
-                        textColor={colors.black}
                         extraStyle={styles.button}
                         onPress={() => navigation.navigate('SigninScreen')}
                     />

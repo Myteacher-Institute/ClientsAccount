@@ -1,47 +1,41 @@
 import { fonts, colors } from '@/theme';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { Text, View, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 const ClientsButton = ({
     text,
     space,
     onPress,
+    bgColor,
     leftIcon,
-    leftText,
     rightIcon,
-    rightText,
     extraStyle,
+    textColor,
     iconSize = 20,
     extraTextStyle,
+    isLight = false,
     rounded = false,
     outline = false,
     loading = false,
-    fitContent = false,
-    iconType = 'ionIcon',
-    bgColor = colors.black,
-    textColor = colors.white,
+    IconComponent = Ionicons,
     ...rest
 }) => {
+    const finalBgColor = bgColor ?? (isLight ? colors.white : colors.black);
+    const finalTextColor = textColor ?? (isLight ? colors.black : colors.white);
+
     const containerStyle = [
         {
+            marginTop: space || 0,
             borderWidth: outline ? 1 : 0,
             borderRadius: rounded ? 50 : 8,
-            ...(space ? { marginTop: space } : {}),
-            alignSelf: fitContent ? 'flex-start' : 'stretch',
-            borderColor: outline ? textColor : 'transparent',
-            backgroundColor: outline ? 'transparent' : bgColor,
+            borderColor: outline ? finalTextColor : 'transparent',
+            backgroundColor: outline ? 'transparent' : finalBgColor,
         },
         styles.container,
         extraStyle,
     ];
 
-    const renderIcon = (icon, position) => {
-        if (!icon) { return null; }
-        const iconStyle = { position: 'absolute', [position]: 15 };
-        return iconType === 'image'
-            ? <Image source={icon} style={[styles.iconImage, iconStyle]} />
-            : <Icon name={icon} size={iconSize} color={textColor} style={iconStyle} />;
-    };
+    const renderIcon = (iconName) => iconName ? <IconComponent name={iconName} size={iconSize} color={finalTextColor} /> : null;
 
     return (
         <TouchableOpacity
@@ -52,17 +46,12 @@ const ClientsButton = ({
             style={containerStyle}
         >
             {loading ? (
-                <ActivityIndicator size="small" color={textColor} />
-            ) : leftText && rightText ? (
-                <View style={styles.dualText}>
-                    <Text style={[{ ...fonts.medium(16) }, { color: textColor }, extraTextStyle]}>{leftText}</Text>
-                    <Text style={[{ ...fonts.medium(16) }, { color: textColor }, extraTextStyle]}>{rightText}</Text>
-                </View>
+                <ActivityIndicator size="small" color={finalTextColor} />
             ) : (
-                <View style={styles.inner}>
-                    {renderIcon(leftIcon, 'left')}
-                    <Text style={[{ ...fonts.medium(16) }, { color: textColor }, extraTextStyle]}>{text}</Text>
-                    {renderIcon(rightIcon, 'right')}
+                <View style={styles.content}>
+                    {leftIcon && renderIcon(leftIcon)}
+                    <Text style={[fonts.medium(16), { color: finalTextColor }, extraTextStyle]}>{text}</Text>
+                    {rightIcon && renderIcon(rightIcon)}
                 </View>
             )}
         </TouchableOpacity>
@@ -72,23 +61,14 @@ const ClientsButton = ({
 const styles = StyleSheet.create({
     container: {
         height: 50,
-        padding: 12,
+        paddingHorizontal: 16,
         justifyContent: 'center',
     },
-    inner: {
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    dualText: {
-        width: '100%',
+    content: {
+        gap: 5,
         alignItems: 'center',
         flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    iconImage: {
-        width: 20,
-        height: 20,
-        resizeMode: 'contain',
+        justifyContent: 'center',
     },
 });
 

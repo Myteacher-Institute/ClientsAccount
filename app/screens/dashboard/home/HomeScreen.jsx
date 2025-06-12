@@ -1,10 +1,12 @@
-import ClientsButton from '@/components/ClientsButton';
 import ClientsLayout from '@/components/ClientsLayout';
+import AccountBalance from './components/AccountBalance';
+import AccountDetails from './components/AccountDetails';
 
 const HomeScreen = () => {
     return (
         <ClientsLayout>
-            <ClientsButton text="Home" />
+            <AccountBalance />
+            <AccountDetails />
         </ClientsLayout>
     );
 };
