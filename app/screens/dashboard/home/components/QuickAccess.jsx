@@ -1,45 +1,42 @@
 import { fonts, colors } from '@/theme';
-import { Text, View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
+import { Text, Pressable, StyleSheet, ScrollView } from 'react-native';
 
 const tools = [
-    { icon: 'scale-balanced', label: 'Files', iconColor: colors.blue5 },
-    { icon: 'book-open', label: 'Client Funds', iconColor: colors.green4 },
-    { icon: 'users', label: 'Resources', iconColor: colors.brown2 },
-    { icon: 'briefcase', label: 'Support', iconColor: colors.brown2 },
+    { icon: 'folder-open', label: 'Files', iconColor: colors.blue5, screen: 'Storage' },
+    { icon: 'briefcase', label: 'Client Funds', iconColor: colors.purple2, screen: 'Account' },
+    { icon: 'gavel', label: 'Resources', iconColor: colors.green4, screen: 'Resources' },
+    { icon: 'headset', label: 'Support', iconColor: colors.brown2, screen: 'Account' },
 ];
 
 const QuickAccess = () => {
     const navigation = useNavigation();
 
     return (
-        <View style={styles.container}>
-            {tools.map(({ icon, label, iconColor }) => (
-                <View key={icon} style={styles.tool}>
-                    <Icon name={icon} size={20} color={iconColor} />
-                    <Text style={styles.label}>{label}</Text>
-                </View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.container}>
+            {tools.map((item, index) => (
+                <Pressable key={index} style={styles.tool} onPress={() => navigation.navigate(item.screen)}>
+                    <Icon name={item.icon} size={20} color={item.iconColor} />
+                    <Text style={styles.label}>{item.label}</Text>
+                </Pressable>
             ))}
-        </View>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        gap: 10,
-        marginBottom: 15,
-        paddingVertical: 5,
-        overflow: 'scroll',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        gap: 15,
+        padding: 2,
+        marginBottom: 18,
     },
     tool: {
         gap: 8,
-        width: 80,
-        height: 80,
-        paddingHorizontal: 5,
+        width: 85,
+        height: 85,
         borderRadius: 12,
+        paddingVertical: 10,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.white,

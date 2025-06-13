@@ -1,7 +1,7 @@
 import { fonts, colors } from '@/theme';
-import { Text, View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
+import { Text, View, StyleSheet, ScrollView } from 'react-native';
 
 const resources = [
     { icon: 'scale-balanced', label: 'Legal Templates', bgColor: colors.blue8, iconColor: colors.blue5 },
@@ -18,14 +18,14 @@ const HelpFulResources = () => {
                 <Text style={styles.headerRecent}>HelpFul Resources</Text>
                 <Text style={styles.headerLink} onPress={() => navigation.navigate('Resources')}>Browse</Text>
             </View>
-            <View style={[styles.header, styles.resources]}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.resources}>
                 {resources.map(({ icon, label, bgColor, iconColor }) => (
                     <View key={icon} style={[styles.resource, { backgroundColor: bgColor }]}>
                         <Icon name={icon} size={20} color={iconColor} />
                         <Text style={[styles.label, { color: iconColor }]}>{label}</Text>
                     </View>
                 ))}
-            </View>
+            </ScrollView>
         </View>
     );
 };
@@ -52,10 +52,7 @@ const styles = StyleSheet.create({
         color: colors.blue5,
         ...fonts.medium(12),
     },
-    resources: {
-        gap: 12,
-        overflow: 'scroll',
-    },
+    resources: { gap: 12 },
     resource: {
         gap: 8,
         width: 120,

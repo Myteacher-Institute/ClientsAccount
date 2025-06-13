@@ -13,7 +13,7 @@ const DashboardHeader = () => {
                 <Text style={styles.profileName}>Hi, Charles</Text>
             </Pressable>
 
-            <Pressable onPress={() => navigation.navigate('KYCScreen')}>
+            <Pressable onPress={() => navigation.navigate('Account')}>
                 <Icon name="bell-badge-outline" size={24} color={colors.black} />
             </Pressable>
         </View>
