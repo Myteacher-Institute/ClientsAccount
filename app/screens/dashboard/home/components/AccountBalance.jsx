@@ -3,7 +3,6 @@ import { Text, View, StyleSheet } from 'react-native';
 import ClientsButton from '@/components/ClientsButton';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 
-
 const AccountBalance = () => {
     return (
         <View style={styles.container}>

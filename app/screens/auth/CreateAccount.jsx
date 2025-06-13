@@ -77,8 +77,8 @@ const styles = StyleSheet.create({
         borderColor: colors.grey2,
     },
     genderOptionSelected: {
-        borderColor: colors.primary,
-        backgroundColor: colors.yellow,
+        borderColor: colors.black,
+        backgroundColor: colors.black,
     },
     genderLabel: {
         marginTop: 4,

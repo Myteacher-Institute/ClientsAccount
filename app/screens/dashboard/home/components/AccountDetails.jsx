@@ -3,13 +3,12 @@ import { Text, View, StyleSheet } from 'react-native';
 import ClientsButton from '@/components/ClientsButton';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 
-
 const AccountDetails = () => {
     return (
         <View style={styles.container}>
             <View>
-                <Text style={styles.account}>Account Number</Text>
-                <Text style={styles.number}>0123 4567 8910</Text>
+                <Text style={styles.account}>Account Details</Text>
+                <Text style={styles.number}>0123456789</Text>
                 <Text style={styles.name}>John Doe & Sons Chamber</Text>
                 <Text style={styles.name}>Wema Bank</Text>
             </View>
@@ -22,7 +21,7 @@ const styles = StyleSheet.create({
     container: {
         padding: 15,
         borderRadius: 16,
-        marginBottom: 20,
+        marginBottom: 15,
         alignItems: 'center',
         flexDirection: 'row',
         backgroundColor: colors.white,
@@ -34,12 +33,15 @@ const styles = StyleSheet.create({
         ...fonts.regular(12),
     },
     number: {
+        marginTop: 5,
+        marginBottom: -5,
         color: colors.grey5,
         ...fonts.medium(16),
     },
     name: {
-        ...fonts.regular(12),
+        marginBottom: -5,
         color: colors.grey4,
+        ...fonts.regular(12),
     },
 });
 
