@@ -1,10 +1,12 @@
-import ClientsButton from '@/components/ClientsButton';
+import AccountInfo from './components/AccountInfo';
 import ClientsLayout from '@/components/ClientsLayout';
+import AccountProfile from './components/AccountProfile';
 
 const AccountScreen = () => {
     return (
         <ClientsLayout>
-            <ClientsButton text="Account" />
+            <AccountProfile />
+            <AccountInfo />
         </ClientsLayout>
     );
 };
