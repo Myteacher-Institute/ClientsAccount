@@ -10,10 +10,11 @@ const ClientsLayout = ({
     onBackPress = null,
     onRightPress = null,
     customHeader = null,
+    bgColor,
 }) => {
     const isDark = useColorScheme() === 'dark';
     const shouldShowBack = showHeader || Boolean(title);
-    const backgroundColor = isDark ? colors.offWhite : colors.offWhite;
+    const backgroundColor = bgColor ?? (isDark ? colors.offWhite : colors.offWhite);
 
     return (
         <View style={[styles.container, { backgroundColor }]}>
