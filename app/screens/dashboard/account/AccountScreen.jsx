@@ -9,7 +9,7 @@ const AccountScreen = () => {
         <ClientsLayout>
             <AccountProfile />
             <AccountInfo />
-            <ClientsButton space={40} text="Logout" bgColor={colors.red1} textColor={colors.red4} />
+            <ClientsButton space={{ bottom: 40 }} text="Logout" bgColor={colors.red1} textColor={colors.red4} />
         </ClientsLayout>
     );
 };

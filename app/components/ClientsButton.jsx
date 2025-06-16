@@ -22,20 +22,24 @@ const ClientsButton = ({
 }) => {
     const finalBgColor = bgColor ?? (isLight ? colors.white : colors.black);
     const finalTextColor = textColor ?? (isLight ? colors.black : colors.white);
+    const marginStyles = {
+        marginTop: typeof space === 'number' ? space : space?.top || 0,
+        marginBottom: typeof space === 'object' ? space?.bottom || 0 : 0,
+    };
 
     const containerStyle = [
         {
-            marginTop: space || 0,
-            borderWidth: outline ? 1 : 0,
-            borderRadius: rounded ? 50 : 8,
-            borderColor: outline ? finalTextColor : 'transparent',
             backgroundColor: outline ? 'transparent' : finalBgColor,
+            borderColor: outline ? finalTextColor : 'transparent',
+            borderRadius: rounded ? 50 : 8,
+            borderWidth: outline ? 1 : 0,
         },
         styles.container,
+        marginStyles,
         extraStyle,
     ];
 
-    const renderIcon = (iconName) => iconName ? <IconComponent name={iconName} size={iconSize} color={finalTextColor} /> : null;
+    const renderIcon = iconName => iconName ? <IconComponent name={iconName} size={iconSize} color={finalTextColor} /> : null;
 
     return (
         <TouchableOpacity
