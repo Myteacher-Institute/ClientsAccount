@@ -6,9 +6,9 @@ const ResourcesDetails = () => {
     return (
         <View style={styles.container}>
             <Icon name="scale-balanced" size={30} color={colors.white} />
-            <View>
+            <View style={styles.content}>
                 <Text style={styles.heading}>Legal Templates & Tools</Text>
-                <Text style={styles.paragraph}>Curated contracts, pleadings, checklists, and guides for lawyers. Browse free and premium resources.</Text>
+                <Text style={styles.paragraph}>{'Curated contracts, pleadings,\nchecklists, & guides for lawyers.\nBrowse free & premium resources.'}</Text>
             </View>
         </View>
     );
@@ -16,21 +16,25 @@ const ResourcesDetails = () => {
 
 const styles = StyleSheet.create({
     container: {
-        gap: 16,
-        padding: 16,
+        gap: 15,
         borderRadius: 12,
         marginBottom: 20,
+        paddingVertical: 20,
         alignItems: 'center',
         flexDirection: 'row',
+        paddingHorizontal: 12,
         backgroundColor: colors.black,
+    },
+    content: {
+        gap: 15,
+        flex: 1,
     },
     heading: {
         color: colors.white,
         ...fonts.semiBold(20),
     },
     paragraph: {
-        width: '80%',
-        ...fonts.regular(),
+        ...fonts.light(),
         color: colors.white,
     },
 });
