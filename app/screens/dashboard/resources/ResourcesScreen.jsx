@@ -1,10 +1,10 @@
-import ClientsButton from '@/components/ClientsButton';
 import ClientsLayout from '@/components/ClientsLayout';
+import ResourcesDetails from './components/ResourcesDetails';
 
 const ResourcesScreen = () => {
     return (
         <ClientsLayout>
-            <ClientsButton text="Resources" />
+            <ResourcesDetails />
         </ClientsLayout>
     );
 };

@@ -1,7 +1,9 @@
 const colors = {
-    red1: '#FF2F2F',
+    red1: '#FEF2F2',
     red2: '#F472B6',
     red3: '#EF4444',
+    red4: '#DC2626',
+    red5: '#EC4899',
     black: '#000000',
     white: '#FFFFFF',
     blue1: '#276EF1',
@@ -12,6 +14,7 @@ const colors = {
     blue6: '#DBEAFE',
     blue7: '#2563EB',
     blue8: '#EFF6FF',
+    blue9: '#4338CA',
     grey1: '#374151',
     grey2: '#ADAEBC',
     grey3: '#111827',
@@ -36,7 +39,9 @@ const colors = {
     purple2: '#9333EA',
     purple3: '#6366F1',
     purple4: '#818CF8',
-    offWhite: '#F8F9FB',
+    offWhite1: '#F8F9FB',
+    offWhite2: '#FFFFFFE5',
+    offWhite3: '#FFFFFF4D',
 };
 
 export default colors;

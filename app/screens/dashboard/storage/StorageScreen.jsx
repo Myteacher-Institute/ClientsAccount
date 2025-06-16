@@ -1,10 +1,16 @@
-import ClientsButton from '@/components/ClientsButton';
+import Folders from './components/Folders';
+import RecentFiles from './components/RecentFiles';
+import QuickActions from './components/QuickActions';
 import ClientsLayout from '@/components/ClientsLayout';
+import StorageDetails from './components/StorageDetails';
 
 const StorageScreen = () => {
     return (
         <ClientsLayout>
-            <ClientsButton text="Storage" />
+            <StorageDetails />
+            <QuickActions />
+            <RecentFiles />
+            <Folders />
         </ClientsLayout>
     );
 };

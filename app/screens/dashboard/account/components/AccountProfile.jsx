@@ -17,7 +17,7 @@ const AccountProfile = () => {
                 </View>
                 <View style={[styles.pill, styles.button, { backgroundColor: colors.blue8 }]}>
                     <Icon name="wallet" size={12} color={colors.blue4} />
-                    <Text style={[styles.pillText, { color: colors.blue4 }]}>Wallet Active</Text>
+                    <Text style={[styles.pillText, { color: colors.blue4 }]}>Active Wallet</Text>
                 </View>
             </View>
         </View>

@@ -46,7 +46,7 @@ const ClientsInput = ({
     const isMasked = !!maskConfig;
 
     const resolvedLabel = darkLabel || label;
-    const inputBackground = darkMode ? colors.black : colors.offWhite;
+    const inputBackground = darkMode ? colors.black : colors.offWhite1;
     const labelColor = { ...fonts.medium(), marginBottom: 2, color: darkLabel ? colors.grey1 : colors.white };
 
     return (

@@ -5,18 +5,18 @@ import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'rea
 const ClientsButton = ({
     text,
     space,
-    onPress,
     bgColor,
+    onPress,
     leftIcon,
     rightIcon,
-    extraStyle,
     textColor,
+    textStyle,
+    extraStyle,
     iconSize = 20,
-    extraTextStyle,
     isLight = false,
-    rounded = false,
-    outline = false,
     loading = false,
+    outline = false,
+    rounded = false,
     IconComponent = Ionicons,
     ...rest
 }) => {
@@ -50,7 +50,7 @@ const ClientsButton = ({
             ) : (
                 <View style={styles.content}>
                     {leftIcon && renderIcon(leftIcon)}
-                    <Text style={[fonts.medium(16), { color: finalTextColor }, extraTextStyle]}>{text}</Text>
+                    <Text style={[fonts.medium(16), { color: finalTextColor }, textStyle]}>{text}</Text>
                     {rightIcon && renderIcon(rightIcon)}
                 </View>
             )}
