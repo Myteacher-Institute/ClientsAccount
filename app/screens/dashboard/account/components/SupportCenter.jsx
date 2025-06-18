@@ -1,7 +1,6 @@
 import { fonts, colors } from '@/theme';
-import ClientsButton from '@/components/ClientsButton';
-import ClientsLayout from '@/components/ClientsLayout';
 import Icon from 'react-native-vector-icons/FontAwesome6';
+import { ClientsButton, ClientsLayout } from '@/components';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
 const supportOptions = [

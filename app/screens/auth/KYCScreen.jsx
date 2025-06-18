@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { fonts, colors } from '@/theme';
-import ClientsInput from '@/components/ClientsInput';
-import ClientsButton from '@/components/ClientsButton';
-import ClientsLayout from '@/components/ClientsLayout';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Text, View, Pressable, StyleSheet } from 'react-native';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { ClientsInput, ClientsButton, ClientsLayout } from '@/components';
 
 const KYCScreen = ({ navigation }) => {
     const [terms, setTerms] = useState(false);

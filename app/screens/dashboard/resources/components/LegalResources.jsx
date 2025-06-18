@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { fonts, colors } from '@/theme';
-import ClientsInput from '@/components/ClientsInput';
 import { Text, View, StyleSheet } from 'react-native';
-import ClientsButton from '@/components/ClientsButton';
 import Icon from 'react-native-vector-icons/FontAwesome6';
+import { ClientsInput, ClientsButton } from '@/components';
 
 const resources = [
     {

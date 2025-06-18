@@ -1,16 +1,9 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import ClientsLayout from '@/components/ClientsLayout';
-import ClientsButton from '@/components/ClientsButton';
+import { useState } from 'react';
 import { fonts, colors } from '@/theme';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { ClientsButton, ClientsLayout } from '@/components';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 
 const WithDrawFundsScreen = ({ navigation }) => {
   const [amount, setAmount] = useState('');
@@ -59,8 +52,8 @@ const WithDrawFundsScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.helpContainer}>
-            <Icon name="help-circle-outline" size={20} color={colors.black} />
-            <Text style={styles.helpText}>Need help?</Text>
+          <Icon name="help-circle-outline" size={20} color={colors.black} />
+          <Text style={styles.helpText}>Need help?</Text>
         </View>
 
         <ClientsButton

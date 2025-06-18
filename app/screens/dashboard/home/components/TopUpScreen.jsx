@@ -1,9 +1,7 @@
 import { fonts, colors } from '@/theme';
 import { useRef, useState } from 'react';
-import ClientsInput from '@/components/ClientsInput';
-import ClientsButton from '@/components/ClientsButton';
-import ClientsLayout from '@/components/ClientsLayout';
 import Icon from 'react-native-vector-icons/FontAwesome6';
+import { ClientsInput, ClientsButton, ClientsLayout } from '@/components';
 import { View, Text, Modal, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
 const paymentMethods = ['Via Debit Card', 'Via Bank Transfer'];

@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { fonts, colors } from '@/theme';
-import ClientsInput from '@/components/ClientsInput';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ClientsButton from '@/components/ClientsButton';
-import ClientsLayout from '@/components/ClientsLayout';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { ClientsInput, ClientsButton, ClientsLayout } from '@/components';
 
 const CreateAccount = ({ navigation }) => {
     const [selectedGender, setSelectedGender] = useState(null);

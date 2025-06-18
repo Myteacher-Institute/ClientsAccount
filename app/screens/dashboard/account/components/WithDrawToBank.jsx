@@ -1,16 +1,9 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Image,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import ClientsHeader from '@/components/ClientsHeader';
+import { useState } from 'react';
 import { fonts, colors } from '@/theme';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { ClientsHeader, ClientsLayout } from '@/components';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 
 
 const avatar = require('@/assets/images/profile.png');

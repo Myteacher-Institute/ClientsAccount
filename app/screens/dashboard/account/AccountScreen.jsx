@@ -1,8 +1,7 @@
 import { colors } from '@/theme';
 import AccountInfo from './components/AccountInfo';
-import ClientsButton from '@/components/ClientsButton';
-import ClientsLayout from '@/components/ClientsLayout';
 import AccountProfile from './components/AccountProfile';
+import { ClientsButton, ClientsLayout } from '@/components';
 
 const AccountScreen = () => {
     return (

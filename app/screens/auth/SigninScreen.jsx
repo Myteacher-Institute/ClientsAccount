@@ -1,6 +1,5 @@
 import { fonts, colors } from '@/theme';
-import ClientsInput from '@/components/ClientsInput';
-import ClientsButton from '@/components/ClientsButton';
+import { ClientsInput, ClientsButton } from '@/components';
 import { Text, View, Image, Keyboard, StyleSheet, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 
 const SigninScreen = ({ navigation }) => {
