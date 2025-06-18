@@ -1,19 +1,16 @@
+import { colors } from '@/theme';
+import AccountInfo from './components/AccountInfo';
 import ClientsButton from '@/components/ClientsButton';
 import ClientsLayout from '@/components/ClientsLayout';
-import AddFundsScreen from './components/AddFunds';
-import WithDrawFundsScreen from './components/WithDrawFunds';
-import WithDrawToBankScreen from './components/WithDrawToBank';
-import SupportCenterScreen from './components/SupportCenter';
+import AccountProfile from './components/AccountProfile';
 
 const AccountScreen = () => {
     return (
-        // <ClientsLayout>
-        //     <ClientsButton text="Account" />
-        // </ClientsLayout>
-        // <AddFundsScreen />
-        // <WithDrawFundsScreen />
-        // <WithDrawToBankScreen />
-        <SupportCenterScreen />
+        <ClientsLayout>
+            <AccountProfile />
+            <AccountInfo />
+            <ClientsButton space={{ bottom: 40 }} text="Logout" bgColor={colors.red1} textColor={colors.red4} />
+        </ClientsLayout>
     );
 };
 

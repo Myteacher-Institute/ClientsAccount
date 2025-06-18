@@ -1,10 +1,14 @@
-import ClientsButton from '@/components/ClientsButton';
 import ClientsLayout from '@/components/ClientsLayout';
+import UnlockPremium from './components/UnlockPremium';
+import LegalResources from './components/LegalResources';
+import ResourcesDetails from './components/ResourcesDetails';
 
 const ResourcesScreen = () => {
     return (
         <ClientsLayout>
-            <ClientsButton text="Resources" />
+            <ResourcesDetails />
+            <LegalResources />
+            <UnlockPremium />
         </ClientsLayout>
     );
 };

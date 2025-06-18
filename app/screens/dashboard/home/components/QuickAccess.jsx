@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome6';
 import { Text, Pressable, StyleSheet, ScrollView } from 'react-native';
 
 const tools = [
-    { icon: 'folder-open', label: 'Files', iconColor: colors.blue5, screen: 'Storage' },
+    { icon: 'folder-tree', label: 'Files', iconColor: colors.blue5, screen: 'Storage' },
     { icon: 'briefcase', label: 'Client Funds', iconColor: colors.purple2, screen: 'Account' },
     { icon: 'gavel', label: 'Resources', iconColor: colors.green4, screen: 'Resources' },
     { icon: 'headset', label: 'Support', iconColor: colors.brown2, screen: 'Account' },
@@ -33,16 +33,18 @@ const styles = StyleSheet.create({
     },
     tool: {
         gap: 8,
-        width: 85,
-        height: 85,
+        width: 80,
+        height: 80,
         borderRadius: 12,
         paddingVertical: 10,
+        paddingHorizontal: 6,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.white,
         boxShadow: '0px 1px 2px 0px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10)',
     },
     label: {
+        lineHeight: 15,
         textAlign: 'center',
         color: colors.grey1,
         ...fonts.regular(12),

@@ -28,12 +28,12 @@ const ClientsInput = ({
     leftIcon,
     rightIcon,
     darkLabel,
+    extraStyle,
     isPassword,
     placeholder,
     onChangeText,
     type = 'default',
     darkMode = false,
-    extraContainerStyle,
     iconPosition = 'left',
     ...props
 }) => {
@@ -46,11 +46,11 @@ const ClientsInput = ({
     const isMasked = !!maskConfig;
 
     const resolvedLabel = darkLabel || label;
-    const inputBackground = darkMode ? colors.black : colors.offWhite;
+    const inputBackground = darkMode ? colors.black : colors.offWhite1;
     const labelColor = { ...fonts.medium(), marginBottom: 2, color: darkLabel ? colors.grey1 : colors.white };
 
     return (
-        <View style={extraContainerStyle}>
+        <View style={extraStyle}>
             {resolvedLabel && <Text style={labelColor}>{resolvedLabel}</Text>}
 
             <View style={[styles.inputContainer, { backgroundColor: inputBackground }]}>

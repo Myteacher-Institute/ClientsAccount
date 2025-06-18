@@ -5,37 +5,41 @@ import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'rea
 const ClientsButton = ({
     text,
     space,
-    onPress,
     bgColor,
+    onPress,
     leftIcon,
     rightIcon,
-    extraStyle,
     textColor,
+    textStyle,
+    extraStyle,
     iconSize = 20,
-    extraTextStyle,
     isLight = false,
-    rounded = false,
-    outline = false,
     loading = false,
+    outline = false,
+    rounded = false,
     IconComponent = Ionicons,
     ...rest
 }) => {
     const finalBgColor = bgColor ?? (isLight ? colors.white : colors.black);
     const finalTextColor = textColor ?? (isLight ? colors.black : colors.white);
+    const marginStyles = {
+        marginTop: typeof space === 'number' ? space : space?.top || 0,
+        marginBottom: typeof space === 'object' ? space?.bottom || 0 : 0,
+    };
 
     const containerStyle = [
         {
-            marginTop: space || 0,
-            borderWidth: outline ? 1 : 0,
-            borderRadius: rounded ? 50 : 8,
-            borderColor: outline ? finalTextColor : 'transparent',
             backgroundColor: outline ? 'transparent' : finalBgColor,
+            borderColor: outline ? finalTextColor : 'transparent',
+            borderRadius: rounded ? 50 : 8,
+            borderWidth: outline ? 1 : 0,
         },
         styles.container,
+        marginStyles,
         extraStyle,
     ];
 
-    const renderIcon = (iconName) => iconName ? <IconComponent name={iconName} size={iconSize} color={finalTextColor} /> : null;
+    const renderIcon = iconName => iconName ? <IconComponent name={iconName} size={iconSize} color={finalTextColor} /> : null;
 
     return (
         <TouchableOpacity
@@ -50,7 +54,7 @@ const ClientsButton = ({
             ) : (
                 <View style={styles.content}>
                     {leftIcon && renderIcon(leftIcon)}
-                    <Text style={[fonts.medium(16), { color: finalTextColor }, extraTextStyle]}>{text}</Text>
+                    <Text style={[fonts.medium(16), { color: finalTextColor }, textStyle]}>{text}</Text>
                     {rightIcon && renderIcon(rightIcon)}
                 </View>
             )}

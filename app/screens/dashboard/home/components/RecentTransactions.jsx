@@ -36,8 +36,8 @@ const RecentTransactions = () => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerRecent}>Recent Transactions</Text>
-                <Text style={styles.headerLink}>See All</Text>
+                <Text style={styles.heading}>Recent Transactions</Text>
+                <Text style={styles.headerLink}>See all</Text>
             </View>
             {transactions.map((item, index) => (
                 <View key={index} style={[styles.header, styles.recent, index === 1 && styles.border]}>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    headerRecent: {
+    heading: {
         color: colors.grey5,
         ...fonts.medium(16),
     },
@@ -100,8 +100,8 @@ const styles = StyleSheet.create({
     },
     date: {
         marginLeft: 10,
-        ...fonts.regular(12),
         color: colors.grey4,
+        ...fonts.regular(12),
     },
     money: { ...fonts.medium() },
 });

@@ -15,7 +15,7 @@ const HelpFulResources = () => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerRecent}>HelpFul Resources</Text>
+                <Text style={styles.heading}>HelpFul Resources</Text>
                 <Text style={styles.headerLink} onPress={() => navigation.navigate('Resources')}>Browse</Text>
             </View>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.resources}>
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    headerRecent: {
+    heading: {
         color: colors.grey5,
         ...fonts.medium(16),
     },
