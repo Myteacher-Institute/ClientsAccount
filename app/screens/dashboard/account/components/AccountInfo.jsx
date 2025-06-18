@@ -59,7 +59,7 @@ const infos = [
     {
         color: colors.purple4,
         title: 'Help & Support',
-        screen: 'SupportScreen',
+        screen: 'SupportCenter',
         icon: 'help-circle-outline',
         content: 'FAQs, Contact support',
     },

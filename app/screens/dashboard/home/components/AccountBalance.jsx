@@ -1,9 +1,12 @@
 import { fonts, colors } from '@/theme';
 import { Text, View, StyleSheet } from 'react-native';
 import ClientsButton from '@/components/ClientsButton';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 
 const AccountBalance = () => {
+    const navigation = useNavigation();
+
     return (
         <View style={styles.container}>
             <View>
@@ -12,7 +15,7 @@ const AccountBalance = () => {
                 <Icon name="scale-balanced" size={60} color={colors.grey1} style={styles.scale} />
             </View>
             <View style={styles.button}>
-                <ClientsButton rounded isLight text="Top Up" iconSize={15} IconComponent={Icon} leftIcon="arrow-up-from-bracket" />
+                <ClientsButton rounded isLight text="Top Up" iconSize={15} IconComponent={Icon} leftIcon="arrow-up-from-bracket" onPress={() => navigation.navigate('TopUpScreen')} />
                 <ClientsButton rounded outline text="Withdraw" iconSize={15} IconComponent={Icon} leftIcon="arrow-down" />
             </View>
         </View>
