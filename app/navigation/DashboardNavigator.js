@@ -4,8 +4,8 @@ import StorageNavigator from './StorageNavigator';
 import AccountNavigator from './AccountNavigator';
 import ResourcesNavigator from './ResourcesNavigator';
 import DashboardHeader from '@/components/DashboardHeader';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator();
@@ -15,17 +15,17 @@ const rootScreens = {
     Storage: 'StorageScreen',
     Account: 'AccountScreen',
     Resources: 'ResourcesScreen',
-}
+};
 
 const screenOptions = ({ route }) => {
-    const focused = getFocusedRouteNameFromRoute(route) ?? rootScreens[route.name];
-    const hideTabBar = focused !== rootScreens[route.name];
+    const activeRoute = getFocusedRouteNameFromRoute(route) ?? rootScreens[route.name];
+    const hideTabBar = activeRoute !== rootScreens[route.name];
 
     return {
-        header: () => (!hideTabBar ? <DashboardHeader /> : null),
         tabBarActiveTintColor: colors.blue2,
         tabBarInactiveTintColor: colors.grey4,
         tabBarLabelStyle: { ...fonts.medium(12) },
+        header: () => (!hideTabBar && <DashboardHeader />),
         tabBarStyle: hideTabBar ? { display: 'none' } :
             {
                 height: 60,
@@ -54,9 +54,9 @@ const screenOptions = ({ route }) => {
                     iconName = 'circle-half-full';
             }
 
-            return <Ionicons name={iconName} size={24} color={color} />;
+            return <Icon name={iconName} size={24} color={color} />;
         },
-    }
+    };
 };
 
 const DashboardNavigator = () => {
