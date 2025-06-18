@@ -10,7 +10,7 @@ const Verification = ({ navigation }) => {
             onBackPress={() => navigation.reset({ routes: [{ name: 'SplashScreen', params: { skipAnimation: true } }] })}
         >
             <View style={styles.shield}>
-                <Icon name="shield-half-full" size={30} color={colors.yellow} />
+                <Icon name="shield-half-full" size={30} color={colors.yellow1} />
             </View>
             <View style={styles.section}>
                 <Text style={[styles.text, styles.heading]}>Documents Received</Text>

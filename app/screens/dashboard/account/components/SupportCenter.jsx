@@ -49,33 +49,33 @@ const SupportCenter = ({ navigation }) => {
       {supportOptions.map((item, index) => (
         <TouchableOpacity key={index} style={styles.optionItem}>
           <View style={styles.optionIconContainer}>
-            <Icon name={item.icon} size={24} color={colors.yellow} />
+            <Icon name={item.icon} size={24} color={colors.yellow1} />
           </View>
           <View style={styles.optionTextContainer}>
             <Text style={styles.optionTitle}>{item.title}</Text>
             <Text style={styles.optionDescription}>{item.description}</Text>
           </View>
-          <Icon name="chevron-right" size={16} color={colors.yellow} />
+          <Icon name="chevron-right" size={16} color={colors.yellow1} />
         </TouchableOpacity>
       ))}
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}><Icon name="comments" size={20} color={colors.yellow} /> Contact Us Directly</Text>
+        <Text style={styles.sectionTitle}><Icon name="comments" size={20} color={colors.yellow1} /> Contact Us Directly</Text>
         {contactMethods.map((item, index) => (
           <TouchableOpacity key={index} style={styles.contactItem}>
-            <Icon name={item.icon} size={20} color={colors.yellow} />
+            <Icon name={item.icon} size={20} color={colors.yellow1} />
             <Text style={styles.contactText}>{item.text}</Text>
-            <Icon name="chevron-right" size={16} color={colors.yellow} />
+            <Icon name="chevron-right" size={16} color={colors.yellow1} />
           </TouchableOpacity>
         ))}
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}><Icon name="circle-question" size={20} color={colors.yellow} /> Quick Answers</Text>
+        <Text style={styles.sectionTitle}><Icon name="circle-question" size={20} color={colors.yellow1} /> Quick Answers</Text>
         {quickAnswers.map((item, index) => (
           <TouchableOpacity key={index} style={styles.quickAnswerItem}>
             <Text style={styles.quickAnswerText}>{item.text}</Text>
-            <Icon name="chevron-right" size={16} color={colors.yellow} />
+            <Icon name="chevron-right" size={16} color={colors.yellow1} />
           </TouchableOpacity>
         ))}
       </View>
@@ -83,7 +83,7 @@ const SupportCenter = ({ navigation }) => {
       <ClientsButton
         rounded
         text="Start Live Chat"
-        bgColor={colors.yellow}
+        bgColor={colors.yellow1}
         textColor={colors.black}
         extraStyle={styles.button}
         leftIcon="chatbubble-ellipses"
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   headerIconContainer: {
-    backgroundColor: colors.yellow,
+    backgroundColor: colors.yellow1,
     width: 70,
     height: 70,
     borderRadius: 35,

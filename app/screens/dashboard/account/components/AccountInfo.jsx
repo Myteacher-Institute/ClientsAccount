@@ -66,9 +66,9 @@ const infos = [
     {
         title: 'About App',
         color: colors.grey4,
+        icon: 'alert-circle',
         screen: 'AboutScreen',
         content: 'Version & Legal',
-        icon: 'application-braces-outline',
     },
 ];
 

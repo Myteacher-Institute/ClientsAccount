@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { fonts, colors } from '@/theme';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { TextInputMask } from 'react-native-masked-text';
 import { Text, View, Pressable, TextInput, StyleSheet } from 'react-native';
 
@@ -34,27 +34,26 @@ const ClientsInput = ({
     onChangeText,
     type = 'default',
     darkMode = false,
-    iconPosition = 'left',
+    iconColor = colors.grey2,
+    IconComponent = Ionicons,
     ...props
 }) => {
-    const [secureTextEntry, setSecureTextEntry] = useState(isPassword || false);
-
-    const toggleSecureEntry = () => setSecureTextEntry(!secureTextEntry);
-    const renderNamedIcon = name => name ? <Icon name={name} size={20} color={colors.grey2} /> : null;
+    const [secureEntry, setSecureEntry] = useState(isPassword || false);
 
     const maskConfig = maskTypeMap[type];
     const isMasked = !!maskConfig;
-
     const resolvedLabel = darkLabel || label;
+    const toggleSecureEntry = () => setSecureEntry(!secureEntry);
     const inputBackground = darkMode ? colors.black : colors.offWhite1;
-    const labelColor = { ...fonts.medium(), marginBottom: 2, color: darkLabel ? colors.grey1 : colors.white };
+    const renderIcon = iconName => iconName && <IconComponent name={iconName} size={20} color={iconColor} />;
+    const labelStyle = { marginBottom: 2, ...fonts.medium(), color: darkLabel ? colors.grey1 : colors.white };
 
     return (
-        <View style={extraStyle}>
-            {resolvedLabel && <Text style={labelColor}>{resolvedLabel}</Text>}
+        <View>
+            {resolvedLabel && <Text style={labelStyle}>{resolvedLabel}</Text>}
 
-            <View style={[styles.inputContainer, { backgroundColor: inputBackground }]}>
-                {iconPosition === 'left' && renderNamedIcon(leftIcon)}
+            <View style={[styles.inputContainer, { backgroundColor: inputBackground }, extraStyle]}>
+                {renderIcon(leftIcon)}
 
                 {isMasked ? (
                     <TextInputMask
@@ -66,7 +65,7 @@ const ClientsInput = ({
                         placeholder={placeholder}
                         onChangeText={onChangeText}
                         options={maskConfig.options}
-                        secureTextEntry={secureTextEntry}
+                        secureTextEntry={secureEntry}
                         placeholderTextColor={colors.grey2}
                     />
                 ) : (
@@ -76,7 +75,7 @@ const ClientsInput = ({
                         style={styles.input}
                         placeholder={placeholder}
                         onChangeText={onChangeText}
-                        secureTextEntry={secureTextEntry}
+                        secureTextEntry={secureEntry}
                         placeholderTextColor={colors.grey2}
                         textContentType={props.textContentType}
                         autoCorrect={props.autoCorrect ?? false}
@@ -85,12 +84,11 @@ const ClientsInput = ({
                     />
                 )}
 
-                {(isPassword || iconPosition === 'right') &&
-                    (isPassword ? (
-                        <Pressable onPress={toggleSecureEntry}>
-                            <Icon size={20} color={colors.grey2} name={secureTextEntry ? 'eye-off' : 'eye'} />
-                        </Pressable>
-                    ) : renderNamedIcon(rightIcon))}
+                {isPassword ? (
+                    <Pressable onPress={toggleSecureEntry}>
+                        <IconComponent size={20} color={iconColor} name={secureEntry ? 'eye-off' : 'eye'} />
+                    </Pressable>
+                ) : renderIcon(rightIcon)}
             </View>
         </View>
     );
@@ -108,8 +106,8 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         height: 50,
-        color: colors.grey2,
         paddingVertical: 12,
+        color: colors.grey2,
         ...fonts.regular(16),
     },
 });

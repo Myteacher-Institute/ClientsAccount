@@ -15,7 +15,7 @@ const KYCScreen = ({ navigation }) => {
         <ClientsLayout title="KYC Verification">
             <View style={styles.section}>
                 <View style={styles.header}>
-                    <Ionicons name="briefcase" size={22} color={colors.yellow} />
+                    <Ionicons name="briefcase" size={22} color={colors.yellow1} />
                     <Text style={styles.headerText}>Verify CAC Documents</Text>
                 </View>
 
