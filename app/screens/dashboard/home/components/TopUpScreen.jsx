@@ -18,7 +18,7 @@ import ClientsButton from '@/components/ClientsButton';
 import { fonts, colors } from '@/theme';
 import logo from '@/assets/images/logo.png';
 
-const AddFundsScreen = ({ navigation }) => {
+const TopUpScreen = ({ navigation }) => {
   const [amount, setAmount] = useState('');
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState(null);
@@ -54,17 +54,12 @@ const AddFundsScreen = ({ navigation }) => {
 
   return (
     <>
-      <ClientsLayout
-        showHeader
-        onBackPress={() => navigation.goBack()}
-        title="Add Funds"
-        bgColor={colors.black}
-      >
+      <ClientsLayout title="Add Funds">
 
         <View style={styles.balanceContainer}>
           <View style={styles.logoContainer}>
-          <Image source={logo} style={styles.logo} />
-          <Text style={styles.logoText}>Clients Account</Text>
+            <Image source={logo} style={styles.logo} />
+            <Text style={styles.logoText}>Clients Account</Text>
           </View>
           <Text style={styles.balanceLabel}>Current Balance</Text>
           <Text style={styles.balanceAmount}>₦100,000.00</Text>
@@ -299,4 +294,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddFundsScreen;
+export default TopUpScreen;
