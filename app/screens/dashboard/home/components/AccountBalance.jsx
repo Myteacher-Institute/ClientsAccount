@@ -16,7 +16,7 @@ const AccountBalance = () => {
             </View>
             <View style={styles.button}>
                 <ClientsButton rounded isLight text="Top Up" iconSize={15} IconComponent={Icon} leftIcon="arrow-up-from-bracket" onPress={() => navigation.navigate('TopUpScreen')} />
-                <ClientsButton rounded outline text="Withdraw" iconSize={15} IconComponent={Icon} leftIcon="arrow-down" />
+                <ClientsButton rounded outline text="Withdraw" iconSize={15} IconComponent={Icon} leftIcon="arrow-down" onPress={() => navigation.navigate('WithdrawFunds')} />
             </View>
         </View>
     );

@@ -28,6 +28,7 @@ const colors = {
     grey10: '#E5E7EB',
     grey11: '#808080',
     grey12: '#161616',
+    grey13: '#E0E7FF',
     brown1: '#FEFCE8',
     brown2: '#CA8A04',
     brown3: '#EAB308',
@@ -52,6 +53,7 @@ const colors = {
     offWhite1: '#F8F9FB',
     offWhite2: '#FFFFFFE5',
     offWhite3: '#FFFFFF4D',
+    offWhite4: '#FFFFFF1A',
 };
 
 export default colors;

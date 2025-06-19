@@ -61,7 +61,7 @@ const LegalResources = () => {
     return (
         <View style={styles.container}>
             <View style={styles.search}>
-                <ClientsInput leftIcon="search" placeholder="Search resources..." extraStyle={styles.content} />
+                <ClientsInput leftIcon="search" placeholder="Search resources..." extraStyle={styles.input} />
                 <View style={styles.filter}><Icon name="sliders" size={16} color={colors.grey6} /></View>
             </View>
 
@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
+    input: { height: 45 },
     filter: {
         width: 40,
         height: 40,
