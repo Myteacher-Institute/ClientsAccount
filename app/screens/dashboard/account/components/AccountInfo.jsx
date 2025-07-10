@@ -85,8 +85,8 @@ const AccountInfo = () => {
                         return (
                             <TouchableOpacity
                                 key={item.title}
-                                style={[styles.info, !isLast && styles.border]}
                                 activeOpacity={0.8}
+                                style={[styles.info, !isLast && styles.border]}
                                 onPress={() => navigation.navigate(item.screen)}
                             >
                                 <View style={[styles.info, styles.mark]}>

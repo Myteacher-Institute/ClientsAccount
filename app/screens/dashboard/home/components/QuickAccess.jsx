@@ -7,16 +7,24 @@ const tools = [
     { icon: 'folder-tree', label: 'Files', iconColor: colors.blue5, screen: 'Storage' },
     { icon: 'briefcase', label: 'Client Funds', iconColor: colors.purple2, screen: 'Account' },
     { icon: 'gavel', label: 'Resources', iconColor: colors.green4, screen: 'Resources' },
-    { icon: 'headset', label: 'Support', iconColor: colors.brown2, screen: 'Account' },
+    { icon: 'headset', label: 'Support', iconColor: colors.brown2, screen: 'Account', nestedScreen: 'SupportCenter' },
 ];
 
 const QuickAccess = () => {
     const navigation = useNavigation();
 
+    const handlePress = (item) => {
+        if (item.nestedScreen) {
+            navigation.navigate(item.screen, { screen: item.nestedScreen });
+        } else {
+            navigation.navigate(item.screen);
+        }
+    };
+
     return (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.container}>
             {tools.map((item, index) => (
-                <Pressable key={index} style={styles.tool} onPress={() => navigation.navigate(item.screen)}>
+                <Pressable key={index} style={styles.tool} onPress={() => handlePress(item)}>
                     <Icon name={item.icon} size={20} color={item.iconColor} />
                     <Text style={styles.label}>{item.label}</Text>
                 </Pressable>

@@ -35,18 +35,16 @@ const quickAnswers = [
 const SupportCenter = ({ navigation }) => {
   return (
     <ClientsLayout title="Support Center">
-      <View style={styles.headerSection}>
-        <View style={styles.headerIconContainer}>
-          <Icon name="headset" size={40} color={colors.black} />
+      <View style={styles.centerSection}>
+        <View style={styles.centerIcon}>
+          <Icon name="headset" size={30} color={colors.black} />
         </View>
-        <Text style={styles.headerTitle}>How can we help you?</Text>
-        <Text style={styles.headerSubtitle}>
-          Our team is here for clients and lawyers. Choose a support option below or start a chat.
-        </Text>
+        <Text style={styles.centerTitle}>How can we help you?</Text>
+        <Text style={styles.centerText}>Our team is here for clients and lawyers. Choose a support option below or start a chat.</Text>
       </View>
 
       {supportOptions.map((item, index) => (
-        <TouchableOpacity key={index} style={styles.optionItem}>
+        <TouchableOpacity key={index} activeOpacity={0.8} style={styles.optionItem}>
           <View style={styles.optionIconContainer}>
             <Icon name={item.icon} size={24} color={colors.yellow1} />
           </View>
@@ -61,7 +59,7 @@ const SupportCenter = ({ navigation }) => {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}><Icon name="comments" size={20} color={colors.yellow1} /> Contact Us Directly</Text>
         {contactMethods.map((item, index) => (
-          <TouchableOpacity key={index} style={styles.contactItem}>
+          <TouchableOpacity key={index} activeOpacity={0.8} style={styles.contactItem}>
             <Icon name={item.icon} size={20} color={colors.yellow1} />
             <Text style={styles.contactText}>{item.text}</Text>
             <Icon name="chevron-right" size={16} color={colors.yellow1} />
@@ -72,7 +70,7 @@ const SupportCenter = ({ navigation }) => {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}><Icon name="circle-question" size={20} color={colors.yellow1} /> Quick Answers</Text>
         {quickAnswers.map((item, index) => (
-          <TouchableOpacity key={index} style={styles.quickAnswerItem}>
+          <TouchableOpacity key={index} activeOpacity={0.8} style={styles.quickAnswerItem}>
             <Text style={styles.quickAnswerText}>{item.text}</Text>
             <Icon name="chevron-right" size={16} color={colors.yellow1} />
           </TouchableOpacity>
@@ -93,32 +91,32 @@ const SupportCenter = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  headerSection: {
+  centerSection: {
+    gap: 10,
+    borderRadius: 16,
+    marginBottom: 20,
     alignItems: 'center',
     paddingVertical: 20,
-    paddingHorizontal: 10,
-    backgroundColor: '#1C1C1E',
-    borderRadius: 15,
-    marginBottom: 20,
+    paddingHorizontal: 5,
+    backgroundColor: colors.black,
+    boxShadow: '0px 4px 6px 0px rgba(0, 0, 0, 0.10), 0px 10px 15px 0px rgba(0, 0, 0, 0.10)',
   },
-  headerIconContainer: {
-    backgroundColor: colors.yellow1,
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    justifyContent: 'center',
+  centerIcon: {
+    width: 65,
+    height: 65,
+    borderRadius: 50,
     alignItems: 'center',
-    marginBottom: 15,
+    justifyContent: 'center',
+    backgroundColor: colors.yellow1,
   },
-  headerTitle: {
-    ...fonts.bold(22),
+  centerTitle: {
+    ...fonts.bold(20),
     color: colors.white,
-    marginBottom: 10,
   },
-  headerSubtitle: {
-    ...fonts.regular(14),
-    color: colors.grey2,
+  centerText: {
+    ...fonts.light(),
     textAlign: 'center',
+    color: colors.grey14,
   },
   optionItem: {
     flexDirection: 'row',
