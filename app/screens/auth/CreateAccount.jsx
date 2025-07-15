@@ -1,11 +1,44 @@
-import { useState } from 'react';
 import { fonts, colors } from '@/theme';
+import { useApi, useForm } from '@/hooks';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { ClientsInput, ClientsButton, ClientsLayout } from '@/components';
 
 const CreateAccount = ({ navigation }) => {
-    const [selectedGender, setSelectedGender] = useState(null);
+    const initialValues = {
+        nin: '',
+        email: '',
+        phone: '',
+        gender: '',
+        password: '',
+        fullName: '',
+        chamberName: '',
+        enrolleeNumber: '',
+    };
+
+    const required = Object.keys(initialValues);
+    const { loading, call: callApi } = useApi('post');
+    const { bind, values, validate, setField } = useForm(initialValues, required);
+
+    const onSubmit = async () => {
+        if (!validate()) { return; }
+
+        try {
+            const response = await callApi({
+                data: values,
+                requiresAuth: false,
+                endpoint: 'register',
+                onSuccessMessage: 'User registered successfully!',
+            });
+
+            console.log('API response:', response);
+            if (response) {
+                navigation.navigate('KYCScreen');
+            }
+        } catch (error) {
+            console.error('API call failed:', error);
+        }
+    };
 
     const genderOptions = [
         { key: 'male', label: 'Male', icon: 'male', color: colors.blue4 },
@@ -16,33 +49,33 @@ const CreateAccount = ({ navigation }) => {
     return (
         <ClientsLayout title="Create Account">
             <View style={styles.section}>
-                <ClientsInput darkLabel="Full Name" placeholder="Enter your full name" />
-                <ClientsInput placeholder="Enter a Chamber Name" darkLabel="Enter a desired/registered Chamber Name?" />
-                <ClientsInput type="scn" placeholder="Enter SCN Number" darkLabel="Supreme Court Enrollment Number" />
+                <ClientsInput darkLabel="Full Name" placeholder="Enter full name" {...bind('fullName')} />
+                <ClientsInput placeholder="Chamber Name" darkLabel="Chamber?" {...bind('chamberName')} />
+                <ClientsInput type="scn" placeholder="SCN Number" darkLabel="SCN" {...bind('enrolleeNumber')} />
 
                 <Text style={styles.text}>Gender</Text>
                 <View style={styles.gender}>
                     {genderOptions.map(({ key, icon, color, label }) => {
-                        const isSelected = selectedGender === key;
+                        const isSelected = values.gender === key;
                         return (
                             <TouchableOpacity
                                 key={key}
-                                onPress={() => setSelectedGender(key)}
+                                onPress={() => setField('gender', key)}
                                 style={[styles.genderOption, isSelected && styles.genderOptionSelected]}
                             >
                                 <Icon name={icon} size={15} color={color} />
-                                <Text style={[styles.genderLabel, isSelected && styles.genderLabelSelected]}>{label}</Text>
+                                <Text style={[styles.genderLabel, isSelected && styles.genderLabelSelected]}> {label} </Text>
                             </TouchableOpacity>
                         );
                     })}
                 </View>
 
-                <ClientsInput type="nin" darkLabel="NIN" placeholder="Enter NIN" />
-                <ClientsInput type="email" darkLabel="Email" placeholder="Enter your email address" />
-                <ClientsInput type="phone" darkLabel="Phone" placeholder="Enter your phone number" />
-                <ClientsInput isPassword darkLabel="Create Password" placeholder="Create a password" />
+                <ClientsInput type="nin" darkLabel="NIN" placeholder="Enter NIN" {...bind('nin')} />
+                <ClientsInput type="email" darkLabel="Email" placeholder="Enter email" {...bind('email')} />
+                <ClientsInput type="phone" darkLabel="Phone" placeholder="Enter phone" {...bind('phone')} />
+                <ClientsInput isPassword type="password" darkLabel="Password" {...bind('password')} placeholder="Create password" />
 
-                <ClientsButton space={20} text="Continue" onPress={() => navigation.navigate('KYCScreen')} />
+                <ClientsButton space={20} text="Continue" loading={loading} onPress={onSubmit} />
             </View>
         </ClientsLayout>
     );

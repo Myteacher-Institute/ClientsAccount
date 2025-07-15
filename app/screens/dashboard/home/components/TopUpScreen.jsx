@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.yellow3,
+    backgroundColor: colors.offWhite5,
   },
   amount: { ...fonts.semiBold() },
   method: {

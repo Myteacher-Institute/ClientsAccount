@@ -15,11 +15,15 @@ const keyboardTypeMap = {
 
 const maskTypeMap = {
     cpf: { type: 'cpf', options: {} },
-    scn: { type: 'custom', options: { mask: 'AAA/9999' } },
     cac: { type: 'custom', options: { mask: 'BN/999999' } },
+    scn: { type: 'custom', options: { mask: '9999999999' } },
     nin: { type: 'custom', options: { mask: '99999999999' } },
-    phone: { type: 'cel-phone', options: { withDDD: true, dddMask: '(999) ' } },
     currency: { type: 'money', options: { unit: '₦', precision: 2, separator: '.', delimiter: ',', suffixUnit: '' } },
+};
+
+const getAutoCapitalize = (type, userDefined) => {
+    if (userDefined !== undefined) { return userDefined; }
+    return ['email', 'password', 'nin', 'scn', 'cac'].includes(type) ? 'none' : 'words';
 };
 
 const ClientsInput = forwardRef(({
@@ -74,8 +78,8 @@ const ClientsInput = forwardRef(({
                     onChangeText={onChangeText}
                     placeholderTextColor={colors.grey2}
                     autoCorrect={props.autoCorrect ?? false}
-                    autoCapitalize={props.autoCapitalize || 'none'}
                     keyboardType={isMasked ? 'numeric' : keyboardTypeMap[type]}
+                    autoCapitalize={getAutoCapitalize(type, props.autoCapitalize)}
                     {...(isMasked ? { type: maskConfig?.type, options: maskConfig?.options } : { secureTextEntry: secure })}
                 />
                 {renderRightIcon()}

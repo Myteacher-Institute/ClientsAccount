@@ -1,8 +1,37 @@
 import { fonts, colors } from '@/theme';
+import { useApi, useForm } from '@/hooks';
 import { ClientsInput, ClientsButton } from '@/components';
 import { Text, View, Image, Keyboard, StyleSheet, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 
 const SigninScreen = ({ navigation }) => {
+    const initialValues = {
+        email: '',
+        password: '',
+    };
+
+    const required = Object.keys(initialValues);
+    const { loading, call: callApi } = useApi('post');
+    const { bind, values, validate } = useForm(initialValues, required);
+
+    const onSubmit = async () => {
+        if (!validate()) { return; }
+
+        try {
+            const response = await callApi({
+                data: values,
+                endpoint: 'login',
+                requiresAuth: false,
+                onSuccessMessage: 'Sign in successful!',
+            });
+
+            console.log('API response:', response);
+            if (response) {
+                navigation.navigate('Dashboard');
+            }
+        } catch (error) {
+            console.error('API call failed:', error);
+        }
+    };
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -14,12 +43,12 @@ const SigninScreen = ({ navigation }) => {
                 <View style={styles.section}>
                     <Image source={require('@/assets/images/brand.png')} style={styles.brand} />
 
-                    <ClientsInput type="email" name="mail" label="Email Address" placeholder="you@email.com" leftIcon="mail-outline" />
-                    <ClientsInput isPassword label="Password" placeholder="Enter your password" leftIcon="lock-closed" />
+                    <ClientsInput type="email" name="mail" label="Email Address" placeholder="you@email.com" leftIcon="mail-outline" {...bind('email')} />
+                    <ClientsInput isPassword type="password" label="Password" placeholder="Enter your password" leftIcon="lock-closed" {...bind('password')} />
 
                     <Text style={[styles.text, styles.helpText]}>Forgot Password?</Text>
 
-                    <ClientsButton isLight text="Sign In" onPress={() => navigation.navigate('Dashboard')} />
+                    <ClientsButton isLight text="Sign In" loading={loading} onPress={onSubmit} />
                 </View>
                 <View style={styles.footer}>
                     <Text style={[styles.text, styles.footerText]}>Don't have an account?</Text>
