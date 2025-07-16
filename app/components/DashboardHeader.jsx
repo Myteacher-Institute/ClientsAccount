@@ -1,16 +1,18 @@
 import { fonts, colors } from '@/theme';
+import { useUser } from '@/context/UserContext';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Text, View, Image, Pressable, StyleSheet } from 'react-native';
 
 const DashboardHeader = () => {
+    const { user } = useUser();
     const navigation = useNavigation();
 
     return (
         <View style={styles.container}>
             <Pressable style={styles.profile} onPress={() => navigation.navigate('Account')}>
                 <Image source={require('@/assets/images/profile.png')} style={styles.profileImg} />
-                <Text style={styles.profileName}>Hi, Charles</Text>
+                <Text style={styles.profileName}>Hi, {user?.fullName || 'Guest'}</Text>
             </Pressable>
 
             <Pressable onPress={() => navigation.navigate('Account')}>
