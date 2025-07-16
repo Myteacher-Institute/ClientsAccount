@@ -12,7 +12,7 @@ const DashboardHeader = () => {
         <View style={styles.container}>
             <Pressable style={styles.profile} onPress={() => navigation.navigate('Account')}>
                 <Image source={require('@/assets/images/profile.png')} style={styles.profileImg} />
-                <Text style={styles.profileName}>Hi, {user?.fullName || 'Guest'}</Text>
+                <Text style={styles.profileName}>Hi, {user?.fullName?.split(' ')[0] || 'Guest'}</Text>
             </Pressable>
 
             <Pressable onPress={() => navigation.navigate('Account')}>

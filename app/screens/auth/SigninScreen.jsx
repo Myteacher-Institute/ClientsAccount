@@ -1,3 +1,4 @@
+import { setToken } from '@/auth/token';
 import { fonts, colors } from '@/theme';
 import { useApi, useForm } from '@/hooks';
 import { ClientsInput, ClientsButton } from '@/components';
@@ -25,7 +26,9 @@ const SigninScreen = ({ navigation }) => {
             });
 
             console.log('API response:', response);
-            if (response) {
+            if (response?.token) {
+                await setToken(response.token);
+                console.log('[SigninScreen] Token stored, navigating to Dashboard');
                 navigation.navigate('Dashboard');
             }
         } catch (error) {

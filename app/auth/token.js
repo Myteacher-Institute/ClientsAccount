@@ -3,9 +3,10 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 export const getToken = async () => {
     try {
         const token = await EncryptedStorage.getItem('auth_token');
+        console.log('[EncryptedStorage] getToken returned:', token);
         return token;
     } catch (error) {
-        console.error('Error getting token:', error);
+        console.error('[EncryptedStorage] Error getting token:', error);
         return null;
     }
 };
@@ -13,15 +14,17 @@ export const getToken = async () => {
 export const setToken = async (token) => {
     try {
         await EncryptedStorage.setItem('auth_token', token);
+        console.log('[EncryptedStorage] setToken stored:', token);
     } catch (error) {
-        console.error('Error saving token:', error);
+        console.error('[EncryptedStorage] Error saving token:', error);
     }
 };
 
 export const removeToken = async () => {
     try {
         await EncryptedStorage.removeItem('auth_token');
+        console.log('[EncryptedStorage] Token removed.');
     } catch (error) {
-        console.error('Error removing token:', error);
+        console.error('[EncryptedStorage] Error removing token:', error);
     }
 };
