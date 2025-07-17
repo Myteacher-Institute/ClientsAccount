@@ -1,97 +1,82 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+This is a working version of the **Clients Account** mobile app.
 
 # Getting Started
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+> **Note**: Make sure you have cloned the [ClientsAcct Repo](https://github.com/Myteacher-Institute/ClientsAcct) from Github before proceeding.
 
-## Step 1: Start Metro
+## Step 1: Install Dependencies
+
+First, you will need to run install all packages and dependencies required to run the app.
+
+To install dependencies, run the following command from the root of your React Native project:
+
+```sh
+# Using Yarn
+yarn install
+```
+
+## Step 2: Start Metro
 
 First, you will need to run **Metro**, the JavaScript build tool for React Native.
 
 To start the Metro dev server, run the following command from the root of your React Native project:
 
 ```sh
-# Using npm
-npm start
-
-# OR using Yarn
+# Using Yarn
 yarn start
 ```
 
-## Step 2: Build and run your app
+## Step 3: Build and run your app
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
+With Metro running, open a new terminal window/pane from the root of your React Native project, and use the command below to build and run your Android:
 
 ```sh
-# Using npm
-npm run android
-
-# OR using Yarn
+# Using Yarn
 yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
 ```
 
 If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+This is one way to run your app — you can also build it directly from Android Studio.
 
-## Step 3: Modify your app
+## Step 4: Modify your app
 
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+Open `app/api/instance.js` in your text editor of choice and change `${IPAddress}` in this line `baseURL: 'http://${IPAddress}:3000/api/v1/users/',` to your laptop's IP Address. When you save, your app should be able to interact with the back-end seamlessly.
 
 ## Congratulations! :tada:
 
-You've successfully run and modified your React Native App. :partying_face:
+You've successfully run and modified your Clients Account App. :partying_face:
 
-### Now what?
+### Now what to do?
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+- Sign up to the Clients Account on your android device.
 
-# Troubleshooting
+- After successful sign up, you should be navigated to the KYCScreen.
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+- Go back to the welcome screen and click on the sign in button.
 
-# Learn More
+- Sign in using the details from the sign up process and you should be navigated to your dashboard.
 
-To learn more about React Native, take a look at the following resources:
+## Congratulations! :tada:
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+You've successfully signed in to your Clients Account App. :partying_face:
+
+### API Integrations
+
+- ~~Api to register user~~
+
+- ~~Api to login user~~
+
+- ~~Api to get user details~~
+
+- Api to update user profile
+
+- Api to upload user avatar
+
+- Api to listen for any deposit transaction
+
+- Api to top-up with card
+
+- Api to retrieve the details of a reserved account
+
+- Api to withdraw funds
