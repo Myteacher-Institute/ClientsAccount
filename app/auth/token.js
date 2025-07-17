@@ -20,11 +20,11 @@ export const setToken = async (token) => {
     }
 };
 
-export const removeToken = async () => {
+export const clearToken = async () => {
     try {
         await EncryptedStorage.removeItem('auth_token');
-        console.log('[EncryptedStorage] Token removed.');
+        console.log('[EncryptedStorage] Token cleared.');
     } catch (error) {
-        console.error('[EncryptedStorage] Error removing token:', error);
+        console.error('[EncryptedStorage] Error clearing token:', error);
     }
 };

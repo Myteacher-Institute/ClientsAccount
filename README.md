@@ -65,6 +65,8 @@ You've successfully signed in to your Clients Account App. :partying_face:
 
 - ~~Api to register user~~
 
+- Api to upload kyc documents
+
 - ~~Api to login user~~
 
 - ~~Api to get user details~~

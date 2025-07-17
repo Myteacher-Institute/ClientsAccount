@@ -1,6 +1,7 @@
 import { setToken } from '@/auth/token';
 import { fonts, colors } from '@/theme';
 import { useApi, useForm } from '@/hooks';
+import { useUser } from '@/context/UserContext';
 import { ClientsInput, ClientsButton } from '@/components';
 import { Text, View, Image, Keyboard, StyleSheet, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 
@@ -10,6 +11,7 @@ const SigninScreen = ({ navigation }) => {
         password: '',
     };
 
+    const { fetchUser } = useUser();
     const required = Object.keys(initialValues);
     const { loading, call: callApi } = useApi('post');
     const { bind, values, validate } = useForm(initialValues, required);
@@ -25,10 +27,11 @@ const SigninScreen = ({ navigation }) => {
                 onSuccessMessage: 'Sign in successful!',
             });
 
-            console.log('API response:', response);
             if (response?.token) {
                 await setToken(response.token);
-                console.log('[SigninScreen] Token stored, navigating to Dashboard');
+                console.log('[SigninScreen] Token stored.');
+
+                await fetchUser(response.token);
                 navigation.navigate('Dashboard');
             }
         } catch (error) {

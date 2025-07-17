@@ -1,6 +1,6 @@
 import { Get } from '@/api';
 import { jwtDecode } from 'jwt-decode';
-import { getToken } from '@/auth/token';
+import { getToken, clearToken } from '@/auth/token';
 import { useState, useEffect, useContext, createContext } from 'react';
 
 const UserContext = createContext(null);
@@ -10,39 +10,49 @@ export const UserProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log('[UserContext] useEffect triggered');
+        console.log('[UserContext] App mounted. Checking for token...');
         fetchUser();
     }, []);
 
-    const fetchUser = async () => {
+    const fetchUser = async (tokenOverride = null) => {
         console.log('[UserContext] fetchUser() started');
+
         try {
             setLoading(true);
-            const token = await getToken();
-            console.log('[UserContext] getToken returned:', token);
 
+            const token = tokenOverride || await getToken();
             if (!token) {
                 console.warn('[UserContext] No token found.');
+                setUser(null);
                 return;
             }
 
-            const decoded = jwtDecode(token); // can throw
+            const decoded = jwtDecode(token);
             console.log('[UserContext] Decoded token:', decoded);
+
+            const isExpired = decoded?.exp * 1000 < Date.now();
+            if (isExpired) {
+                console.warn('[UserContext] Token is expired. Clearing token...');
+                await clearToken();
+                setUser(null);
+                return;
+            }
 
             const userId = decoded?.userId;
             if (!userId) { throw new Error('userId not found in token'); }
 
-            const data = await Get('userProfile', userId, true);
-            console.log('[UserContext] Fetched user:', data);
+            const data = await Get('userProfile', userId, true); // true = auth required
+            if (!data?.user) { throw new Error('Invalid user response from backend'); }
 
+            console.log('[UserContext] Fetched user:', data.user);
             setUser(data.user);
         } catch (err) {
             console.error('[UserContext] fetchUser error:', err);
+            setUser(null);
         } finally {
             setLoading(false);
         }
     };
-
 
     return (
         <UserContext.Provider value={{ user, setUser, fetchUser, loading }}>
