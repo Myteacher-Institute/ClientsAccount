@@ -1,15 +1,18 @@
 import { fonts, colors } from '@/theme';
+import { useUser } from '@/context/UserContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { View, Text, StyleSheet } from 'react-native';
 import { ClientsInput, ClientsButton, ClientsLayout } from '@/components';
 
 const WithdrawFunds = ({ navigation }) => {
+  const { user } = useUser();
+
   return (
     <ClientsLayout title="Withdraw Funds">
       <View style={styles.balance}>
         <View>
           <Text style={styles.available}>Available Balance</Text>
-          <Text style={styles.amount}>₦100,000.00</Text>
+          <Text style={styles.amount}>₦{user?.wallet?.accountBalance}</Text>
         </View>
         <View style={styles.wallet}>
           <Icon name="wallet" size={24} color={colors.white} />
@@ -18,7 +21,7 @@ const WithdrawFunds = ({ navigation }) => {
 
       <View style={styles.withdraw}>
         <ClientsInput type="currency" darkLabel="Amount" />
-        <Text style={styles.minimum}>Minimum: $20</Text>
+        <Text style={styles.minimum}>Minimum: ₦20</Text>
         <ClientsInput type="number" darkLabel="Bank Account" />
 
         <View style={styles.help}>

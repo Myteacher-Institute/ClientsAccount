@@ -1,14 +1,17 @@
 import { fonts, colors } from '@/theme';
+import { useUser } from '@/context/UserContext';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import { Text, View, Image, StyleSheet } from 'react-native';
 
 const AccountProfile = () => {
+    const { user } = useUser();
+
     return (
         <View style={styles.container}>
             <Image source={require('@/assets/images/profile.png')} style={styles.profileImg} />
             <View style={styles.info}>
-                <Text style={styles.name}>Charles Omeke</Text>
-                <Text style={styles.title}>Junior Counsel, John Doe Chambers</Text>
+                <Text style={styles.name}>{user?.fullName}</Text>
+                <Text numberOfLines={1} style={styles.title}>{user?.chamberName}</Text>
             </View>
             <View style={styles.button}>
                 <View style={[styles.pill, styles.button, { backgroundColor: colors.green5 }]}>

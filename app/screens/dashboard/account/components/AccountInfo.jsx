@@ -99,12 +99,7 @@ const AccountInfo = () => {
 
                                 <View style={[styles.info, styles.mark]}>
                                     {item.status && (
-                                        <Text
-                                            style={[
-                                                styles.status,
-                                                { color: item.color, backgroundColor: item.bgColor },
-                                            ]}
-                                        >
+                                        <Text style={[styles.status, { color: item.color, backgroundColor: item.bgColor }]}>
                                             {item.status}
                                         </Text>
                                     )}

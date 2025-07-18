@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react';
 import { fonts, colors } from '@/theme';
+import { useRef, useState } from 'react';
+import { useUser } from '@/context/UserContext';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import { ClientsInput, ClientsButton, ClientsLayout } from '@/components';
 import { View, Text, Modal, Pressable, UIManager, StyleSheet, findNodeHandle, TouchableWithoutFeedback } from 'react-native';
@@ -22,6 +23,7 @@ const PickerModal = ({ visible, onClose, options, onSelect, position }) => (
 );
 
 const TopUpScreen = () => {
+  const { user } = useUser();
   const InputRef = useRef(null);
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
@@ -40,7 +42,7 @@ const TopUpScreen = () => {
   return (
     <ClientsLayout title="Top Up">
       <Text style={styles.current}>Current Balance</Text>
-      <Text style={styles.balance}>₦100,000.00</Text>
+      <Text style={styles.balance}>₦{user?.wallet?.accountBalance}</Text>
 
       <View style={styles.funds}>
         <ClientsInput

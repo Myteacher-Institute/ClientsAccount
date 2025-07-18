@@ -16,25 +16,23 @@ const CreateAccount = ({ navigation }) => {
         enrolleeNumber: '',
     };
 
-    const required = Object.keys(initialValues);
     const { loading, call: callApi } = useApi('post');
-    const { bind, values, validate, setField } = useForm(initialValues, required);
+    const { bind, values, validate, setField } = useForm(initialValues, Object.keys(initialValues));
+
+    const formatChamberName = name => name.trim() ? `${name.trim().replace(/\s+and\s+/gi, ' & ').replace(/\s+Chambers?$/i, '')} Chamber` : '';
 
     const onSubmit = async () => {
         if (!validate()) { return; }
 
         try {
             const response = await callApi({
-                data: values,
                 requiresAuth: false,
                 endpoint: 'register',
                 onSuccessMessage: 'User registered successfully!',
+                data: { ...values, chamberName: formatChamberName(values.chamberName) },
             });
 
-            console.log('API response:', response);
-            if (response) {
-                navigation.navigate('KYCScreen');
-            }
+            if (response) { navigation.navigate('KYCScreen'); }
         } catch (error) {
             console.error('API call failed:', error);
         }
@@ -50,21 +48,26 @@ const CreateAccount = ({ navigation }) => {
         <ClientsLayout title="Create Account">
             <View style={styles.section}>
                 <ClientsInput darkLabel="Full Name" placeholder="Enter full name" {...bind('fullName')} />
-                <ClientsInput placeholder="Chamber Name" darkLabel="Chamber?" {...bind('chamberName')} />
-                <ClientsInput type="scn" placeholder="SCN Number" darkLabel="SCN" {...bind('enrolleeNumber')} />
+                <ClientsInput
+                    darkLabel="Chamber?"
+                    {...bind('chamberName')}
+                    placeholder="Chamber Name"
+                    onBlur={() => setField('chamberName', formatChamberName(values.chamberName))}
+                />
+                <ClientsInput type="scn" darkLabel="SCN" placeholder="SCN Number" {...bind('enrolleeNumber')} />
 
                 <Text style={styles.text}>Gender</Text>
                 <View style={styles.gender}>
-                    {genderOptions.map(({ key, icon, color, label }) => {
-                        const isSelected = values.gender === key;
+                    {genderOptions.map(({ key, icon, label, color }) => {
+                        const selected = values.gender === key;
                         return (
                             <TouchableOpacity
                                 key={key}
                                 onPress={() => setField('gender', key)}
-                                style={[styles.genderOption, isSelected && styles.genderOptionSelected]}
+                                style={[styles.genderOption, selected && styles.genderOptionSelected]}
                             >
                                 <Icon name={icon} size={15} color={color} />
-                                <Text style={[styles.genderLabel, isSelected && styles.genderLabelSelected]}> {label} </Text>
+                                <Text style={[styles.genderLabel, selected && styles.genderLabelSelected]}>{label}</Text>
                             </TouchableOpacity>
                         );
                     })}
@@ -73,7 +76,7 @@ const CreateAccount = ({ navigation }) => {
                 <ClientsInput type="nin" darkLabel="NIN" placeholder="Enter NIN" {...bind('nin')} />
                 <ClientsInput type="email" darkLabel="Email" placeholder="Enter email" {...bind('email')} />
                 <ClientsInput type="phone" darkLabel="Phone" placeholder="Enter phone" {...bind('phone')} />
-                <ClientsInput isPassword type="password" darkLabel="Password" {...bind('password')} placeholder="Create password" />
+                <ClientsInput isPassword type="password" darkLabel="Password" placeholder="Create password" {...bind('password')} />
 
                 <ClientsButton space={20} text="Continue" loading={loading} onPress={onSubmit} />
             </View>
@@ -82,20 +85,9 @@ const CreateAccount = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    section: {
-        gap: 15,
-        paddingBottom: '10%',
-    },
-    text: {
-        ...fonts.medium(),
-        marginBottom: -15,
-        color: colors.grey1,
-    },
-    gender: {
-        gap: 15,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
+    section: { gap: 15, paddingBottom: '10%' },
+    text: { ...fonts.medium(), marginBottom: -15, color: colors.grey1 },
+    gender: { gap: 15, flexDirection: 'row', justifyContent: 'space-between' },
     genderOption: {
         gap: 5,
         flex: 1,

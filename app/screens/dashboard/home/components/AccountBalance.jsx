@@ -1,17 +1,19 @@
 import { fonts, colors } from '@/theme';
+import { useUser } from '@/context/UserContext';
 import { Text, View, StyleSheet } from 'react-native';
 import ClientsButton from '@/components/ClientsButton';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 
 const AccountBalance = () => {
+    const { user } = useUser();
     const navigation = useNavigation();
 
     return (
         <View style={styles.container}>
             <View>
                 <Text style={styles.account}>Account Balance</Text>
-                <Text style={styles.money}>N8,250.00</Text>
+                <Text style={styles.money}>₦{user?.wallet?.accountBalance}</Text>
                 <Icon name="scale-balanced" size={60} color={colors.grey1} style={styles.scale} />
             </View>
             <View style={styles.button}>
