@@ -21,8 +21,9 @@ const WithdrawFunds = ({ navigation }) => {
 
       <View style={styles.withdraw}>
         <ClientsInput type="currency" darkLabel="Amount" />
-        <Text style={styles.minimum}>Minimum: ₦20</Text>
+        <Text style={styles.minimum}>Minimum: ₦1,000</Text>
         <ClientsInput type="number" darkLabel="Bank Account" />
+        <ClientsInput darkLabel="Bank Name" />
 
         <View style={styles.help}>
           <Icon name="help-circle-outline" size={15} color={colors.black} />
@@ -60,20 +61,20 @@ const styles = StyleSheet.create({
     backgroundColor: colors.offWhite4,
   },
   withdraw: {
+    gap: 20,
     padding: 20,
     borderRadius: 16,
     backgroundColor: colors.white,
     boxShadow: '0px 1px 2px 0px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10)',
   },
   minimum: {
-    marginBottom: 20,
+    marginTop: -20,
     ...fonts.light(12),
     color: colors.grey4,
   },
   help: {
     gap: 5,
-    marginTop: 50,
-    marginBottom: 25,
+    marginTop: 30,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',

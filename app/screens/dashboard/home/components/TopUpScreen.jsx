@@ -50,8 +50,6 @@ const TopUpScreen = () => {
           IconComponent={Icon}
           rightIcon="naira-sign"
           darkLabel="Amount to Add"
-          extraStyle={styles.input}
-          iconColor={colors.yellow2}
           placeholder="Enter amount"
         />
 
@@ -61,7 +59,6 @@ const TopUpScreen = () => {
             pointerEvents="none"
             value={paymentMethod}
             rightIcon="chevron-down"
-            iconColor={colors.grey11}
             darkLabel="Payment Method"
             placeholder="Select method"
           />
@@ -121,10 +118,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 15,
     marginVertical: 30,
-    backgroundColor: colors.white,
-  },
-  input: {
-    borderColor: colors.yellow2,
     backgroundColor: colors.white,
   },
   heading: {

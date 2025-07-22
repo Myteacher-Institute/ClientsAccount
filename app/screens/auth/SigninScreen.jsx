@@ -32,7 +32,7 @@ const SigninScreen = ({ navigation }) => {
                 console.log('[SigninScreen] Token stored.');
 
                 await fetchUser(response.token);
-                navigation.navigate('Dashboard');
+                navigation.reset({ index: 0, routes: [{ name: 'Dashboard' }] });
             }
         } catch (error) {
             console.error('API call failed:', error);

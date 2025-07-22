@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
   },
   bankName: { ...fonts.regular(18) },
   footer: {
+    width: '100%',
     marginTop: 50,
     borderTopWidth: 10,
     paddingVertical: 12,

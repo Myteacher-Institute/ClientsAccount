@@ -1,7 +1,7 @@
 import { fonts, colors } from '@/theme';
 import { useApi, useForm } from '@/hooks';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, Pressable, StyleSheet } from 'react-native';
 import { ClientsInput, ClientsButton, ClientsLayout } from '@/components';
 
 const CreateAccount = ({ navigation }) => {
@@ -61,14 +61,14 @@ const CreateAccount = ({ navigation }) => {
                     {genderOptions.map(({ key, icon, label, color }) => {
                         const selected = values.gender === key;
                         return (
-                            <TouchableOpacity
+                            <Pressable
                                 key={key}
                                 onPress={() => setField('gender', key)}
                                 style={[styles.genderOption, selected && styles.genderOptionSelected]}
                             >
                                 <Icon name={icon} size={15} color={color} />
                                 <Text style={[styles.genderLabel, selected && styles.genderLabelSelected]}>{label}</Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         );
                     })}
                 </View>

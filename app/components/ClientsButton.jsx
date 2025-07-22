@@ -1,6 +1,6 @@
 import { fonts, colors } from '@/theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Text, View, Pressable, StyleSheet, ActivityIndicator } from 'react-native';
 
 const ClientsButton = ({
     text,
@@ -42,12 +42,11 @@ const ClientsButton = ({
     const renderIcon = iconName => iconName ? <IconComponent name={iconName} size={iconSize} color={finalTextColor} /> : null;
 
     return (
-        <TouchableOpacity
+        <Pressable
             {...rest}
             onPress={onPress}
             disabled={loading}
-            activeOpacity={0.8}
-            style={containerStyle}
+            style={({ pressed }) => [containerStyle, { opacity: loading ? 1 : pressed ? 0.85 : 1 }]}
         >
             {loading ? (
                 <ActivityIndicator size="small" color={finalTextColor} />
@@ -58,7 +57,7 @@ const ClientsButton = ({
                     {rightIcon && renderIcon(rightIcon)}
                 </View>
             )}
-        </TouchableOpacity>
+        </Pressable>
     );
 };
 

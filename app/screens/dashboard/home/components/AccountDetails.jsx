@@ -1,11 +1,19 @@
+import { useToast } from '@/hooks';
 import { fonts, colors } from '@/theme';
 import { useUser } from '@/context/UserContext';
 import { Text, View, StyleSheet } from 'react-native';
 import ClientsButton from '@/components/ClientsButton';
 import Icon from 'react-native-vector-icons/FontAwesome6';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 const AccountDetails = () => {
+    const toast = useToast();
     const { user } = useUser();
+
+    const handleCopy = () => {
+        Clipboard.setString(user?.wallet?.accountNumber ?? '');
+        toast.showSuccess('Copied to clipboard!');
+    };
 
     return (
         <View style={styles.container}>
@@ -15,7 +23,7 @@ const AccountDetails = () => {
                 <Text style={styles.name}>{user?.wallet?.accountName}</Text>
                 <Text style={styles.name}>{user?.wallet?.bankName}</Text>
             </View>
-            <ClientsButton text="Copy" iconSize={15} bgColor={colors.grey9} textColor={colors.grey7} IconComponent={Icon} leftIcon="copy" />
+            <ClientsButton text="Copy" iconSize={15} bgColor={colors.grey9} textColor={colors.grey7} IconComponent={Icon} leftIcon="copy" onPress={handleCopy} />
         </View>
     );
 };

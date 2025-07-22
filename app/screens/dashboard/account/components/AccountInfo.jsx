@@ -1,7 +1,7 @@
 import { fonts, colors } from '@/theme';
 import { useNavigation } from '@react-navigation/native';
+import { Text, View, Pressable, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
 const infos = [
     {
@@ -58,9 +58,8 @@ const AccountInfo = () => {
                 {group.map((item, index) => {
                     const isLast = index === group.length - 1;
                     return (
-                        <TouchableOpacity
+                        <Pressable
                             key={item.title}
-                            activeOpacity={0.8}
                             style={[styles.info, !isLast && styles.border]}
                             onPress={() => navigation.navigate(item.screen)}
                         >
@@ -72,7 +71,7 @@ const AccountInfo = () => {
                                 </View>
                             </View>
                             <Icon name="chevron-right" size={20} color={colors.grey4} />
-                        </TouchableOpacity>
+                        </Pressable>
                     );
                 })}
             </View>

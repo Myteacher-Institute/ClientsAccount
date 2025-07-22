@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     type: { color: colors.grey5 },
     paragraph: { ...fonts.light(12), color: colors.grey7 },
     free: { color: colors.green4, backgroundColor: colors.green5 },
-    paid: { color: colors.brown6, backgroundColor: colors.brown7 },
+    paid: { color: colors.red0, backgroundColor: colors.brown6 },
 });
 
 export default LegalResources;
