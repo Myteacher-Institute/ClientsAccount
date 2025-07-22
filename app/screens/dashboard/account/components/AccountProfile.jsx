@@ -15,7 +15,7 @@ const AccountProfile = () => {
             </View>
             <View style={styles.button}>
                 <View style={[styles.pill, styles.button, { backgroundColor: colors.green5 }]}>
-                    <Icon name="circle-check" size={12} color={colors.green4} />
+                    <Icon name="circle-check" solid size={12} color={colors.green4} />
                     <Text style={[styles.pillText, { color: colors.green4 }]}>Verified Lawyer</Text>
                 </View>
                 <View style={[styles.pill, styles.button, { backgroundColor: colors.blue8 }]}>
