@@ -20,11 +20,10 @@ const SupportCenter = ({ navigation }) => {
       <View style={styles.support}>
         <Text style={styles.header}>Submit Request</Text>
         <View>
-          <Text>Support Type</Text>
-          <Text>Subject</Text>
-          <Text>Message</Text>
+          <ClientsInput darkLabel="Support Type" />
+          <ClientsInput darkLabel="Subject" />
+          <ClientsInput darkLabel="Message" />
           <Text>Priority</Text>
-          <ClientsInput />
           <View style={styles.button}>
             <ClientsButton text="Low" />
             <ClientsButton text="Medium" />
