@@ -58,7 +58,7 @@ const ClientsInput = forwardRef(({
     ) : null;
 
     return (
-        <View>
+        <View style={styles.container}>
             {displayLabel && <Text style={[styles.label, { color: labelColor }]}>{displayLabel}</Text>}
             <View style={[styles.inputContainer, { backgroundColor: inputBg }, extraStyle]}>
                 {icon(leftIcon)}
@@ -85,6 +85,7 @@ const ClientsInput = forwardRef(({
 });
 
 const styles = StyleSheet.create({
+    container: { flex: 1 },
     inputContainer: {
         borderWidth: 1,
         borderRadius: 8,
