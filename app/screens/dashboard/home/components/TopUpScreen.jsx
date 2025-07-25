@@ -1,43 +1,16 @@
 import { fonts, colors } from '@/theme';
-import { useRef, useState } from 'react';
 import { useUser } from '@/context/UserContext';
+import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import { ClientsInput, ClientsButton, ClientsLayout } from '@/components';
-import { View, Text, Modal, Pressable, UIManager, StyleSheet, findNodeHandle, TouchableWithoutFeedback } from 'react-native';
+import { ClientsInput, ClientsButton, ClientsLayout, ClientsSelect } from '@/components';
 
-const paymentMethods = ['Via Debit Card', 'Via Bank Transfer'];
 const topUps = [
   { date: 'May 22', amount: '₦50,000', method: 'Via Debit Card' },
   { date: 'May 18', amount: '₦20,000', method: 'Via Bank Transfer' },
 ];
 
-const PickerModal = ({ visible, onClose, options, onSelect, position }) => (
-  <Modal transparent visible={visible} animationType="fade" onRequestClose={onClose}>
-    <TouchableWithoutFeedback onPress={onClose}>
-      <View style={styles.modalOverlay} />
-    </TouchableWithoutFeedback>
-    <View style={[styles.modalContent, { top: position.top + 60, left: position.left }]}>
-      {options.map(option => <Text key={option} onPress={() => onSelect(option)} style={styles.optionText}>{option}</Text>)}
-    </View>
-  </Modal>
-);
-
 const TopUpScreen = () => {
   const { user } = useUser();
-  const InputRef = useRef(null);
-  const [paymentMethod, setPaymentMethod] = useState(null);
-  const [isPickerVisible, setPickerVisible] = useState(false);
-  const [pickerPos, setPickerPos] = useState({ top: 100, left: 50 });
-
-  const openPicker = () => {
-    const handle = findNodeHandle(InputRef.current);
-    if (handle) {
-      UIManager.measure(handle, (_, __, ___, ____, pageX, pageY) => {
-        setPickerPos({ top: pageY, left: pageX });
-        setPickerVisible(true);
-      });
-    }
-  };
 
   return (
     <ClientsLayout title="Top Up">
@@ -53,16 +26,16 @@ const TopUpScreen = () => {
           placeholder="Enter amount"
         />
 
-        <Pressable ref={InputRef} onPress={openPicker}>
-          <ClientsInput
-            editable={false}
-            pointerEvents="none"
-            value={paymentMethod}
-            rightIcon="chevron-down"
-            darkLabel="Payment Method"
-            placeholder="Select method"
-          />
-        </Pressable>
+        <ClientsSelect
+          label="Payment method"
+          onSelect={(val) => console.log('Selected:', val)}
+          options={[
+            'Select method',
+            'Bank Transfer',
+            'Master Card',
+            'Debit Card',
+          ]}
+        />
 
         <ClientsButton
           text="Add Funds"
@@ -90,14 +63,6 @@ const TopUpScreen = () => {
           </View>
         ))}
       </View>
-
-      <PickerModal
-        position={pickerPos}
-        options={paymentMethods}
-        visible={isPickerVisible}
-        onClose={() => setPickerVisible(false)}
-        onSelect={(method) => { setPaymentMethod(method); setPickerVisible(false); }}
-      />
     </ClientsLayout>
   );
 };
@@ -152,23 +117,6 @@ const styles = StyleSheet.create({
   },
   date: {
     color: colors.grey6,
-    ...fonts.regular(12),
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.2)',
-  },
-  modalContent: {
-    padding: 10,
-    width: '60%',
-    elevation: 5,
-    borderRadius: 10,
-    position: 'absolute',
-    backgroundColor: colors.grey12,
-  },
-  optionText: {
-    padding: 10,
-    color: colors.white,
     ...fonts.regular(12),
   },
 });

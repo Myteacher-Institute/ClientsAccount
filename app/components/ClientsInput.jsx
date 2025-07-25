@@ -73,13 +73,16 @@ const ClientsInput = forwardRef(({
                     ref={ref}
                     {...props}
                     value={value}
-                    style={styles.input}
                     placeholder={placeholder}
+                    multiline={props.multiline}
                     onChangeText={onChangeText}
                     placeholderTextColor={colors.grey2}
                     autoCorrect={props.autoCorrect ?? false}
+                    textAlignVertical={props.multiline ? 'top' : 'center'}
+                    style={[styles.input, props.multiline && styles.multiline]}
                     keyboardType={isMasked ? 'numeric' : keyboardTypeMap[type]}
                     autoCapitalize={getAutoCapitalize(type, props.autoCapitalize)}
+                    numberOfLines={props.numberOfLines ?? (props.multiline ? 6 : 1)}
                     {...(isMasked ? { type: maskConfig?.type, options: maskConfig?.options } : { secureTextEntry: secure })}
                 />
                 {renderRightIcon()}
@@ -103,6 +106,12 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         color: colors.grey2,
         ...fonts.regular(16),
+    },
+    multiline: {
+        height: 110,
+        paddingTop: 12,
+        paddingBottom: 12,
+        textAlignVertical: 'top',
     },
     label: {
         marginBottom: 2,
