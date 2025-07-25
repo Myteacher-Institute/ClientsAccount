@@ -37,7 +37,7 @@ const AccountProfile = () => {
 
             <Modal
                 transparent
-                animationType="slide"
+                animationType="fade"
                 visible={modalVisible}
                 onRequestClose={() => setModalVisible(false)}
             >
