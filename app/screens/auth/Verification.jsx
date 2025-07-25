@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
         justifyContent: 'center',
         borderColor: colors.grey2,
-        backgroundColor: colors.offWhite1,
+        backgroundColor: colors.offWhite0,
     },
     email: {
         color: colors.grey7,

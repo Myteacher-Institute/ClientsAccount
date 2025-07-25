@@ -47,7 +47,7 @@ const ClientsSelect = ({
                 onPress={openDropdown}
                 style={[
                     {
-                        backgroundColor: themed(colors.offWhite1, colors.black),
+                        backgroundColor: themed(colors.offWhite0, colors.black),
                         borderColor: themed(colors.grey2, colors.grey7),
                     },
                     styles.inputContainer,

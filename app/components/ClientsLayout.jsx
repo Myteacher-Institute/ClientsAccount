@@ -13,7 +13,7 @@ const ClientsLayout = ({
 }) => {
     const isDark = useColorScheme() === 'dark';
     const shouldShowBack = showHeader || Boolean(title);
-    const backgroundColor = isDark ? colors.offWhite1 : colors.offWhite1;
+    const backgroundColor = isDark ? colors.offWhite0 : colors.offWhite0;
 
     return (
         <View style={[styles.container, { backgroundColor }]}>
