@@ -27,7 +27,7 @@ const TopUpScreen = () => {
         />
 
         <ClientsSelect
-          label="Payment method"
+          darkLabel="Payment method"
           onSelect={(val) => console.log('Selected:', val)}
           options={[
             'Select method',

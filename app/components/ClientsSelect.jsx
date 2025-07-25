@@ -3,7 +3,15 @@ import { useRef, useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import { Text, View, Modal, Pressable, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 
-const ClientsSelect = ({ darkMode, label, value, onSelect, options = [] }) => {
+const ClientsSelect = ({
+    label,
+    value,
+    onSelect,
+    darkLabel,
+    extraStyle,
+    options = [],
+    darkMode = false,
+}) => {
     const boxRef = useRef();
     const [open, setOpen] = useState(false);
     const [internalValue, setInternalValue] = useState(options[0]);
@@ -11,6 +19,7 @@ const ClientsSelect = ({ darkMode, label, value, onSelect, options = [] }) => {
 
     const selected = value ?? internalValue;
     const themed = (light, dark) => (darkMode ? dark : light);
+    const displayLabel = typeof darkLabel === 'string' ? darkLabel : label;
 
     const handleSelect = (opt) => {
         onSelect?.(opt);
@@ -27,15 +36,28 @@ const ClientsSelect = ({ darkMode, label, value, onSelect, options = [] }) => {
 
     return (
         <View>
-            {label && <Text style={[styles.label, themed(null, styles.labelDark)]}>{label}</Text>}
+            {displayLabel && (
+                <Text style={[styles.label, { color: themed(colors.grey1, colors.white) }]}>
+                    {displayLabel}
+                </Text>
+            )}
 
             <Pressable
                 ref={boxRef}
                 onPress={openDropdown}
-                style={[styles.box, themed(null, styles.boxDark)]}
+                style={[
+                    {
+                        backgroundColor: themed(colors.offWhite1, colors.black),
+                        borderColor: themed(colors.grey2, colors.grey7),
+                    },
+                    styles.inputContainer,
+                    extraStyle,
+                ]}
             >
-                <Text style={[styles.text, themed(null, styles.textDark)]}>{selected}</Text>
-                <Icon name="chevron-down" size={18} color={themed(colors.grey9, colors.white)} />
+                <Text style={[styles.text, { color: themed(colors.grey2, colors.white) }]}>
+                    {selected}
+                </Text>
+                <Icon name="chevron-down" size={18} color={themed(colors.grey2, colors.white)} />
             </Pressable>
 
             {open && (
@@ -46,12 +68,12 @@ const ClientsSelect = ({ darkMode, label, value, onSelect, options = [] }) => {
                                 style={[
                                     dropdownPos,
                                     styles.dropdown,
-                                    themed(null, styles.dropdownDark),
+                                    { backgroundColor: themed(colors.white, colors.grey1) },
                                 ]}
                             >
                                 {options.slice(1).map((opt, i) => (
                                     <Pressable key={i} onPress={() => handleSelect(opt)} style={styles.option}>
-                                        <Text style={[styles.optionText, themed(null, styles.optionTextDark)]}>
+                                        <Text style={{ color: themed(colors.grey4, colors.white), ...fonts.regular(14) }}>
                                             {opt}
                                         </Text>
                                     </Pressable>
@@ -66,33 +88,31 @@ const ClientsSelect = ({ darkMode, label, value, onSelect, options = [] }) => {
 };
 
 const styles = StyleSheet.create({
-    label: { marginBottom: 4, ...fonts.medium() },
-    labelDark: { color: colors.white },
-    box: {
-        padding: 14,
+    label: {
+        marginBottom: 2,
+        ...fonts.medium(),
+    },
+    inputContainer: {
+        height: 50,
         borderWidth: 1,
         borderRadius: 8,
         alignItems: 'center',
         flexDirection: 'row',
-        borderColor: colors.grey3,
-        backgroundColor: colors.white,
+        paddingHorizontal: 12,
         justifyContent: 'space-between',
     },
-    boxDark: { backgroundColor: colors.grey1, borderColor: colors.grey7 },
-    text: { ...fonts.regular(14), color: colors.grey2 },
-    textDark: { color: colors.white },
+    text: {
+        flex: 1,
+        ...fonts.regular(16),
+    },
     dropdown: {
         zIndex: 999,
         elevation: 4,
         borderRadius: 8,
         overflow: 'hidden',
         position: 'absolute',
-        backgroundColor: colors.white,
     },
-    dropdownDark: { backgroundColor: colors.grey1 },
     option: { padding: 14 },
-    optionText: { ...fonts.regular(14), color: colors.grey9 },
-    optionTextDark: { color: colors.white },
 });
 
 export default ClientsSelect;

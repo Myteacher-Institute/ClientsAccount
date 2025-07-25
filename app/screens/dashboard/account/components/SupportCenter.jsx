@@ -25,6 +25,7 @@ const SupportCenter = () => {
             <ClientsSelect
               darkMode
               label="Support Type"
+              extraStyle={styles.input}
               onSelect={(val) => console.log('Selected:', val)}
               options={[
                 'Select type',

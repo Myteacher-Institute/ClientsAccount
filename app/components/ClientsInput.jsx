@@ -14,17 +14,13 @@ const keyboardTypeMap = {
 };
 
 const maskTypeMap = {
-    cpf: { type: 'cpf', options: {} },
-    cac: { type: 'custom', options: { mask: 'BN/999999' } },
     scn: { type: 'custom', options: { mask: '9999999999' } },
     nin: { type: 'custom', options: { mask: '99999999999' } },
+    cpf: { type: 'cpf' }, cac: { type: 'custom', options: { mask: 'BN/999999' } },
     currency: { type: 'money', options: { unit: '₦', precision: 2, separator: '.', delimiter: ',', suffixUnit: '' } },
 };
 
-const getAutoCapitalize = (type, userDefined) => {
-    if (userDefined !== undefined) { return userDefined; }
-    return ['email', 'password', 'nin', 'scn', 'cac'].includes(type) ? 'none' : 'words';
-};
+const getAutoCapitalize = (type, custom) => custom ?? (['cac', 'nin', 'scn', 'email', 'password'].includes(type) ? 'none' : 'words');
 
 const ClientsInput = forwardRef(({
     label,
@@ -45,31 +41,28 @@ const ClientsInput = forwardRef(({
 }, ref) => {
     const [secure, setSecure] = useState(!!isPassword);
 
-    const isMasked = !!maskTypeMap[type];
-    const maskConfig = maskTypeMap[type];
+    const mask = maskTypeMap[type];
+    const masked = !!maskTypeMap[type];
+    const Input = masked ? TextInputMask : TextInput;
+    const labelColor = darkMode ? colors.white : colors.grey1;
     const inputBg = darkMode ? colors.black : colors.offWhite1;
-    const labelColor = darkLabel ? colors.grey1 : colors.white;
-    const InputComponent = isMasked ? TextInputMask : TextInput;
     const displayLabel = typeof darkLabel === 'string' ? darkLabel : label;
+    const icon = (name) => name && <IconComponent name={name} size={20} color={iconColor} />;
 
-    const renderIcon = name => name && <IconComponent name={name} size={20} color={iconColor} />;
-    const renderRightIcon = () =>
-        isPassword ? (
-            <Pressable onPress={() => setSecure(!secure)}>
-                <IconComponent name={secure ? 'eye-off' : 'eye'} size={20} color={iconColor} />
-            </Pressable>
-        ) : rightIcon ? (
-            onRightIconPress ? (
-                <Pressable onPress={onRightIconPress}>{renderIcon(rightIcon)}</Pressable>
-            ) : renderIcon(rightIcon)
-        ) : null;
+    const right = isPassword ? (
+        <Pressable onPress={() => setSecure(!secure)}>
+            <IconComponent name={secure ? 'eye-off' : 'eye'} size={20} color={iconColor} />
+        </Pressable>
+    ) : rightIcon ? (
+        onRightIconPress ? <Pressable onPress={onRightIconPress}>{icon(rightIcon)}</Pressable> : icon(rightIcon)
+    ) : null;
 
     return (
         <View>
             {displayLabel && <Text style={[styles.label, { color: labelColor }]}>{displayLabel}</Text>}
             <View style={[styles.inputContainer, { backgroundColor: inputBg }, extraStyle]}>
-                {renderIcon(leftIcon)}
-                <InputComponent
+                {icon(leftIcon)}
+                <Input
                     ref={ref}
                     {...props}
                     value={value}
@@ -79,13 +72,13 @@ const ClientsInput = forwardRef(({
                     placeholderTextColor={colors.grey2}
                     autoCorrect={props.autoCorrect ?? false}
                     textAlignVertical={props.multiline ? 'top' : 'center'}
+                    keyboardType={masked ? 'numeric' : keyboardTypeMap[type]}
                     style={[styles.input, props.multiline && styles.multiline]}
-                    keyboardType={isMasked ? 'numeric' : keyboardTypeMap[type]}
                     autoCapitalize={getAutoCapitalize(type, props.autoCapitalize)}
                     numberOfLines={props.numberOfLines ?? (props.multiline ? 6 : 1)}
-                    {...(isMasked ? { type: maskConfig?.type, options: maskConfig?.options } : { secureTextEntry: secure })}
+                    {...(masked ? { type: mask.type, options: mask.options } : { secureTextEntry: secure })}
                 />
-                {renderRightIcon()}
+                {right}
             </View>
         </View>
     );

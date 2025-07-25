@@ -20,26 +20,26 @@ const ClientsButton = ({
     IconComponent = Ionicons,
     ...rest
 }) => {
-    const finalBgColor = bgColor ?? (isLight ? colors.white : colors.black);
-    const finalTextColor = textColor ?? (isLight ? colors.black : colors.white);
-    const marginStyles = {
+    const finalBg = bgColor ?? (isLight ? colors.white : colors.black);
+    const finalText = textColor ?? (isLight ? colors.black : colors.white);
+    const margin = {
         marginTop: typeof space === 'number' ? space : space?.top || 0,
         marginBottom: typeof space === 'object' ? space?.bottom || 0 : 0,
     };
 
     const containerStyle = [
         {
-            backgroundColor: outline ? 'transparent' : finalBgColor,
-            borderColor: outline ? finalTextColor : 'transparent',
+            backgroundColor: outline ? 'transparent' : finalBg,
+            borderColor: outline ? finalText : 'transparent',
             borderRadius: rounded ? 50 : 8,
             borderWidth: outline ? 1 : 0,
         },
         styles.container,
-        marginStyles,
         extraStyle,
+        margin,
     ];
 
-    const renderIcon = iconName => iconName ? <IconComponent name={iconName} size={iconSize} color={finalTextColor} /> : null;
+    const icon = (name) => name ? <IconComponent name={name} size={iconSize} color={finalText} /> : null;
 
     return (
         <Pressable
@@ -49,12 +49,12 @@ const ClientsButton = ({
             style={({ pressed }) => [containerStyle, { opacity: loading ? 1 : pressed ? 0.85 : 1 }]}
         >
             {loading ? (
-                <ActivityIndicator size="small" color={finalTextColor} />
+                <ActivityIndicator size="small" color={finalText} />
             ) : (
                 <View style={styles.content}>
-                    {leftIcon && renderIcon(leftIcon)}
-                    <Text style={[fonts.medium(16), { color: finalTextColor }, textStyle]}>{text}</Text>
-                    {rightIcon && renderIcon(rightIcon)}
+                    {icon(leftIcon)}
+                    <Text style={[fonts.medium(16), { color: finalText }, textStyle]}>{text}</Text>
+                    {icon(rightIcon)}
                 </View>
             )}
         </Pressable>
