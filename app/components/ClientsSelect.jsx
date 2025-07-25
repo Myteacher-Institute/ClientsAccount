@@ -37,7 +37,7 @@ const ClientsSelect = ({
     return (
         <View>
             {displayLabel && (
-                <Text style={[styles.label, { color: themed(colors.grey1, colors.white) }]}>
+                <Text style={[styles.label, { color: darkLabel ? colors.grey1 : colors.white }]}>
                     {displayLabel}
                 </Text>
             )}
@@ -68,7 +68,7 @@ const ClientsSelect = ({
                                 style={[
                                     dropdownPos,
                                     styles.dropdown,
-                                    { backgroundColor: themed(colors.white, colors.grey1) },
+                                    { backgroundColor: themed(colors.offWhite0, colors.black) },
                                 ]}
                             >
                                 {options.slice(1).map((opt, i) => (

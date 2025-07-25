@@ -23,9 +23,7 @@ const SupportCenter = () => {
           <Text style={styles.feedText}>Submit a Request</Text>
           <View style={styles.gaps}>
             <ClientsSelect
-              darkMode
               label="Support Type"
-              extraStyle={styles.input}
               onSelect={(val) => console.log('Selected:', val)}
               options={[
                 'Select type',
@@ -34,8 +32,8 @@ const SupportCenter = () => {
                 'General Inquiry',
               ]}
             />
-            <ClientsInput label="Subject" placeholder="What's this about?" extraStyle={styles.input} />
-            <ClientsInput multiline label="Message" placeholder="Describe your issue in detail..." extraStyle={styles.input} />
+            <ClientsInput label="Subject" placeholder="What's this about?" />
+            <ClientsInput multiline label="Message" placeholder="Describe your issue in detail..." />
             <ClientsButton space={10} text="Submit Request" extraStyle={{ backgroundColor: colors.blue4 }} />
           </View>
         </View>
@@ -96,23 +94,19 @@ const styles = StyleSheet.create({
     gap: 10,
     padding: 20,
     borderRadius: 12,
-    backgroundColor: colors.grey5,
+    backgroundColor: colors.black,
   },
   feedText: {
     marginBottom: 4,
     ...fonts.medium(18),
     color: colors.white,
   },
-  input: {
-    borderColor: colors.grey7,
-    backgroundColor: colors.grey1,
-  },
   contact: {
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
     flexDirection: 'row',
-    backgroundColor: colors.grey5,
+    backgroundColor: colors.black,
     justifyContent: 'space-between',
   },
   contactIcon: {
@@ -138,7 +132,7 @@ const styles = StyleSheet.create({
   ticket: {
     padding: 16,
     borderRadius: 8,
-    backgroundColor: colors.grey5,
+    backgroundColor: colors.black,
   },
   ticketHeader: {
     alignItems: 'center',
