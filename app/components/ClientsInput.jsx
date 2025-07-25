@@ -44,7 +44,7 @@ const ClientsInput = forwardRef(({
     const mask = maskTypeMap[type];
     const masked = !!maskTypeMap[type];
     const Input = masked ? TextInputMask : TextInput;
-    const labelColor = darkMode ? colors.white : colors.grey1;
+    const labelColor = darkLabel ? colors.grey1 : colors.white;
     const inputBg = darkMode ? colors.black : colors.offWhite1;
     const displayLabel = typeof darkLabel === 'string' ? darkLabel : label;
     const icon = (name) => name && <IconComponent name={name} size={20} color={iconColor} />;

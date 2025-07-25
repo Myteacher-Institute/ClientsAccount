@@ -34,8 +34,8 @@ const SupportCenter = () => {
                 'General Inquiry',
               ]}
             />
-            <ClientsInput darkMode label="Subject" placeholder="What's this about?" extraStyle={styles.input} />
-            <ClientsInput darkMode multiline label="Message" placeholder="Describe your issue in detail..." extraStyle={styles.input} />
+            <ClientsInput label="Subject" placeholder="What's this about?" extraStyle={styles.input} />
+            <ClientsInput multiline label="Message" placeholder="Describe your issue in detail..." extraStyle={styles.input} />
             <ClientsButton space={10} text="Submit Request" extraStyle={{ backgroundColor: colors.blue4 }} />
           </View>
         </View>
