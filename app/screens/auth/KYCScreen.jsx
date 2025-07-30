@@ -17,7 +17,7 @@ const KYCScreen = ({ navigation }) => {
                     <Text style={styles.headerText}>Verify CAC Documents</Text>
                 </View>
 
-                <ClientsInput type="cac" darkLabel="CAC Registration Number" placeholder="e.g. RC1234567" />
+                <ClientsInput darkLabel="CAC Registration Number" placeholder="e.g. RC1234567" />
 
                 <View style={styles.upload}>
                     <Text style={styles.uploadText}>Upload Call to Bar Certificate (PDF)</Text>

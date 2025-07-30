@@ -14,13 +14,13 @@ const keyboardTypeMap = {
 };
 
 const maskTypeMap = {
+    cpf: { type: 'cpf' },
     scn: { type: 'custom', options: { mask: '9999999999' } },
     nin: { type: 'custom', options: { mask: '99999999999' } },
-    cpf: { type: 'cpf' }, cac: { type: 'custom', options: { mask: 'BN/999999' } },
     currency: { type: 'money', options: { unit: '₦', precision: 2, separator: '.', delimiter: ',', suffixUnit: '' } },
 };
 
-const getAutoCapitalize = (type, custom) => custom ?? (['cac', 'nin', 'scn', 'email', 'password'].includes(type) ? 'none' : 'words');
+const getAutoCapitalize = (type, custom) => custom ?? (['nin', 'scn', 'email', 'password'].includes(type) ? 'none' : 'words');
 
 const ClientsInput = forwardRef(({
     label,

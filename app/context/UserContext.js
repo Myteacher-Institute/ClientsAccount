@@ -30,7 +30,10 @@ export const UserProvider = ({ children }) => {
             const decoded = jwtDecode(token);
             console.log('[UserContext] Decoded token:', decoded);
 
-            const isExpired = decoded?.exp * 1000 < Date.now();
+            const exp = Number(decoded?.exp) * 1000;
+            const isExpired = exp && exp < Date.now();
+            console.log('[UserContext] Expiry check:', exp, 'vs', Date.now(), 'Expired?', isExpired);
+
             if (isExpired) {
                 console.warn('[UserContext] Token is expired. Clearing token...');
                 await clearToken();
@@ -41,7 +44,7 @@ export const UserProvider = ({ children }) => {
             const userId = decoded?.userId;
             if (!userId) { throw new Error('userId not found in token'); }
 
-            const data = await Get('userProfile', userId, true); // true = auth required
+            const data = await Get('userProfile', userId, true);
             if (!data?.user) { throw new Error('Invalid user response from backend'); }
 
             console.log('[UserContext] Fetched user:', data.user);

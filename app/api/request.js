@@ -14,11 +14,12 @@ const handleRequest = async (
         onSuccessMessage = false,
     } = {}
 ) => {
+    let url;
     try {
         const raw = endpoints[endpointKey];
         if (!raw) { throw new Error(`Invalid endpoint: ${endpointKey}`); }
 
-        const url = typeof raw === 'function' ? raw(dynamicId) : raw;
+        url = typeof raw === 'function' ? raw(dynamicId) : raw;
 
         const headers = {};
         if (requiresAuth) {
@@ -26,6 +27,17 @@ const handleRequest = async (
             if (!token) { throw new Error('Authentication required'); }
             headers.Authorization = `Bearer ${token}`;
         }
+
+        const isFormData = (typeof FormData !== 'undefined') && (data instanceof FormData);
+        if (isFormData) {
+            headers['Content-Type'] = 'multipart/form-data';
+        }
+
+        console.log('[API Request]', method.toUpperCase(), url, {
+            data,
+            headers,
+            requiresAuth,
+        });
 
         const config = { headers };
 
@@ -50,8 +62,17 @@ const handleRequest = async (
 
         return response.data;
     } catch (error) {
-        const msg = error?.response?.data?.message || error.message || 'Request failed';
+        console.error('[API Error]', {
+            url,
+            method,
+            message: error.message,
+            data: error.config?.data,
+            status: error.response?.status,
+            headers: error.config?.headers,
+            response: error.response?.data,
+        });
 
+        const msg = error?.response?.data?.message || error.message || 'Request failed';
         if (onErrorMessage) {
             toast.error(typeof onErrorMessage === 'string' ? onErrorMessage : msg);
         }
@@ -60,11 +81,14 @@ const handleRequest = async (
     }
 };
 
-export const Get = (endpointKey, dynamicId = null, requiresAuth = true, options = {}) =>
-    handleRequest('get', endpointKey, null, dynamicId, requiresAuth, options);
+export const Get = (endpointKey, dynamicId = null, requiresAuth = true, options = {}) => {
+    return handleRequest('get', endpointKey, null, dynamicId, requiresAuth, options);
+};
 
-export const Post = (endpointKey, data = {}, requiresAuth = false, options = {}) =>
-    handleRequest('post', endpointKey, data, null, requiresAuth, options);
+export const Post = (endpointKey, data = {}, requiresAuth = false, options = {}) => {
+    return handleRequest('post', endpointKey, data, null, requiresAuth, options);
+};
 
-export const Patch = (endpointKey, data = {}, dynamicId = null, requiresAuth = true, options = {}) =>
-    handleRequest('patch', endpointKey, data, dynamicId, requiresAuth, options);
+export const Patch = (endpointKey, data = {}, dynamicId = null, requiresAuth = true, options = {}) => {
+    return handleRequest('patch', endpointKey, data, dynamicId, requiresAuth, options);
+};

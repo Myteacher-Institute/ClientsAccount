@@ -11,7 +11,7 @@ const DashboardHeader = () => {
     return (
         <View style={styles.container}>
             <Pressable style={styles.profile} onPress={() => navigation.navigate('Account')}>
-                <Image source={require('@/assets/images/profile.png')} style={styles.profileImg} />
+                <Image style={styles.profileImg} source={user?.avatar ? { uri: user.avatar } : require('@/assets/images/profile.png')} />
                 <Text style={styles.profileName}>Hi, {user?.fullName?.split(' ')[0] || 'Guest'}</Text>
             </Pressable>
 

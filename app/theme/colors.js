@@ -18,7 +18,7 @@ const colors = {
 
     // off-white colors
     offWhite0: '#F8F9FB',
-    offWhite1: '#0000001a',
+    offWhite1: '#00000066',
     offWhite2: '#FFFFFFE5',
     offWhite3: '#FFFFFF4D',
     offWhite4: '#FFFFFF1A',

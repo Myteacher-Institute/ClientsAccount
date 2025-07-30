@@ -27,14 +27,12 @@ export const useForm = (initialState = {}, requiredFields = Object.keys(initialS
         for (const key of requiredFields) {
             const val = values[key];
             const isEmpty =
+                val === '' ||
                 val === null ||
                 val === undefined ||
-                val === '' ||
                 (typeof val === 'object' && !val?.uri);
 
-            if (isEmpty) {
-                newErrors[key] = 'Required';
-            }
+            if (isEmpty) { newErrors[key] = 'Required'; }
         }
 
         setErrors(newErrors);
@@ -47,6 +45,23 @@ export const useForm = (initialState = {}, requiredFields = Object.keys(initialS
         return true;
     };
 
+    const toFormData = () => {
+        const formData = new FormData();
+        for (const key in values) {
+            const val = values[key];
+            if (val?.uri && val?.name && val?.type) {
+                formData.append(key, {
+                    uri: val.uri,
+                    type: val.type,
+                    name: val.name,
+                });
+            } else {
+                formData.append(key, val);
+            }
+        }
+        return formData;
+    };
+
     const reset = () => {
         setValues(initialState);
         setErrors({});
@@ -57,12 +72,13 @@ export const useForm = (initialState = {}, requiredFields = Object.keys(initialS
     return {
         bind,
         reset,
-        values,
         errors,
+        values,
         bindFile,
         validate,
         setValue,
         setValues,
+        toFormData,
         setField: setValue,
     };
 };
