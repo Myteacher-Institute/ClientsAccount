@@ -1,5 +1,6 @@
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { Platform, PermissionsAndroid, ToastAndroid, Alert, Linking } from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
+import PhotoManipulator from 'react-native-photo-manipulator';
 
 const showToast = (message) => {
     if (Platform.OS === 'android') {
@@ -12,7 +13,6 @@ const showToast = (message) => {
 const askPermission = async (permission, rationale) => {
     try {
         const result = await PermissionsAndroid.request(permission, rationale);
-
         if (result === PermissionsAndroid.RESULTS.GRANTED) { return true; }
 
         if (result === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
@@ -25,12 +25,24 @@ const askPermission = async (permission, rationale) => {
                 ]
             );
         }
-
         return false;
     } catch (e) {
         console.error('Permission request failed', e);
         return false;
     }
+};
+
+export const requestCameraPermission = async () => {
+    if (Platform.OS === 'android') {
+        const granted = await askPermission(PermissionsAndroid.PERMISSIONS.CAMERA, {
+            title: 'Camera Permission',
+            message: 'We need access to your camera to take profile photos.',
+            buttonPositive: 'OK',
+        });
+        if (!granted) { showToast('Camera permission denied'); }
+        return granted;
+    }
+    return true;
 };
 
 export const requestGalleryPermission = async () => {
@@ -44,67 +56,59 @@ export const requestGalleryPermission = async () => {
             message: 'We need access to your photos to update your profile picture.',
             buttonPositive: 'OK',
         });
-
         if (!granted) { showToast('Gallery permission denied'); }
         return granted;
     }
-
     return true;
 };
 
-export const requestCameraPermission = async () => {
-    if (Platform.OS === 'android') {
-        const granted = await askPermission(PermissionsAndroid.PERMISSIONS.CAMERA, {
-            title: 'Camera Permission',
-            message: 'We need access to your camera to take profile photos.',
-            buttonPositive: 'OK',
-        });
-
-        if (!granted) { showToast('Camera permission denied'); }
-        return granted;
-    }
-
-    return true;
-};
-
-export const openCamera = async () => {
-    const granted = await requestCameraPermission();
-    if (!granted) { return { denied: true }; }
-
-    const result = await launchCamera({ mediaType: 'photo', quality: 0.8 });
-
-    if (result.didCancel) { return null; }
-    if (result.errorCode) {
-        console.error('Camera error:', result.errorMessage);
-        showToast('Camera failed to open');
+/**
+ * ✅ Opens camera or gallery, returns raw image
+ */
+const pickImage = async (source) => {
+    try {
+        if (source === 'camera') {
+            const granted = await requestCameraPermission();
+            if (!granted) { return { denied: true }; }
+            return await ImagePicker.openCamera({ cropping: false, compressImageQuality: 0.8 });
+        } else {
+            const granted = await requestGalleryPermission();
+            if (!granted) { return { denied: true }; }
+            return await ImagePicker.openPicker({ cropping: false, compressImageQuality: 0.8 });
+        }
+    } catch (err) {
+        console.error(`${source} error:`, err);
+        showToast(`${source} failed`);
         return null;
     }
-
-    if (result.assets?.length > 0) {
-        return result.assets[0];
-    }
-
-    showToast('No photo captured');
-    return null;
 };
 
-export const openGallery = async () => {
-    const granted = await requestGalleryPermission();
-    if (!granted) { return { denied: true }; }
+/**
+ * ✅ Main function to use in AccountProfile
+ * Handles selection & circular crop
+ */
+export const selectAndCropImage = async (source) => {
+    const raw = await pickImage(source);
+    if (!raw || raw.didCancel) { return null; }
 
-    const result = await launchImageLibrary({ mediaType: 'photo', quality: 0.8 });
+    // Return raw image path for preview, cropping happens in modal
+    return {
+        uri: raw.path,
+        width: raw.width,
+        height: raw.height,
+        mime: raw.mime,
+    };
+};
 
-    if (result.didCancel) { return null; }
-    if (result.errorCode) {
-        console.error('Gallery error:', result.errorMessage);
-        showToast('Gallery failed to open');
-        return null;
+/**
+ * ✅ Crops the image circularly
+ */
+export const cropCircularImage = async (uri, size = 400) => {
+    try {
+        const result = await PhotoManipulator.crop(uri, { x: 0, y: 0, width: size, height: size });
+        return result;
+    } catch (err) {
+        console.error('Circular crop failed:', err);
+        return uri;
     }
-
-    if (result.assets?.length > 0) {
-        return result.assets[0];
-    }
-
-    showToast('No image selected');
-    return null;
 };

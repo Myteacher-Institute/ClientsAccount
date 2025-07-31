@@ -18,11 +18,12 @@ const colors = {
 
     // off-white colors
     offWhite0: '#F8F9FB',
-    offWhite1: '#00000066',
+    offWhite1: '#0000004d',
     offWhite2: '#FFFFFFE5',
     offWhite3: '#FFFFFF4D',
     offWhite4: '#FFFFFF1A',
     offWhite5: '#FACC1533',
+    offWhite6: '#00000099',
 
     // red colors
     red0: '#EA580C',
