@@ -24,40 +24,31 @@ const AccountProfile = () => {
                 onSuccessMessage: 'Profile photo updated!',
             });
 
-            if (res?.url) {
-                setUser((prev) => ({ ...prev, avatar: res.url }));
-                setPhotoUri(res.url);
+            // ✅ If backend returns updatedUser:
+            const newAvatar = res?.url || res?.user?.avatar || res?.updatedUser?.avatar;
+
+            if (newAvatar) {
+                setUser(prev => ({ ...prev, avatar: newAvatar }));
+                setPhotoUri(`${newAvatar}?t=${Date.now()}`);
+            } else {
+                console.warn('No avatar URL in response', res);
             }
         } catch (err) {
             console.error('Upload failed:', err);
         }
     };
 
-    const handleTakePhoto = async () => {
-        const asset = await openCamera();
+    const handleSelectImage = async (sourceFn) => {
+        const asset = await sourceFn();
         if (asset?.denied) { return; }
 
         if (asset?.uri) {
-            const uri = `${asset.uri}?t=${Date.now()}`;
-            setPhotoUri(uri);
-            await uploadAvatar({ ...asset, uri });
+            const previewUri = `${asset.uri}?t=${Date.now()}`;
+            setPhotoUri(previewUri);
+
+            await uploadAvatar(asset);
         } else {
-            console.warn('No photo returned from camera');
-        }
-
-        closeModal();
-    };
-
-    const handlePickGallery = async () => {
-        const asset = await openGallery();
-        if (asset?.denied) { return; }
-
-        if (asset?.uri) {
-            const uri = `${asset.uri}?t=${Date.now()}`;
-            setPhotoUri(uri);
-            await uploadAvatar({ ...asset, uri });
-        } else {
-            console.warn('No image returned from gallery');
+            console.warn(`No image returned from ${sourceFn.name}`);
         }
 
         closeModal();
@@ -83,10 +74,10 @@ const AccountProfile = () => {
                         <TouchableWithoutFeedback>
                             {modalType === 'options' ? (
                                 <View style={styles.modalContent}>
-                                    <Pressable style={styles.modalItem} onPress={handleTakePhoto}>
+                                    <Pressable style={styles.modalItem} onPress={() => handleSelectImage(openCamera)}>
                                         <Text style={styles.modalText}>Take Photo</Text>
                                     </Pressable>
-                                    <Pressable style={styles.modalItem} onPress={handlePickGallery}>
+                                    <Pressable style={styles.modalItem} onPress={() => handleSelectImage(openGallery)}>
                                         <Text style={styles.modalText}>Choose from Gallery</Text>
                                     </Pressable>
                                     <Pressable style={styles.modalItem} onPress={() => setModalType('photo')}>

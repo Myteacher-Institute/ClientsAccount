@@ -73,7 +73,7 @@ You've successfully signed in to your Clients Account App. :partying_face:
 
 - Api to update user profile
 
-- Api to upload user avatar
+- ~~Api to upload user avatar~~
 
 - Api to listen for any deposit transaction
 
