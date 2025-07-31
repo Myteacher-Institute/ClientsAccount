@@ -21,13 +21,15 @@ const AccountProfile = () => {
     };
 
     const handleSelect = async (source) => {
-        console.log('Opening image picker:', source); // ✅ Debug
+        console.log('Opening image picker:', source);
         const asset = await selectAndCropImage(source);
-        console.log('Picker result:', asset); // ✅ Debug
-        if (!asset || asset.denied) {
+        console.log('Picker result:', asset);
+
+        if (!asset || !asset.uri) {
             console.log('No image selected or permission denied');
             return;
         }
+
         setTempImage(asset.uri);
         setModal('crop');
     };
@@ -36,12 +38,21 @@ const AccountProfile = () => {
         try {
             setLoading(true);
             const cropped = await cropCircularImage(tempImage);
+
+            const formData = new FormData();
+            formData.append('avatar', {
+                uri: cropped,
+                type: 'image/jpeg',
+                name: 'avatar.jpg',
+            });
+
             const res = await uploadApi({
+                data: formData,
                 requiresAuth: true,
                 dynamicId: user?._id,
                 endpoint: 'updateAvatar',
-                data: { avatar: { uri: cropped } },
                 onSuccessMessage: 'Profile photo updated!',
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
 
             const newAvatar = res?.url || res?.user?.avatar || res?.updatedUser?.avatar;
@@ -146,7 +157,7 @@ const styles = StyleSheet.create({
     },
     modalText: { ...fonts.medium(16) },
     photo: {
-        height: 400,
+        height: 360,
         width: '100%',
         resizeMode: 'cover',
     },

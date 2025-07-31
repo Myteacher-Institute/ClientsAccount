@@ -69,11 +69,11 @@ const pickImage = async (source) => {
     try {
         if (source === 'camera') {
             const granted = await requestCameraPermission();
-            if (!granted) { return { denied: true }; }
+            if (!granted) { return null; }// ⬅️ return null, not { denied: true }
             return await ImagePicker.openCamera({ cropping: false, compressImageQuality: 0.8 });
         } else {
             const granted = await requestGalleryPermission();
-            if (!granted) { return { denied: true }; }
+            if (!granted) { return null; } // ⬅️ same here
             return await ImagePicker.openPicker({ cropping: false, compressImageQuality: 0.8 });
         }
     } catch (err) {
@@ -94,9 +94,9 @@ export const selectAndCropImage = async (source) => {
     // Return raw image path for preview, cropping happens in modal
     return {
         uri: raw.path,
+        mime: raw.mime,
         width: raw.width,
         height: raw.height,
-        mime: raw.mime,
     };
 };
 
