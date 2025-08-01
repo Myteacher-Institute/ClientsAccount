@@ -1,5 +1,6 @@
 import { colors, fonts } from '@/theme';
 import { useMedia } from '@/hooks/useMedia';
+import { CropView } from 'react-native-image-crop-tools';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import { ClientsModal, ClientsButton } from '@/components';
 import { Text, View, Image, Pressable, StyleSheet } from 'react-native';
@@ -8,23 +9,22 @@ const AccountProfile = () => {
     const {
         user,
         modal,
+        cropRef,
         loading,
-        saveCrop,
         photoUri,
-        pickImage,
+        saveCrop,
         tempImage,
+        pickImage,
         closeModal,
         openOptions,
+        onImageCrop,
         openViewPhoto,
     } = useMedia();
 
     return (
         <View style={styles.container}>
             <View style={styles.imageWrapper}>
-                <Image
-                    style={styles.profileImg}
-                    source={photoUri ? { uri: photoUri } : require('@/assets/images/profile.png')}
-                />
+                <Image style={styles.profileImg} source={photoUri ? { uri: photoUri } : require('@/assets/images/profile.png')} />
                 <Pressable style={styles.cameraIcon} onPress={openOptions}>
                     <Icon name="camera" size={14} color={colors.white} />
                 </Pressable>
@@ -60,7 +60,16 @@ const AccountProfile = () => {
 
                 {modal === 'crop' && tempImage && (
                     <>
-                        <Image source={{ uri: tempImage }} style={styles.cropPreview} />
+                        <CropView
+                            ref={cropRef}
+                            keepAspectRatio
+                            cropShape="circle"
+                            sourceUrl={tempImage}
+                            onImageCrop={onImageCrop}
+                            style={styles.cropPreview}
+                            aspectRatio={{ width: 1, height: 1 }}
+                        />
+
                         <View style={styles.cropActions}>
                             <ClientsButton isLight text="Cancel" onPress={closeModal} extraStyle={styles.button} />
                             <ClientsButton text="Save" loading={loading} onPress={saveCrop} bgColor={colors.yellow1} extraStyle={styles.button} />
@@ -111,7 +120,7 @@ const styles = StyleSheet.create({
     cropPreview: {
         width: '100%',
         aspectRatio: 1,
-        borderRadius: 999,
+        borderRadius: 500,
         overflow: 'hidden',
     },
     cropActions: {

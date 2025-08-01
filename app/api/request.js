@@ -16,21 +16,33 @@ const handleRequest = async (
 ) => {
     let url;
     try {
-        const raw = endpoints[endpointKey];
-        if (!raw) { throw new Error(`Invalid endpoint: ${endpointKey}`); }
+        console.log('[handleRequest] 🔵 START', { method, endpointKey, dynamicId });
 
+        const raw = endpoints[endpointKey];
+        console.log('[handleRequest] raw endpoint value:', raw);
+
+        if (!raw) { throw new Error(`Invalid endpoint: ${endpointKey}`); }
         url = typeof raw === 'function' ? raw(dynamicId) : raw;
+
+        console.log('[handleRequest] ✅ Final URL before axios:', url);
 
         const headers = {};
         if (requiresAuth) {
             const token = await getToken();
+            console.log('[handleRequest] Token:', token?.slice(0, 20) + '...');
             if (!token) { throw new Error('Authentication required'); }
             headers.Authorization = `Bearer ${token}`;
         }
 
         const isFormData = (typeof FormData !== 'undefined') && (data instanceof FormData);
+        console.log('[handleRequest] Data type check:', {
+            isFormData,
+            dataInstance: data?.constructor?.name,
+        });
+
         if (isFormData) {
             headers['Content-Type'] = 'multipart/form-data';
+            console.log('[handleRequest] 📦 Detected FormData, setting Content-Type multipart/form-data');
         }
 
         console.log('[API Request]', method.toUpperCase(), url, {
@@ -56,16 +68,17 @@ const handleRequest = async (
                 throw new Error(`Unsupported method: ${method}`);
         }
 
-        if (onSuccessMessage) {
-            toast.success(onSuccessMessage);
-        }
+        console.log('[handleRequest] ✅ Response:', response.status, response.data);
 
+        if (onSuccessMessage) { toast.success(onSuccessMessage); }
         return response.data;
+
     } catch (error) {
         console.error('[API Error]', {
             url,
             method,
             message: error.message,
+            baseURL: axios.defaults.baseURL,
             data: error.config?.data,
             status: error.response?.status,
             headers: error.config?.headers,
@@ -73,9 +86,7 @@ const handleRequest = async (
         });
 
         const msg = error?.response?.data?.message || error.message || 'Request failed';
-        if (onErrorMessage) {
-            toast.error(typeof onErrorMessage === 'string' ? onErrorMessage : msg);
-        }
+        if (onErrorMessage) { toast.error(typeof onErrorMessage === 'string' ? onErrorMessage : msg); }
 
         throw error;
     }

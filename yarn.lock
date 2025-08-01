@@ -2991,7 +2991,7 @@ __metadata:
     react-native-bootsplash: ^6.3.8
     react-native-encrypted-storage: ^4.0.3
     react-native-gesture-handler: ^2.25.0
-    react-native-image-crop-picker: ^0.50.1
+    react-native-image-crop-tools: ^1.6.4
     react-native-image-picker: ^8.2.1
     react-native-masked-text: ^1.13.0
     react-native-reanimated: ^3.18.0
@@ -8550,13 +8550,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-image-crop-picker@npm:^0.50.1":
-  version: 0.50.1
-  resolution: "react-native-image-crop-picker@npm:0.50.1"
+"react-native-image-crop-tools@npm:^1.6.4":
+  version: 1.6.4
+  resolution: "react-native-image-crop-tools@npm:1.6.4"
   peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 35d4fae23e7da88da388fea740b39aeb2d5f9adecfd971a1efb04c8331e636dff777baedb4c94755a2ae18d9d43bacb68a25d39343e63c7dd14562c5d6934816
+    react: ">=16.0.0"
+    react-native: ">=0.59.0-rc.0 <1.0.x"
+  checksum: d14ca56d9060538d756cd940b20b5c98f95646ad4e4d39613d44000f09c49bddb3a5ca0f6642c8610a5ec4d78fe4314a01f0393a26007756ab954cdc9252b391
   languageName: node
   linkType: hard
 
