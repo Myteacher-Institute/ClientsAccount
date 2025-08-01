@@ -1,5 +1,5 @@
 import { colors, fonts } from '@/theme';
-import { usePhoto } from '@/hooks/usePhoto';
+import { useMedia } from '@/hooks/useMedia';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import { ClientsModal, ClientsButton } from '@/components';
 import { Text, View, Image, Pressable, StyleSheet } from 'react-native';
@@ -9,28 +9,29 @@ const AccountProfile = () => {
         user,
         modal,
         loading,
+        saveCrop,
         photoUri,
+        pickImage,
         tempImage,
         closeModal,
         openOptions,
-        handleSelect,
-        handleUpload,
         openViewPhoto,
-    } = usePhoto();
+    } = useMedia();
 
     return (
         <View style={styles.container}>
             <View style={styles.imageWrapper}>
-                <Image style={styles.profileImg} source={photoUri ? { uri: photoUri } : require('@/assets/images/profile.png')} />
+                <Image
+                    style={styles.profileImg}
+                    source={photoUri ? { uri: photoUri } : require('@/assets/images/profile.png')}
+                />
                 <Pressable style={styles.cameraIcon} onPress={openOptions}>
                     <Icon name="camera" size={14} color={colors.white} />
                 </Pressable>
             </View>
 
-            <View style={styles.info}>
-                <Text style={styles.name}>{user?.fullName}</Text>
-                <Text numberOfLines={1} style={styles.title}>{user?.chamberName}</Text>
-            </View>
+            <Text style={styles.name}>{user?.fullName}</Text>
+            <Text numberOfLines={1} style={styles.title}>{user?.chamberName}</Text>
 
             <ClientsModal
                 visible={!!modal}
@@ -40,10 +41,10 @@ const AccountProfile = () => {
             >
                 {modal === 'options' && (
                     <>
-                        <Pressable style={styles.modalItem} onPress={() => handleSelect('camera')}>
+                        <Pressable style={styles.modalItem} onPress={() => pickImage('camera')}>
                             <Text style={styles.modalText}>Take Photo</Text>
                         </Pressable>
-                        <Pressable style={styles.modalItem} onPress={() => handleSelect('gallery')}>
+                        <Pressable style={styles.modalItem} onPress={() => pickImage('gallery')}>
                             <Text style={styles.modalText}>Choose from Gallery</Text>
                         </Pressable>
                         <Pressable style={styles.modalItem} onPress={openViewPhoto}>
@@ -57,12 +58,12 @@ const AccountProfile = () => {
 
                 {modal === 'view' && <Image style={styles.preview} source={photoUri ? { uri: photoUri } : require('@/assets/images/profile.png')} />}
 
-                {modal === 'crop' && (
+                {modal === 'crop' && tempImage && (
                     <>
-                        <Image style={styles.cropImage} source={{ uri: tempImage }} />
+                        <Image source={{ uri: tempImage }} style={styles.cropPreview} />
                         <View style={styles.cropActions}>
                             <ClientsButton isLight text="Cancel" onPress={closeModal} extraStyle={styles.button} />
-                            <ClientsButton text="Save" loading={loading} onPress={handleUpload} bgColor={colors.yellow1} extraStyle={styles.button} />
+                            <ClientsButton text="Save" loading={loading} onPress={saveCrop} bgColor={colors.yellow1} extraStyle={styles.button} />
                         </View>
                     </>
                 )}
@@ -73,7 +74,7 @@ const AccountProfile = () => {
 
 const styles = StyleSheet.create({
     container: {
-        gap: 12,
+        gap: 10,
         padding: 24,
         borderRadius: 16,
         marginBottom: 25,
@@ -97,7 +98,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         backgroundColor: colors.black,
     },
-    info: { alignItems: 'center' },
     name: { color: colors.grey3, ...fonts.semiBold(20) },
     title: { ...fonts.regular(), color: colors.grey6 },
     modalItem: {
@@ -107,16 +107,12 @@ const styles = StyleSheet.create({
         borderColor: colors.grey10,
     },
     modalText: { ...fonts.medium(16) },
-    preview: {
-        height: 360,
+    preview: { height: 360, width: '100%', resizeMode: 'cover' },
+    cropPreview: {
         width: '100%',
-        resizeMode: 'cover',
-    },
-    cropImage: {
-        width: 250,
-        height: 250,
-        borderRadius: 125,
-        resizeMode: 'cover',
+        aspectRatio: 1,
+        borderRadius: 999,
+        overflow: 'hidden',
     },
     cropActions: {
         gap: 10,

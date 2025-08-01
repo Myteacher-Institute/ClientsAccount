@@ -6,14 +6,10 @@ const askPermission = async (permission, rationale) => {
         if (result === PermissionsAndroid.RESULTS.GRANTED) { return true; }
 
         if (result === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-            Alert.alert(
-                'Permission Required',
-                'Please enable this permission in settings.',
-                [
-                    { text: 'Cancel', style: 'cancel' },
-                    { text: 'Open Settings', onPress: () => Linking.openSettings() },
-                ]
-            );
+            Alert.alert('Permission Required', 'Please enable this permission in settings.', [
+                { text: 'Cancel', style: 'cancel' },
+                { text: 'Open Settings', onPress: () => Linking.openSettings() },
+            ]);
         }
         return false;
     } catch (e) {

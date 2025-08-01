@@ -2994,7 +2994,6 @@ __metadata:
     react-native-image-crop-picker: ^0.50.1
     react-native-image-picker: ^8.2.1
     react-native-masked-text: ^1.13.0
-    react-native-photo-manipulator: ^1.9.2
     react-native-reanimated: ^3.18.0
     react-native-safe-area-context: ^5.4.1
     react-native-screens: ^4.11.1
@@ -3989,39 +3988,6 @@ __metadata:
   version: 1.1.4
   resolution: "color-name@npm:1.1.4"
   checksum: b0445859521eb4021cd0fb0cc1a75cecf67fceecae89b63f62b201cca8d345baf8b952c966862a9d9a2632987d4f6581f0ec8d957dfacece86f0a7919316f610
-  languageName: node
-  linkType: hard
-
-"color-name@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "color-name@npm:2.0.0"
-  checksum: 10a1addae41de2987d6b90dbd3cfade266c2e6f680ce21749911df4493b4fae07654862c6b5358bdd13e155461acb4eedaa5e0ba172bf13542cdcca10866cf2b
-  languageName: node
-  linkType: hard
-
-"color-parse@npm:^2.0.0":
-  version: 2.0.2
-  resolution: "color-parse@npm:2.0.2"
-  dependencies:
-    color-name: ^2.0.0
-  checksum: 4e9446a9b1320da14e9b552b9be767b4fa78c18fbadf8a5c37e83f7fc9687723e2083cf2a17cecc818dcc9d64771f74db7815f218251e18535d1e8f52951c841
-  languageName: node
-  linkType: hard
-
-"color-rgba@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "color-rgba@npm:3.0.0"
-  dependencies:
-    color-parse: ^2.0.0
-    color-space: ^2.0.0
-  checksum: 003b5fa70a77f46df3753e4b941154986163ccabbd9a8a80b2ca6cc4a0c9e505f3d4909c46a0b085e095d19b80297cf1c02dfefa33666b9ea1661ff52b3597bc
-  languageName: node
-  linkType: hard
-
-"color-space@npm:^2.0.0":
-  version: 2.3.2
-  resolution: "color-space@npm:2.3.2"
-  checksum: ebadf516ca3dad38737ba5591a8efef66b1699b011b182a819d69f45e9f8a752b6efef8e9f140f82f44c2b87d23e184f92468e7b87cd92cc4e05866ded5c15c1
   languageName: node
   linkType: hard
 
@@ -8631,18 +8597,6 @@ __metadata:
     date-and-time: 0.9.0
     tinymask: 1.0.2
   checksum: d1ccd591a5262c322333d56e2c4ac7e2729e8cddc55225f5495e55904506935797c6d165ca8a36185627ff1845e5a29accbab6a63ec9d6712a6a1e9613f391ee
-  languageName: node
-  linkType: hard
-
-"react-native-photo-manipulator@npm:^1.9.2":
-  version: 1.9.2
-  resolution: "react-native-photo-manipulator@npm:1.9.2"
-  dependencies:
-    color-rgba: ^3.0.0
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 84a70fa324152e7b772b9cc41427a247cf8b29c5f9012c9b5ced30601b792b90330e0c5e373e588bdbb4ef2cafb7d12686d7a86bd92365e10b3ac7760b842ee0
   languageName: node
   linkType: hard
 

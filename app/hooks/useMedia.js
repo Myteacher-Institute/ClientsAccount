@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { useApi } from '@/hooks';
-import { useToast } from '@/hooks/useToast';
+import { useApi, useToast } from '@/hooks';
+import { selectImage } from '@/utils/media';
 import { useUser } from '@/context/UserContext';
-import { selectAndCropImage, cropCircularImage } from '@/utils/media';
-import { requestCameraPermission, requestGalleryPermission } from '@/utils/permissions';
 
-export const usePhoto = () => {
+export const useMedia = () => {
     const { call } = useApi('patch');
     const { user, setUser } = useUser();
     const [modal, setModal] = useState(null);
@@ -14,36 +12,22 @@ export const usePhoto = () => {
     const [tempImage, setTempImage] = useState(null);
     const [photoUri, setPhotoUri] = useState(user?.avatar || null);
 
-    const closeModal = () => {
-        setModal(null);
-        setTempImage(null);
-    };
+    const closeModal = () => { setModal(null); setTempImage(null); };
 
-    const handleSelect = async (source) => {
-        const granted = source === 'camera' ? await requestCameraPermission() : await requestGalleryPermission();
-
-        if (!granted) { return showError(`${source} permission denied`); }
-
-        const asset = await selectAndCropImage(source);
+    const pickImage = async (source) => {
+        const asset = await selectImage(source);
         if (!asset?.uri) { return showError('No image selected'); }
-
         setTempImage(asset.uri);
         setModal('crop');
     };
 
-    const handleUpload = async () => {
-        if (!tempImage) { return; }
+    const saveCrop = () => tempImage && upload(tempImage);
 
+    const upload = async (uri) => {
+        setLoading(true);
         try {
-            setLoading(true);
-            const cropped = await cropCircularImage(tempImage);
-
             const formData = new FormData();
-            formData.append('avatar', {
-                uri: cropped,
-                type: 'image/jpeg',
-                name: 'avatar.jpg',
-            });
+            formData.append('avatar', { uri, type: 'image/jpeg', name: 'avatar.jpg' });
 
             const res = await call({
                 data: formData,
@@ -70,5 +54,16 @@ export const usePhoto = () => {
         }
     };
 
-    return { user, modal, loading, photoUri, tempImage, closeModal, handleSelect, handleUpload, openViewPhoto: () => setModal('view'), openOptions: () => setModal('options') };
+    return {
+        user,
+        modal,
+        loading,
+        photoUri,
+        tempImage,
+        saveCrop,
+        pickImage,
+        closeModal,
+        openViewPhoto: () => setModal('view'),
+        openOptions: () => setModal('options'),
+    };
 };
