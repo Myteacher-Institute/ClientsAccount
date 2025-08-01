@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const instance = axios.create({ baseURL: 'http://192.168.1.244:3000/api/v1' });
+const instance = axios.create({ baseURL: 'http://192.168.0.102:3000/api/v1' });
 
 instance.interceptors.request.use(req => {
     console.log('[AXIOS REQUEST]', req.method.toUpperCase(), req.url, req.data);

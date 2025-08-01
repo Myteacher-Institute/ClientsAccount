@@ -1,78 +1,28 @@
-import { useApi } from '@/hooks';
-import { useState } from 'react';
 import { colors, fonts } from '@/theme';
-import { useUser } from '@/context/UserContext';
+import { usePhoto } from '@/hooks/usePhoto';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import { ClientsModal, ClientsButton } from '@/components';
-import { selectAndCropImage, cropCircularImage } from '@/utils/media';
 import { Text, View, Image, Pressable, StyleSheet } from 'react-native';
 
 const AccountProfile = () => {
-    const { user, setUser } = useUser();
-    const [modal, setModal] = useState(null);
-    const { call: uploadApi } = useApi('patch');
-    const [loading, setLoading] = useState(false);
-    const [tempImage, setTempImage] = useState(null);
-    const [photoUri, setPhotoUri] = useState(user?.avatar || null);
-
-    const closeModal = () => {
-        setModal(null);
-        setTempImage(null);
-    };
-
-    const handleSelect = async (source) => {
-        console.log('Opening image picker:', source);
-        const asset = await selectAndCropImage(source);
-        console.log('Picker result:', asset);
-
-        if (!asset || !asset.uri) {
-            console.log('No image selected or permission denied');
-            return;
-        }
-
-        setTempImage(asset.uri);
-        setModal('crop');
-    };
-
-    const handleUpload = async () => {
-        try {
-            setLoading(true);
-            const cropped = await cropCircularImage(tempImage);
-
-            const formData = new FormData();
-            formData.append('avatar', {
-                uri: cropped,
-                type: 'image/jpeg',
-                name: 'avatar.jpg',
-            });
-
-            const res = await uploadApi({
-                data: formData,
-                requiresAuth: true,
-                dynamicId: user?._id,
-                endpoint: 'updateAvatar',
-                onSuccessMessage: 'Profile photo updated!',
-                headers: { 'Content-Type': 'multipart/form-data' },
-            });
-
-            const newAvatar = res?.url || res?.user?.avatar || res?.updatedUser?.avatar;
-            if (newAvatar) {
-                setUser(prev => ({ ...prev, avatar: newAvatar }));
-                setPhotoUri(`${newAvatar}?t=${Date.now()}`);
-            }
-        } catch (err) {
-            console.error('Upload failed:', err);
-        } finally {
-            setLoading(false);
-            closeModal();
-        }
-    };
+    const {
+        user,
+        modal,
+        loading,
+        photoUri,
+        tempImage,
+        closeModal,
+        openOptions,
+        handleSelect,
+        handleUpload,
+        openViewPhoto,
+    } = usePhoto();
 
     return (
         <View style={styles.container}>
             <View style={styles.imageWrapper}>
                 <Image style={styles.profileImg} source={photoUri ? { uri: photoUri } : require('@/assets/images/profile.png')} />
-                <Pressable style={styles.cameraIcon} onPress={() => setModal('options')}>
+                <Pressable style={styles.cameraIcon} onPress={openOptions}>
                     <Icon name="camera" size={14} color={colors.white} />
                 </Pressable>
             </View>
@@ -85,8 +35,9 @@ const AccountProfile = () => {
             <ClientsModal
                 visible={!!modal}
                 onClose={closeModal}
-                title={modal === 'crop' ? 'Crop' : ''}
-                mode={modal === 'options' ? 'bottom' : modal === 'crop' ? 'fullscreen' : 'center'}>
+                title={modal === 'crop' ? 'Crop' : modal === 'view' ? 'Profile Photo' : ''}
+                mode={modal === 'options' ? 'bottom' : modal === 'crop' ? 'fullscreen' : 'center'}
+            >
                 {modal === 'options' && (
                     <>
                         <Pressable style={styles.modalItem} onPress={() => handleSelect('camera')}>
@@ -95,7 +46,7 @@ const AccountProfile = () => {
                         <Pressable style={styles.modalItem} onPress={() => handleSelect('gallery')}>
                             <Text style={styles.modalText}>Choose from Gallery</Text>
                         </Pressable>
-                        <Pressable style={styles.modalItem} onPress={() => setModal('view')}>
+                        <Pressable style={styles.modalItem} onPress={openViewPhoto}>
                             <Text style={styles.modalText}>View Photo</Text>
                         </Pressable>
                         <Pressable style={styles.modalItem} onPress={closeModal}>
@@ -104,14 +55,14 @@ const AccountProfile = () => {
                     </>
                 )}
 
-                {modal === 'view' && <Image style={styles.photo} source={photoUri ? { uri: photoUri } : require('@/assets/images/profile.png')} />}
+                {modal === 'view' && <Image style={styles.preview} source={photoUri ? { uri: photoUri } : require('@/assets/images/profile.png')} />}
 
                 {modal === 'crop' && (
                     <>
                         <Image style={styles.cropImage} source={{ uri: tempImage }} />
                         <View style={styles.cropActions}>
                             <ClientsButton isLight text="Cancel" onPress={closeModal} extraStyle={styles.button} />
-                            <ClientsButton text="Save" bgColor={colors.yellow1} loading={loading} onPress={handleUpload} extraStyle={styles.button} />
+                            <ClientsButton text="Save" loading={loading} onPress={handleUpload} bgColor={colors.yellow1} extraStyle={styles.button} />
                         </View>
                     </>
                 )}
@@ -156,7 +107,7 @@ const styles = StyleSheet.create({
         borderColor: colors.grey10,
     },
     modalText: { ...fonts.medium(16) },
-    photo: {
+    preview: {
         height: 360,
         width: '100%',
         resizeMode: 'cover',
