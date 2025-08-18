@@ -20,10 +20,10 @@ const ClientsToast = ({ toast }) => {
 const styles = StyleSheet.create({
     toast: {
         top: 60,
-        height: 50,
         right: '5%',
-        padding: 16,
         zIndex: 100,
+        padding: 16,
+        maxWidth: 300,
         borderRadius: 8,
         position: 'absolute',
         justifyContent: 'center',

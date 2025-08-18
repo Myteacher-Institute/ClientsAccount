@@ -12,6 +12,7 @@ const CreateAccount = ({ navigation }) => {
         gender: '',
         password: '',
         fullName: '',
+        hasChamber: '',
         chamberName: '',
         enrolleeNumber: '',
     };
@@ -19,7 +20,7 @@ const CreateAccount = ({ navigation }) => {
     const { loading, call: callApi } = useApi('post');
     const { bind, values, validate, setField } = useForm(initialValues, Object.keys(initialValues));
 
-    const formatChamberName = name => name.trim() ? `${name.trim().replace(/\s+and\s+/gi, ' & ').replace(/\s+Chambers?$/i, '')} Chamber` : '';
+    const addChambers = name => name.trim() ? name.replace(/\s+and\s+/gi, ' & ').replace(/\s+Chambers?$/i, '').trim() + ' Chambers' : '';
 
     const onSubmit = async () => {
         if (!validate()) { return; }
@@ -29,10 +30,12 @@ const CreateAccount = ({ navigation }) => {
                 requiresAuth: false,
                 endpoint: 'register',
                 onSuccessMessage: 'User registered successfully!',
-                data: { ...values, chamberName: formatChamberName(values.chamberName) },
+                data: { ...values, chamberName: addChambers(values.chamberName) },
             });
 
-            if (response) { navigation.navigate('KYCScreen'); }
+            if (response) {
+                navigation.navigate(values.hasChamber === 'yes' ? 'KYCScreen' : 'SigninScreen');
+            }
         } catch (error) {
             console.error('API call failed:', error);
         }
@@ -48,12 +51,31 @@ const CreateAccount = ({ navigation }) => {
         <ClientsLayout title="Create Account">
             <View style={styles.section}>
                 <ClientsInput darkLabel="Full Name" placeholder="Enter full name" {...bind('fullName')} />
-                <ClientsInput
-                    darkLabel="Chamber?"
-                    {...bind('chamberName')}
-                    placeholder="Chamber Name"
-                    onBlur={() => setField('chamberName', formatChamberName(values.chamberName))}
-                />
+
+                <Text style={styles.text}>Do you have an already registered chambers?</Text>
+                <View style={styles.gender}>
+                    {['yes', 'no'].map(option => (
+                        <Pressable
+                            key={option}
+                            onPress={() => setField('hasChamber', option)}
+                            style={[styles.genderOption, values.hasChamber === option && styles.genderOptionSelected]}
+                        >
+                            <Text style={[styles.genderLabel, values.hasChamber === option && styles.genderLabelSelected]}>
+                                {option[0].toUpperCase() + option.slice(1)}
+                            </Text>
+                        </Pressable>
+                    ))}
+                </View>
+
+                {values.hasChamber && (
+                    <ClientsInput
+                        {...bind('chamberName')}
+                        placeholder="Enter chambers name"
+                        onBlur={() => setField('chamberName', addChambers(values.chamberName))}
+                        darkLabel={values.hasChamber === 'yes' ? 'Existing Registered Chambers' : 'Create a New Chambers'}
+                    />
+                )}
+
                 <ClientsInput type="scn" darkLabel="SCN" placeholder="SCN Number" {...bind('enrolleeNumber')} />
 
                 <Text style={styles.text}>Gender</Text>
