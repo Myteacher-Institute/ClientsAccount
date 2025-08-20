@@ -12,10 +12,14 @@ const ClientsModal = ({
     visible = false,
     modalStyle = {},
     footerStyle = {},
-    titleColor = colors.white,
+    isLight = false,   // 👈 new boolean flag, default = false (dark mode)
 }) => {
     const backdropClosable = mode !== 'fullscreen';
     const opacity = useRef(new Animated.Value(0)).current;
+
+    // derive colors from flag
+    const backgroundColor = isLight ? colors.white : colors.black;
+    const textColor = isLight ? colors.black : colors.white;
 
     useEffect(() => {
         Animated.timing(opacity, {
@@ -26,16 +30,24 @@ const ClientsModal = ({
     }, [visible, opacity]);
 
     return (
-        <Modal transparent visible={visible} animationType="none" onRequestClose={onClose}>
+        <Modal
+            transparent
+            visible={visible}
+            animationType="none"
+            onRequestClose={onClose}
+            presentationStyle="overFullScreen"
+        >
             <TouchableWithoutFeedback onPress={backdropClosable ? onClose : undefined}>
                 <Animated.View style={[styles.overlay, styles[`${mode}Overlay`], { opacity }]}>
-                    <View style={[styles[mode], modalStyle]} onStartShouldSetResponder={() => true}>
+                    <View style={[styles[mode], { backgroundColor }, modalStyle]} onStartShouldSetResponder={() => true}>
                         {mode === 'fullscreen' ? (
                             <>
-                                {title ? <Text style={[styles.title, styles.sticky, { color: titleColor }]}>{title}</Text> : null}
+                                {title ? (
+                                    <Text style={[styles.title, styles.sticky, { color: textColor }]}>{title}</Text>
+                                ) : null}
 
                                 <ScrollView
-                                    style={styles.overlay}
+                                    style={styles.fullscreen}
                                     keyboardDismissMode="on-drag"
                                     keyboardShouldPersistTaps="handled"
                                     showsVerticalScrollIndicator={false}
@@ -46,7 +58,9 @@ const ClientsModal = ({
 
                                 {footer ? <View style={[styles.sticky, footerStyle]}>{footer}</View> : null}
                             </>
-                        ) : <View style={bodyStyle}>{children}</View>}
+                        ) : (
+                            <View style={bodyStyle}>{children}</View>
+                        )}
                     </View>
                 </Animated.View>
             </TouchableWithoutFeedback>
@@ -56,7 +70,6 @@ const ClientsModal = ({
 
 const styles = StyleSheet.create({
     overlay: { flex: 1 },
-    fullscreenOverlay: { backgroundColor: colors.black },
     centerOverlay: { justifyContent: 'center', backgroundColor: colors.black },
     bottomOverlay: { backgroundColor: colors.offWhite1, justifyContent: 'flex-end' },
     sticky: { padding: 12 },
@@ -66,8 +79,8 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 16,
         backgroundColor: colors.white,
     },
-    fullscreen: { flex: 1, backgroundColor: colors.black },
-    center: { width: '100%', backgroundColor: colors.white },
+    center: { width: '100%' },
+    fullscreen: { flex: 1 },
     title: { textAlign: 'center', ...fonts.medium(18) },
 });
 

@@ -78,13 +78,12 @@ const KYCScreen = ({ navigation }) => {
 
             {/* Terms Modal */}
             <ClientsModal
+                isLight
                 scrollable
                 mode="fullscreen"
                 visible={modalVisible}
-                titleColor={colors.black}
                 title="Terms and Conditions"
                 onClose={() => setModalVisible(false)}
-                modalStyle={{ backgroundColor: colors.white }}
                 footer={<ClientsButton text="I Agree" onPress={handleAcceptTerms} />}
             >
                 {terms.map((item, index) => (
