@@ -36,13 +36,14 @@ const AccountProfile = () => {
             <ClientsModal
                 visible={!!modal}
                 onClose={closeModal}
+                footerStyle={styles.cropActions}
                 title={modal === 'crop' && 'Crop'}
                 mode={modal === 'options' ? 'bottom' : modal === 'crop' ? 'fullscreen' : 'center'}
                 footer={modal === 'crop' && (
-                    <View style={styles.cropActions}>
+                    <>
                         <ClientsButton isLight text="Cancel" onPress={closeModal} extraStyle={styles.button} />
                         <ClientsButton text="Save" loading={loading} onPress={saveCrop} bgColor={colors.yellow1} extraStyle={styles.button} />
-                    </View>
+                    </>
                 )}
             >
                 {modal === 'options' && (
