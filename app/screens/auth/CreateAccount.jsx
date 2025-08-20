@@ -98,8 +98,7 @@ const CreateAccount = ({ navigation }) => {
                 <ClientsInput type="phone" darkLabel="Phone" placeholder="Enter phone" {...bind('phone')} />
                 <ClientsInput isPassword type="password" darkLabel="Password" placeholder="Create password" {...bind('password')} />
 
-                <ClientsButton space={20} text="Continue" loading={loading} onPress={() => navigation.navigate('KYCScreen')} />
-                {/* <ClientsButton space={20} text="Continue" loading={loading} onPress={onSubmit} /> */}
+                <ClientsButton space={20} text="Continue" loading={loading} onPress={onSubmit} />
             </View>
         </ClientsLayout>
     );

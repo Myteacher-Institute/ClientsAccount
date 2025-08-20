@@ -31,7 +31,7 @@ const AccountProfile = () => {
             </View>
 
             <Text style={styles.name}>{user?.fullName}</Text>
-            <Text numberOfLines={1} style={styles.title}>{user?.chamberName}</Text>
+            <Text numberOfLines={1} style={styles.chamber}>{user?.chamberName}</Text>
 
             <ClientsModal
                 visible={!!modal}
@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         backgroundColor: colors.black,
     },
-    name: { color: colors.grey3, ...fonts.semiBold(20) },
-    title: { ...fonts.regular(), color: colors.grey6 },
+    name: { color: colors.grey3, ...fonts.semiBold(20), marginBottom: -10 },
+    chamber: { ...fonts.regular(), color: colors.grey6 },
     modalItem: {
         paddingVertical: 14,
         alignItems: 'center',

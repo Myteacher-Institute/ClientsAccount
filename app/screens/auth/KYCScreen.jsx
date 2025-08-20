@@ -58,8 +58,7 @@ const KYCScreen = ({ navigation }) => {
                 <ClientsButton
                     leftIcon="help-circle-outline"
                     text="Submit for Verification"
-                    onPress={() => navigation.navigate('Dashboard', { screen: 'Account' })}
-                // onPress={() => navigation.navigate('Verification')}
+                onPress={() => navigation.navigate('Verification')}
                 />
             </View>
 
