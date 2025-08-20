@@ -12,17 +12,19 @@ const KYCScreen = ({ navigation }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
 
     const handleCheckboxPress = () => {
-        if (!termsAccepted) {
-            setModalVisible(true); // open modal only if unchecked
-        } else {
-            setTermsAccepted(false); // uncheck directly if already checked
-        }
+        termsAccepted ? setTermsAccepted(false) : setModalVisible(true);
     };
 
     const handleAcceptTerms = () => {
         setTermsAccepted(true);
         setModalVisible(false);
     };
+
+    const uploadOptions = [
+        { label: 'Upload Call to Bar Certificate (PDF)' },
+        { label: 'Upload CAC Certificate (PDF, JPG, PNG)' },
+        { label: 'Upload Recent Photo', isPhoto: true },
+    ];
 
     return (
         <ClientsLayout title="KYC Verification">
@@ -34,29 +36,17 @@ const KYCScreen = ({ navigation }) => {
 
                 <ClientsInput darkLabel="CAC Registration Number" placeholder="e.g. RC1234567" />
 
-                <View style={styles.upload}>
-                    <Text style={styles.uploadText}>Upload Call to Bar Certificate (PDF)</Text>
-                    <Pressable style={styles.button}>
-                        <FontAwesome6 name="upload" size={15} color={colors.white} />
-                        <Text style={styles.buttonText}>Choose File</Text>
-                    </Pressable>
-                </View>
-
-                <View style={styles.upload}>
-                    <Text style={styles.uploadText}>Upload CAC Certificate (PDF, JPG, PNG)</Text>
-                    <Pressable style={styles.button}>
-                        <FontAwesome6 name="upload" size={15} color={colors.white} />
-                        <Text style={styles.buttonText}>Choose File</Text>
-                    </Pressable>
-                </View>
-
-                <View style={styles.upload}>
-                    <Text style={styles.uploadText}>Upload Recent Photo</Text>
-                    <Pressable style={styles.button}>
-                        <FontAwesome name="photo" size={15} color={colors.white} />
-                        <Text style={styles.buttonText}>Upload Photo</Text>
-                    </Pressable>
-                </View>
+                {uploadOptions.map((item, index) => (
+                    <View key={index} style={styles.upload}>
+                        <Text style={styles.uploadText}>{item.label}</Text>
+                        <Pressable style={styles.button}>
+                            {item.isPhoto ?
+                                <FontAwesome name="photo" size={15} color={colors.white} />
+                                : <FontAwesome6 name="upload" size={15} color={colors.white} />}
+                            <Text style={styles.buttonText}>Choose File</Text>
+                        </Pressable>
+                    </View>
+                ))}
 
                 <Pressable onPress={handleCheckboxPress} style={styles.terms}>
                     <View style={[styles.termsCircle, termsAccepted && styles.termsChecked]}>
@@ -69,14 +59,12 @@ const KYCScreen = ({ navigation }) => {
                     leftIcon="help-circle-outline"
                     text="Submit for Verification"
                     onPress={() => navigation.navigate('Dashboard', { screen: 'Account' })}
-                // navigation.navigate(item.screen, { screen: item.nestedScreen })
                 // onPress={() => navigation.navigate('Verification')}
                 />
             </View>
 
             <Text style={styles.footer}>© 2025 Clients Account. All rights reserved.</Text>
 
-            {/* Terms Modal */}
             <ClientsModal
                 isLight
                 scrollable
@@ -102,21 +90,55 @@ const KYCScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    section: { gap: 15, marginTop: 10, borderRadius: 16, paddingVertical: 30, paddingHorizontal: 20, backgroundColor: colors.white },
-    header: { gap: 10, marginBottom: 10, alignItems: 'center', flexDirection: 'row' },
+    section: {
+        gap: 15,
+        marginTop: 10,
+        borderRadius: 16,
+        paddingVertical: 30,
+        paddingHorizontal: 20,
+        backgroundColor: colors.white,
+    },
+    header: {
+        gap: 10,
+        marginBottom: 10,
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
     headerText: { ...fonts.medium(18), color: colors.grey3 },
     upload: { gap: 2, marginTop: 10 },
     uploadText: { ...fonts.medium(), color: colors.grey1 },
-    button: { gap: 8, height: 45, borderRadius: 8, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', backgroundColor: colors.grey6 },
+    button: {
+        gap: 8,
+        height: 45,
+        borderRadius: 8,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        backgroundColor: colors.grey6,
+    },
     buttonText: { ...fonts.medium(), color: colors.white },
-    terms: { gap: 6, alignItems: 'center', flexDirection: 'row', marginTop: 15 },
+    terms: {
+        gap: 6,
+        marginTop: 15,
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
     termsText: { ...fonts.italic(), color: colors.grey3 },
-    termsCircle: { width: 15, height: 15, borderWidth: 1, borderRadius: 10, borderColor: colors.grey2 },
+    termsCircle: {
+        width: 15,
+        height: 15,
+        borderWidth: 1,
+        borderRadius: 10, borderColor: colors.grey2,
+    },
     termsChecked: { borderColor: colors.yellow2, backgroundColor: colors.yellow2 },
-    footer: { marginTop: 60, ...fonts.light(12), textAlign: 'center', color: colors.grey4 },
-
+    footer: {
+        marginTop: 60,
+        ...fonts.light(12),
+        textAlign: 'center',
+        color: colors.grey4,
+    },
     modalSection: { ...fonts.bold(16), marginTop: 10 },
-    modalText: { ...fonts.medium(), marginLeft: 10, marginTop: 2 },
+    modalText: { ...fonts.medium(), marginLeft: 15, marginTop: 2 },
 });
 
 export default KYCScreen;
