@@ -36,8 +36,14 @@ const AccountProfile = () => {
             <ClientsModal
                 visible={!!modal}
                 onClose={closeModal}
-                title={modal === 'crop' ? 'Crop' : modal === 'view' ? 'Profile Photo' : ''}
+                title={modal === 'crop' && 'Crop'}
                 mode={modal === 'options' ? 'bottom' : modal === 'crop' ? 'fullscreen' : 'center'}
+                footer={modal === 'crop' && (
+                    <View style={styles.cropActions}>
+                        <ClientsButton isLight text="Cancel" onPress={closeModal} extraStyle={styles.button} />
+                        <ClientsButton text="Save" loading={loading} onPress={saveCrop} bgColor={colors.yellow1} extraStyle={styles.button} />
+                    </View>
+                )}
             >
                 {modal === 'options' && (
                     <>
@@ -56,25 +62,20 @@ const AccountProfile = () => {
                     </>
                 )}
 
-                {modal === 'view' && <Image style={styles.preview} source={photoUri ? { uri: photoUri } : require('@/assets/images/profile.png')} />}
+                {modal === 'view' && (
+                    <Image style={styles.preview} source={photoUri ? { uri: photoUri } : require('@/assets/images/profile.png')} />
+                )}
 
                 {modal === 'crop' && tempImage && (
-                    <>
-                        <CropView
-                            ref={cropRef}
-                            keepAspectRatio
-                            cropShape="circle"
-                            sourceUrl={tempImage}
-                            onImageCrop={onImageCrop}
-                            style={styles.cropPreview}
-                            aspectRatio={{ width: 1, height: 1 }}
-                        />
-
-                        <View style={styles.cropActions}>
-                            <ClientsButton isLight text="Cancel" onPress={closeModal} extraStyle={styles.button} />
-                            <ClientsButton text="Save" loading={loading} onPress={saveCrop} bgColor={colors.yellow1} extraStyle={styles.button} />
-                        </View>
-                    </>
+                    <CropView
+                        ref={cropRef}
+                        keepAspectRatio
+                        cropShape="circle"
+                        sourceUrl={tempImage}
+                        onImageCrop={onImageCrop}
+                        style={styles.cropPreview}
+                        aspectRatio={{ width: 1, height: 1 }}
+                    />
                 )}
             </ClientsModal>
         </View>
@@ -117,17 +118,10 @@ const styles = StyleSheet.create({
     },
     modalText: { ...fonts.medium(16) },
     preview: { height: 360, width: '100%', resizeMode: 'cover' },
-    cropPreview: {
-        width: '100%',
-        aspectRatio: 1,
-        borderRadius: 500,
-        overflow: 'hidden',
-    },
+    cropPreview: { aspectRatio: 1 },
     cropActions: {
         gap: 10,
-        width: '100%',
         flexDirection: 'row',
-        paddingHorizontal: 10,
         justifyContent: 'space-between',
     },
     button: { flex: 1 },

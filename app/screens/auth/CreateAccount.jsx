@@ -33,9 +33,7 @@ const CreateAccount = ({ navigation }) => {
                 data: { ...values, chamberName: addChambers(values.chamberName) },
             });
 
-            if (response) {
-                navigation.navigate(values.hasChamber === 'yes' ? 'KYCScreen' : 'SigninScreen');
-            }
+            if (response) { navigation.navigate('KYCScreen'); }
         } catch (error) {
             console.error('API call failed:', error);
         }
@@ -100,7 +98,8 @@ const CreateAccount = ({ navigation }) => {
                 <ClientsInput type="phone" darkLabel="Phone" placeholder="Enter phone" {...bind('phone')} />
                 <ClientsInput isPassword type="password" darkLabel="Password" placeholder="Create password" {...bind('password')} />
 
-                <ClientsButton space={20} text="Continue" loading={loading} onPress={onSubmit} />
+                <ClientsButton space={20} text="Continue" loading={loading} onPress={() => navigation.navigate('KYCScreen')} />
+                {/* <ClientsButton space={20} text="Continue" loading={loading} onPress={onSubmit} /> */}
             </View>
         </ClientsLayout>
     );
