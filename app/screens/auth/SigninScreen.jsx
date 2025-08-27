@@ -38,11 +38,6 @@ const SigninScreen = ({ navigation }) => {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <ImageBackground source={require('@/assets/images/advocate.png')} style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={[styles.text, styles.headerText]}>Sign In</Text>
-                    <Text style={[styles.text, styles.helpText]}>Help</Text>
-                </View>
-
                 <KeyboardAvoidingView keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                     <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false} contentContainerStyle={styles.section}>
                         <Image source={require('@/assets/images/brand.png')} style={styles.brand} />
@@ -50,15 +45,15 @@ const SigninScreen = ({ navigation }) => {
                         <ClientsInput type="email" name="mail" {...bind('email')} label="Email Address" leftIcon="mail-outline" placeholder="you@email.com" />
                         <ClientsInput isPassword type="password" label="Password" {...bind('password')} leftIcon="lock-closed" placeholder="Enter your password" />
 
-                        <Text style={[styles.text, styles.helpText]}>Forgot Password?</Text>
+                        <Text style={styles.forgot}>Forgot Password?</Text>
 
                         <ClientsButton isLight text="Sign In" loading={loading} onPress={onSubmit} />
                     </ScrollView>
                 </KeyboardAvoidingView>
 
                 <View style={styles.footer}>
-                    <Text style={[styles.text, styles.footerText]}>Don't have an account?</Text>
-                    <Text style={[styles.text, styles.signText]} onPress={() => navigation.navigate('CreateAccount')}>Sign Up</Text>
+                    <Text style={styles.footerText}>Don't have an account?</Text>
+                    <Text style={styles.signText} onPress={() => navigation.navigate('CreateAccount')}>Sign Up</Text>
                 </View>
             </ImageBackground>
         </TouchableWithoutFeedback>
@@ -71,11 +66,6 @@ const styles = StyleSheet.create({
         padding: 20,
         justifyContent: 'space-between',
     },
-    header: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
     footer: {
         gap: 5,
         paddingVertical: 20,
@@ -85,14 +75,13 @@ const styles = StyleSheet.create({
     section: {
         gap: 20,
         flexGrow: 1,
+        marginTop: 80,
         paddingVertical: 40,
         justifyContent: 'center',
     },
-    text: { color: colors.white },
-    helpText: { ...fonts.medium(12) },
-    signText: { ...fonts.regular(12) },
-    headerText: { ...fonts.semiBold(18) },
     brand: { marginBottom: 80, alignSelf: 'center' },
+    forgot: { ...fonts.medium(12), color: colors.white },
+    signText: { color: colors.white, ...fonts.regular(12) },
     footerText: { ...fonts.light(12), color: colors.grey4 },
 });
 
