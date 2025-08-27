@@ -23,13 +23,13 @@ const SupportCenter = () => {
           <Text style={styles.feedText}>Submit a Request</Text>
           <View style={styles.gaps}>
             <ClientsSelect
-              label="Support Type"
+              darkLabel="Support Type"
               onSelect={(val) => console.log('Selected:', val)}
               options={[
                 'Select type',
                 'Legal Inquiry',
-                'Technical Inquiry',
                 'General Inquiry',
+                'Technical Inquiry',
               ]}
             />
             <ClientsInput label="Subject" placeholder="What's this about?" />
@@ -94,20 +94,22 @@ const styles = StyleSheet.create({
     gap: 10,
     padding: 20,
     borderRadius: 12,
-    backgroundColor: colors.black,
+    backgroundColor: colors.white,
+    boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.10), 0px 1px 3px rgba(0, 0, 0, 0.10)',
   },
   feedText: {
     marginBottom: 4,
     ...fonts.medium(18),
-    color: colors.white,
+    color: colors.black,
   },
   contact: {
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
     flexDirection: 'row',
-    backgroundColor: colors.black,
+    backgroundColor: colors.white,
     justifyContent: 'space-between',
+    boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.10), 0px 1px 3px rgba(0, 0, 0, 0.10)',
   },
   contactIcon: {
     width: 40,
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   contactType: {
-    color: colors.white,
+    color: colors.black,
     ...fonts.regular(16),
   },
   contactText: {
@@ -132,7 +134,8 @@ const styles = StyleSheet.create({
   ticket: {
     padding: 16,
     borderRadius: 8,
-    backgroundColor: colors.black,
+    backgroundColor: colors.white,
+    boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.10), 0px 1px 3px rgba(0, 0, 0, 0.10)',
   },
   ticketHeader: {
     alignItems: 'center',
@@ -148,12 +151,12 @@ const styles = StyleSheet.create({
   },
   ticketRef: {
     ...fonts.regular(),
-    color: colors.white,
+    color: colors.black,
   },
   ticketType: {
     marginTop: 10,
     ...fonts.regular(),
-    color: colors.grey0,
+    color: colors.grey4,
   },
   ticketTime: {
     ...fonts.light(12),
