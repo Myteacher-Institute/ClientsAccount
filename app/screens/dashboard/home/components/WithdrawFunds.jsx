@@ -1,11 +1,45 @@
-import { fonts, colors } from '@/theme';
-import { useUser } from '@/context/UserContext';
+import {fonts, colors} from '@/theme';
+import {useUser} from '@/context/UserContext';
+import {useApi, useForm} from '@/hooks';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { View, Text, StyleSheet } from 'react-native';
-import { ClientsInput, ClientsButton, ClientsLayout } from '@/components';
+import {View, Text, StyleSheet} from 'react-native';
+import {ClientsInput, ClientsButton, ClientsLayout} from '@/components';
 
-const WithdrawFunds = ({ navigation }) => {
-  const { user } = useUser();
+const initialValues = {
+  amount: 0.0,
+  accountNumber: '',
+  bankName: '',
+};
+
+const required = Object.keys(initialValues);
+
+const WithdrawFunds = ({navigation}) => {
+  const {user, setUser} = useUser();
+  const {bind, values, validate} = useForm(initialValues, required);
+  const {loading, call: callApi} = useApi('patch');
+
+  const handleWithdraw = async () => {
+    if (!validate()) {
+      return;
+    }
+
+    try {
+      const response = await callApi({
+        data: values,
+        endpoint: 'withdraw',
+        dynamicId: user.id,
+        requiresAuth: true,
+        onSuccessMessage: 'withdrawal successful',
+      });
+
+      console.log('Withdraw ', response);
+      setUser(response.user);
+
+      navigation.replace('Dashboard');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <ClientsLayout title="Withdraw Funds">
@@ -20,17 +54,31 @@ const WithdrawFunds = ({ navigation }) => {
       </View>
 
       <View style={styles.withdraw}>
-        <ClientsInput type="currency" darkLabel="Amount" />
+        <ClientsInput type="number" darkLabel="Amount" {...bind('amount')} />
         <Text style={styles.minimum}>Minimum: ₦1,000</Text>
-        <ClientsInput type="number" darkLabel="Bank Account" />
-        <ClientsInput darkLabel="Bank Name" />
+        <ClientsInput
+          type="number"
+          darkLabel="Bank Account"
+          {...bind('accountNumber')}
+        />
+        <ClientsInput darkLabel="Bank Name" {...bind('bankName')} />
 
-        <View style={styles.help}>
+        <View siityle={styles.help}>
           <Icon name="help-circle-outline" size={15} color={colors.black} />
-          <Text style={styles.helpText} onPress={() => navigation.navigate('Account', { screen: 'SupportCenter' })}>Need help?</Text>
+          <Text
+            style={styles.helpText}
+            onPress={() =>
+              navigation.navigate('Account', {screen: 'SupportCenter'})
+            }>
+            Need help?
+          </Text>
         </View>
 
-        <ClientsButton text="Withdraw Now" onPress={() => navigation.navigate('WithdrawToBank')} />
+        <ClientsButton
+          text="Withdraw Now"
+          loading={loading}
+          onPress={handleWithdraw}
+        />
       </View>
     </ClientsLayout>
   );
@@ -45,7 +93,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: colors.black,
     justifyContent: 'space-between',
-    boxShadow: '0px 4px 6px 0px rgba(0, 0, 0, 0.10), 0px 10px 15px 0px rgba(0, 0, 0, 0.10)',
+    boxShadow:
+      '0px 4px 6px 0px rgba(0, 0, 0, 0.10), 0px 10px 15px 0px rgba(0, 0, 0, 0.10)',
   },
   available: {
     ...fonts.light(12),
@@ -65,7 +114,8 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 16,
     backgroundColor: colors.white,
-    boxShadow: '0px 1px 2px 0px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10)',
+    boxShadow:
+      '0px 1px 2px 0px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10)',
   },
   minimum: {
     marginTop: -20,
@@ -79,7 +129,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  helpText: { ...fonts.regular() },
+  helpText: {...fonts.regular()},
 });
 
 export default WithdrawFunds;
