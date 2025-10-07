@@ -1,64 +1,71 @@
-import { Get } from '@/api';
-import { jwtDecode } from 'jwt-decode';
-import { getToken, clearToken } from '@/auth/token';
-import { useState, useEffect, useContext, createContext } from 'react';
+import {Get} from '@/api';
+import {jwtDecode} from 'jwt-decode';
+import {getToken, clearToken} from '@/auth/token';
+import {useState, useEffect, useContext, createContext} from 'react';
 
 const UserContext = createContext(null);
 
-export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+export const UserProvider = ({children}) => {
+  const [user, setUser] = useState(null);
+  const [topups, setTopups] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        console.log('[UserContext] App mounted. Checking for token...');
-        fetchUser();
-    }, []);
+  useEffect(() => {
+    console.log('[UserContext] App mounted. Checking for token...');
+    fetchUser();
+  }, []);
 
-    const fetchUser = async (tokenOverride = null) => {
-        console.log('[UserContext] fetchUser() started');
+  const fetchUser = async (tokenOverride = null) => {
+    console.log('[UserContext] fetchUser() started');
 
-        try {
-            setLoading(true);
+    try {
+      setLoading(true);
 
-            const token = tokenOverride || await getToken();
-            if (!token) {
-                console.warn('[UserContext] No token found.');
-                setUser(null);
-                return;
-            }
+      const token = tokenOverride || (await getToken());
+      if (!token) {
+        console.warn('[UserContext] No token found.');
+        setUser(null);
+        return;
+      }
 
-            const decoded = jwtDecode(token);
-            console.log('[UserContext] Decoded token:', decoded);
+      const decoded = jwtDecode(token);
+      console.log('[UserContext] Decoded token:', decoded);
 
-            const isExpired = decoded?.exp * 1000 < Date.now();
-            if (isExpired) {
-                console.warn('[UserContext] Token is expired. Clearing token...');
-                await clearToken();
-                setUser(null);
-                return;
-            }
+      const isExpired = decoded?.exp * 1000 < Date.now();
+      if (isExpired) {
+        console.warn('[UserContext] Token is expired. Clearing token...');
+        await clearToken();
+        setUser(null);
+        return;
+      }
 
-            const userId = decoded?.userId;
-            if (!userId) { throw new Error('userId not found in token'); }
+      const userId = decoded?.userId;
+      if (!userId) {
+        throw new Error('userId not found in token');
+      }
 
-            const data = await Get('userProfile', userId, true); // true = auth required
-            if (!data?.user) { throw new Error('Invalid user response from backend'); }
+      const data = await Get('userProfile', userId, true); // true = auth required
+      if (!data?.user) {
+        throw new Error('Invalid user response from backend');
+      }
 
-            console.log('[UserContext] Fetched user:', data.user);
-            setUser(data.user);
-        } catch (err) {
-            console.error('[UserContext] fetchUser error:', err);
-            setUser(null);
-        } finally {
-            setLoading(false);
-        }
-    };
+      console.log('[UserContext] Fetched user:', data.user);
+      setUser(data.user);
+      setTopups(data.user.wallet.topups || []);
+    } catch (err) {
+      console.error('[UserContext] fetchUser error:', err);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return (
-        <UserContext.Provider value={{ user, setUser, fetchUser, loading }}>
-            {children}
-        </UserContext.Provider>
-    );
+  return (
+    <UserContext.Provider
+      value={{user, setUser, setTopups, topups, fetchUser, loading}}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 
 export const useUser = () => useContext(UserContext);

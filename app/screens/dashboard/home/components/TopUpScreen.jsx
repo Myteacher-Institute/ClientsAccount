@@ -1,39 +1,123 @@
-import { fonts, colors } from '@/theme';
-import { useRef, useState } from 'react';
-import { useUser } from '@/context/UserContext';
+import {fonts, colors} from '@/theme';
+import {useRef, useState} from 'react';
+import {useUser} from '@/context/UserContext';
+import {useApi, useForm} from '@/hooks';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import { ClientsInput, ClientsButton, ClientsLayout } from '@/components';
-import { View, Text, Modal, Pressable, UIManager, StyleSheet, findNodeHandle, TouchableWithoutFeedback } from 'react-native';
+import {ClientsInput, ClientsButton, ClientsLayout} from '@/components';
+import {
+  View,
+  Text,
+  Modal,
+  Pressable,
+  UIManager,
+  StyleSheet,
+  findNodeHandle,
+  TouchableWithoutFeedback,
+} from 'react-native';
 
-const paymentMethods = ['Via Debit Card', 'Via Bank Transfer'];
-const topUps = [
-  { date: 'May 22', amount: '₦50,000', method: 'Via Debit Card' },
-  { date: 'May 18', amount: '₦20,000', method: 'Via Bank Transfer' },
-];
+const paymentMethods = ['Via Debit Card'];
+/*const topUps = [
+  {date: 'May 22', amount: '₦50,000', method: 'Via Debit Card'},
+  {date: 'May 18', amount: '₦20,000', method: 'Via Bank Transfer'},
+];*/
 
-const PickerModal = ({ visible, onClose, options, onSelect, position }) => (
-  <Modal transparent visible={visible} animationType="fade" onRequestClose={onClose}>
+const PickerModal = ({visible, onClose, options, onSelect, position}) => (
+  <Modal
+    transparent
+    visible={visible}
+    animationType="fade"
+    onRequestClose={onClose}>
     <TouchableWithoutFeedback onPress={onClose}>
       <View style={styles.modalOverlay} />
     </TouchableWithoutFeedback>
-    <View style={[styles.modalContent, { top: position.top + 60, left: position.left }]}>
-      {options.map(option => <Text key={option} onPress={() => onSelect(option)} style={styles.optionText}>{option}</Text>)}
+    <View
+      style={[
+        styles.modalContent,
+        {top: position.top + 60, left: position.left},
+      ]}>
+      {options.map(option => (
+        <Text
+          key={option}
+          onPress={() => onSelect(option)}
+          style={styles.optionText}>
+          {option}
+        </Text>
+      ))}
     </View>
   </Modal>
 );
 
-const TopUpScreen = () => {
-  const { user } = useUser();
+const initialValues = {
+  amount: 0.0,
+};
+
+const required = Object.keys(initialValues);
+
+const TopUpScreen = ({navigation}) => {
+  const {user, topups} = useUser();
   const InputRef = useRef(null);
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [isPickerVisible, setPickerVisible] = useState(false);
-  const [pickerPos, setPickerPos] = useState({ top: 100, left: 50 });
+  const [pickerPos, setPickerPos] = useState({top: 100, left: 50});
+  const {values, bind, validate} = useForm(initialValues, required);
+  const {loading, call: callApi} = useApi('fetchpost');
+
+  const dateFormatter = dateString => {
+    const date = new Date(dateString);
+
+    const options = {day: 'numeric', month: 'long', year: 'numeric'};
+    const formatted = date.toLocaleDateString('en-GB', options);
+
+    // Add 'st', 'nd', 'rd', or 'th' suffix manually
+    const day = date.getDate();
+    const suffix =
+      day % 10 === 1 && day !== 11
+        ? 'st'
+        : day % 10 === 2 && day !== 12
+        ? 'nd'
+        : day % 10 === 3 && day !== 13
+        ? 'rd'
+        : 'th';
+
+    const finalDate = `${day}${suffix} ${date.toLocaleString('default', {
+      month: 'long',
+    })}, ${date.getFullYear()}`;
+
+    return finalDate;
+  };
+
+  const recentTopup = topups.sort(
+    (a, b) => new Date(b.date) - new Date(a.date),
+  );
+
+  const handleTransfer = async () => {
+    if (!validate()) {
+      return;
+    }
+
+    const data = JSON.stringify(values);
+
+    try {
+      const response = await callApi({
+        data: data,
+        endpoint: 'topupWithCard',
+        dynamicId: user.id,
+        requiresAuth: true,
+        onSuccessMessage: 'Proceeding to top up',
+      });
+
+      const {result} = response;
+      navigation.navigate('PaymentScreen', {...result.data});
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const openPicker = () => {
     const handle = findNodeHandle(InputRef.current);
     if (handle) {
       UIManager.measure(handle, (_, __, ___, ____, pageX, pageY) => {
-        setPickerPos({ top: pageY, left: pageX });
+        setPickerPos({top: pageY, left: pageX});
         setPickerVisible(true);
       });
     }
@@ -46,11 +130,11 @@ const TopUpScreen = () => {
 
       <View style={styles.funds}>
         <ClientsInput
-          type="currency"
           IconComponent={Icon}
           rightIcon="naira-sign"
           darkLabel="Amount to Add"
           placeholder="Enter amount"
+          {...bind('amount')}
         />
 
         <Pressable ref={InputRef} onPress={openPicker}>
@@ -70,25 +154,36 @@ const TopUpScreen = () => {
           IconComponent={Icon}
           bgColor={colors.yellow2}
           textColor={colors.black}
+          loading={loading}
+          onPress={handleTransfer}
         />
       </View>
 
       <Text style={styles.heading}>Recent Top-ups</Text>
       <View style={styles.topUps}>
-        {topUps.map(({ date, amount, method }, i) => (
-          <View key={i} style={[styles.content, styles.topUpItem]}>
-            <View style={styles.content}>
-              <View style={styles.icon}>
-                <Icon name="arrow-down" size={20} color={colors.yellow2} />
-              </View>
-              <View>
-                <Text style={styles.amount}>{amount}</Text>
-                <Text style={styles.method}>{method}</Text>
-              </View>
-            </View>
-            <Text style={styles.date}>{date}</Text>
-          </View>
-        ))}
+        {recentTopup.length > 0
+          ? recentTopup.map(
+              ({date, amount, method}, i) =>
+                i <= 1 && (
+                  <View key={i} style={[styles.content, styles.topUpItem]}>
+                    <View style={styles.content}>
+                      <View style={styles.icon}>
+                        <Icon
+                          name="arrow-down"
+                          size={20}
+                          color={colors.yellow2}
+                        />
+                      </View>
+                      <View>
+                        <Text style={styles.amount}>{amount}</Text>
+                        <Text style={styles.method}>{method}</Text>
+                      </View>
+                    </View>
+                    <Text style={styles.date}>{dateFormatter(date)}</Text>
+                  </View>
+                ),
+            )
+          : null}
       </View>
 
       <PickerModal
@@ -96,7 +191,10 @@ const TopUpScreen = () => {
         options={paymentMethods}
         visible={isPickerVisible}
         onClose={() => setPickerVisible(false)}
-        onSelect={(method) => { setPaymentMethod(method); setPickerVisible(false); }}
+        onSelect={method => {
+          setPaymentMethod(method);
+          setPickerVisible(false);
+        }}
       />
     </ClientsLayout>
   );
@@ -129,7 +227,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: colors.white,
   },
-  topUpItem: { paddingVertical: 12 },
+  topUpItem: {paddingVertical: 12},
   content: {
     gap: 12,
     alignItems: 'center',
@@ -144,7 +242,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.offWhite5,
   },
-  amount: { ...fonts.semiBold() },
+  amount: {...fonts.semiBold()},
   method: {
     marginTop: -5,
     color: colors.grey4,
