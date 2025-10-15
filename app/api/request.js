@@ -9,51 +9,27 @@ const handleRequest = async (
     data = null,
     dynamicId = null,
     requiresAuth = true,
-    {
-        onErrorMessage = true,
-        onSuccessMessage = false,
-    } = {}
+    { onErrorMessage = true, onSuccessMessage = false } = {}
 ) => {
-    let url;
     try {
-        console.log('[handleRequest] 🔵 START', { method, endpointKey, dynamicId });
-
         const raw = endpoints[endpointKey];
-        console.log('[handleRequest] raw endpoint value:', raw);
-
         if (!raw) { throw new Error(`Invalid endpoint: ${endpointKey}`); }
-        url = typeof raw === 'function' ? raw(dynamicId) : raw;
-
-        console.log('[handleRequest] ✅ Final URL before axios:', url);
+        const url = typeof raw === 'function' ? raw(dynamicId) : raw;
 
         const headers = {};
         if (requiresAuth) {
             const token = await getToken();
-            console.log('[handleRequest] Token:', token?.slice(0, 20) + '...');
             if (!token) { throw new Error('Authentication required'); }
             headers.Authorization = `Bearer ${token}`;
         }
 
-        const isFormData = (typeof FormData !== 'undefined') && (data instanceof FormData);
-        console.log('[handleRequest] Data type check:', {
-            isFormData,
-            dataInstance: data?.constructor?.name,
-        });
+        if (data instanceof FormData) { headers['Content-Type'] = 'multipart/form-data'; }
 
-        if (isFormData) {
-            headers['Content-Type'] = 'multipart/form-data';
-            console.log('[handleRequest] 📦 Detected FormData, setting Content-Type multipart/form-data');
-        }
-
-        console.log('[API Request]', method.toUpperCase(), url, {
-            data,
-            headers,
-            requiresAuth,
-        });
+        console.log(`[API Request] ${method.toUpperCase()} ${url}`, { data, headers });
 
         const config = { headers };
-
         let response;
+
         switch (method) {
             case 'get':
                 response = await axios.get(url, config);
@@ -68,24 +44,22 @@ const handleRequest = async (
                 throw new Error(`Unsupported method: ${method}`);
         }
 
-        console.log('[handleRequest] ✅ Response:', response.status, response.data);
-
         if (onSuccessMessage) { toast.success(onSuccessMessage); }
+
+        console.log('[API Response]', response.status, response.data);
         return response.data;
 
     } catch (error) {
+        const msg = error?.response?.data?.message || error.message || 'Request failed';
+
         console.error('[API Error]', {
-            url,
+            url: endpoints[endpointKey],
             method,
-            message: error.message,
-            baseURL: axios.defaults.baseURL,
-            data: error.config?.data,
             status: error.response?.status,
-            headers: error.config?.headers,
-            response: error.response?.data,
+            message: msg,
+            data: data,
         });
 
-        const msg = error?.response?.data?.message || error.message || 'Request failed';
         if (onErrorMessage) { toast.error(typeof onErrorMessage === 'string' ? onErrorMessage : msg); }
 
         throw error;

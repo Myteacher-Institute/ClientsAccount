@@ -86,6 +86,7 @@ const TopUpScreen = ({ navigation }) => {
         dynamicId: user.id,
         requiresAuth: true,
         endpoint: 'topUpWithCard',
+        onErrorMessage: 'Top up failed',
         onSuccessMessage: 'Proceeding to top up',
       });
 
@@ -133,11 +134,11 @@ const TopUpScreen = ({ navigation }) => {
       </View>
 
       <Text style={styles.heading}>Recent Top-ups</Text>
-      <View style={styles.topUps}>
-        {recentTopUp.length > 0
-          ? recentTopUp.map(
-            ({ date, amount, method }, i) =>
-              i <= 1 && (
+      {recentTopUp.length > 0
+        ? recentTopUp.map(
+          ({ date, amount, method }, i) =>
+            i <= 1 && (
+              <View style={styles.topUps}>
                 <View key={i} style={[styles.content, styles.topUpItem]}>
                   <View style={styles.content}>
                     <View style={styles.icon}>
@@ -154,10 +155,10 @@ const TopUpScreen = ({ navigation }) => {
                   </View>
                   <Text style={styles.date}>{dateFormatter(date)}</Text>
                 </View>
-              ),
-          )
-          : null}
-      </View>
+              </View>
+            ),
+        )
+        : <Text style={styles.date}>No transactions made yet</Text>}
 
       <PickerModal
         position={pickerPos}

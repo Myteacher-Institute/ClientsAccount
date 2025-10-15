@@ -8,7 +8,7 @@ import { Text, View, Image, Keyboard, Platform, ScrollView, StyleSheet, ImageBac
 const SigninScreen = ({ navigation }) => {
   const initialValues = { email: '', password: '' };
 
-  const { fetchUser, user } = useUser();
+  const { fetchUser } = useUser();
   const required = Object.keys(initialValues);
   const { loading, call: callApi } = useApi('post');
   const { bind, values, validate } = useForm(initialValues, required);
@@ -30,11 +30,11 @@ const SigninScreen = ({ navigation }) => {
         await setToken(response.token);
         console.log('[SigninScreen] Token stored.');
 
-        await fetchUser(response.token);
-        const kycStatus = user.kyc;
+        let fetchedUser = await fetchUser();
+        const kycStatus = fetchedUser?.kyc;
 
         !kycStatus
-          ? navigation.navigate('KYCScreen', { data: user })
+          ? navigation.navigate('KYCScreen', { data: fetchedUser })
           : navigation.reset({ index: 0, routes: [{ name: 'Dashboard' }] });
       }
     } catch (error) {

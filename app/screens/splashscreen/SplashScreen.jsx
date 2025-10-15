@@ -2,7 +2,7 @@ import { fonts, colors } from '@/theme';
 import RNBootSplash from 'react-native-bootsplash';
 import { useRef, useState, useEffect } from 'react';
 import ClientsButton from '@/components/ClientsButton';
-import { View, Easing, Animated, StatusBar, StyleSheet, ImageBackground, Text } from 'react-native';
+import { Text, View, Easing, Animated, StatusBar, StyleSheet, ImageBackground } from 'react-native';
 
 const HOLD = 700, DUR_BG = 900, DUR_EL = 1000;
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -11,19 +11,16 @@ const animateParallel = (anime) => new Promise((resolve) => Animated.parallel(an
 const fadeTo = (anim, to, duration = DUR_EL, delay = 0, easing = Easing.inOut(Easing.ease)) =>
     Animated.timing(anim, { toValue: to, duration, delay, easing, useNativeDriver: true });
 
-const SplashScreen = ({ route, navigation }) => {
-    const skipAnimation = route?.params?.skipAnimation ?? false;
+const SplashScreen = ({ navigation }) => {
     const [allowInteraction, setAllowInteraction] = useState(false);
 
     const screen1 = useRef(new Animated.Value(0)).current;
     const screen2 = useRef(new Animated.Value(0)).current;
     const screen3 = useRef(new Animated.Value(0)).current;
-
     const logoScale = useRef(new Animated.Value(1)).current;
     const logoOpacity = useRef(new Animated.Value(0)).current;
     const logoTranslateX = useRef(new Animated.Value(0)).current;
     const logoTranslateY = useRef(new Animated.Value(0)).current;
-
     const screen3BrandScale = useRef(new Animated.Value(0)).current;
     const screen2BrandOpacity = useRef(new Animated.Value(0)).current;
     const screen3BrandOpacity = useRef(new Animated.Value(0)).current;
@@ -31,29 +28,15 @@ const SplashScreen = ({ route, navigation }) => {
     const screen3BrandTranslateY = useRef(new Animated.Value(50)).current;
 
     useEffect(() => {
-        StatusBar.setHidden(true, 'fade');
+        StatusBar.setHidden(false);
+        StatusBar.setBarStyle('light-content');
+        StatusBar.setBackgroundColor(colors.black);
 
         const run = async () => {
             await RNBootSplash.hide({ fade: true });
 
-            if (skipAnimation) {
-                logoOpacity.setValue(0);
-                screen1.setValue(0);
-                screen2.setValue(0);
-                screen3.setValue(1);
-                logoScale.setValue(1.2);
-                logoTranslateX.setValue(0);
-                logoTranslateY.setValue(-10);
-                screen2BrandOpacity.setValue(0);
-                screen3BrandTranslateY.setValue(-50);
-                screen3BrandOpacity.setValue(1);
-                screen3BrandScale.setValue(0.8);
-                screen3ButtonsOpacity.setValue(1);
-
-                StatusBar.setHidden(false, 'fade');
-                setAllowInteraction(true);
-                return;
-            }
+            // Always play full animation for non-logged-in users
+            console.log('[SplashScreen] Playing full animation');
 
             await animateParallel([
                 fadeTo(logoOpacity, 1),
@@ -84,19 +67,16 @@ const SplashScreen = ({ route, navigation }) => {
                 fadeTo(logoTranslateX, 0, DUR_BG * 0.8),
             ]);
 
-            StatusBar.setHidden(false, 'fade');
             setAllowInteraction(true);
         };
 
         run();
-        return () => StatusBar.setHidden(false, 'fade');
     }, [
         screen1,
         screen2,
         screen3,
         logoScale,
         logoOpacity,
-        skipAnimation,
         logoTranslateX,
         logoTranslateY,
         screen3BrandScale,
@@ -141,7 +121,6 @@ const SplashScreen = ({ route, navigation }) => {
             shadowOpacity: 1,
             shadowOffset: { width: 5, height: 5 },
             shadowColor: 'rgba(255, 255, 255, 0.25)',
-            boxShadow: '5px 5px 4px 0px rgba(255, 255, 255, 0.25)',
         },
     });
 
@@ -158,10 +137,19 @@ const SplashScreen = ({ route, navigation }) => {
         <View style={styles.container} pointerEvents={allowInteraction ? 'auto' : 'none'}>
             <Animated.Image source={require('@/assets/images/logo.png')} style={[styles.logo, logoStyle]} />
 
-            <AnimatedImageBackground source={require('@/assets/images/gavel.png')} style={[styles.bg, { opacity: screen1 }]} />
+            <AnimatedImageBackground
+                source={require('@/assets/images/gavel.png')}
+                style={[styles.bg, { opacity: screen1 }]}
+            />
 
-            <AnimatedImageBackground source={require('@/assets/images/advocate.png')} style={[styles.bg, { opacity: screen2 }]}>
-                <Animated.Image source={require('@/assets/images/brand.png')} style={{ opacity: screen2BrandOpacity, transform: [{ scale: 1 }] }} />
+            <AnimatedImageBackground
+                source={require('@/assets/images/advocate.png')}
+                style={[styles.bg, { opacity: screen2 }]}
+            >
+                <Animated.Image
+                    source={require('@/assets/images/brand.png')}
+                    style={{ opacity: screen2BrandOpacity }}
+                />
                 <Text style={styles.text}>Account For Lawyers</Text>
             </AnimatedImageBackground>
 

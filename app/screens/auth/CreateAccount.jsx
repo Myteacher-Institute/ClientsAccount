@@ -34,6 +34,7 @@ const CreateAccount = ({ navigation }) => {
       const response = await callApi({
         requiresAuth: false,
         endpoint: 'register',
+        onErrorMessage: 'Network error!',
         onSuccessMessage: 'User registered successfully!',
         data: { ...values, chamberName: addChambers(values.chamberName) },
       });

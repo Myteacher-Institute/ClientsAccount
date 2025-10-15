@@ -1,7 +1,7 @@
 import { Get } from '@/api';
 import { jwtDecode } from 'jwt-decode';
 import { getToken, clearToken } from '@/auth/token';
-import { useState, useEffect, useContext, createContext } from 'react';
+import { useState, useEffect, useContext, createContext, useCallback, useMemo } from 'react';
 
 const UserContext = createContext(null);
 
@@ -10,65 +10,55 @@ export const UserProvider = ({ children }) => {
   const [topUps, setTopUps] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    console.log('[UserContext] App mounted. Checking for token...');
-    fetchUser();
-  }, []);
-
-  const fetchUser = async (tokenOverride = null) => {
-    console.log('[UserContext] fetchUser() started');
-
+  // Fetch user from token and backend
+  const fetchUser = useCallback(async () => {
+    setLoading(true);
     try {
-      setLoading(true);
+      const token = await getToken();
+      if (!token) { return setUser(null); }
 
-      const token = tokenOverride || (await getToken());
-      if (!token) {
-        console.warn('[UserContext] No token found.');
-        setUser(null);
-        return;
-      }
-
-      const decoded = jwtDecode(token);
-      console.log('[UserContext] Decoded token:', decoded);
-
-      const exp = Number(decoded?.exp) * 1000;
-      const isExpired = exp && exp < Date.now();
-      console.log('[UserContext] Expiry check:', exp, 'vs', Date.now(), 'Expired?', isExpired);
-
-      if (isExpired) {
-        console.warn('[UserContext] Token is expired. Clearing token...');
+      let decoded;
+      try {
+        decoded = jwtDecode(token);
+      } catch {
         await clearToken();
-        setUser(null);
-        return;
+        return setUser(null);
       }
 
       const userId = decoded?.userId;
       if (!userId) {
-        throw new Error('userId not found in token');
+        await clearToken();
+        return setUser(null);
       }
 
-      const data = await Get('userProfile', userId, true); // true = auth required
-      if (!data?.user) {
-        throw new Error('Invalid user response from backend');
+      const data = await Get('userProfile', userId, true);
+      if (data?.user) {
+        setUser(data.user);
+        setTopUps(data.user.wallet?.topups || []);
+      } else {
+        await clearToken();
+        setUser(null);
       }
-
-      console.log('[UserContext] Fetched user:', data.user);
-      setUser(data.user);
-      setTopUps(data.user.wallet.topUps || []);
+      return data.user;
     } catch (err) {
-      console.error('[UserContext] fetchUser error:', err);
+      if (err.response?.status === 403) { await clearToken(); }
       setUser(null);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  return (
-    <UserContext.Provider
-      value={{ user, topUps, setUser, setTopUps, fetchUser, loading }}>
-      {children}
-    </UserContext.Provider>
+  // Run once on mount
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
+  const contextValue = useMemo(() =>
+    ({ user, topUps, loading, setUser, setTopUps, fetchUser }),
+    [user, topUps, loading, fetchUser]
   );
+
+  return <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>;
 };
 
 export const useUser = () => useContext(UserContext);
