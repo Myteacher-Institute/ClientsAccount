@@ -11,10 +11,11 @@ const handleRequest = async (
     requiresAuth = true,
     { onErrorMessage = true, onSuccessMessage = false } = {}
 ) => {
+    let url;
     try {
         const raw = endpoints[endpointKey];
         if (!raw) { throw new Error(`Invalid endpoint: ${endpointKey}`); }
-        const url = typeof raw === 'function' ? raw(dynamicId) : raw;
+        url = typeof raw === 'function' ? raw(dynamicId) : raw;
 
         const headers = {};
         if (requiresAuth) {
@@ -27,40 +28,47 @@ const handleRequest = async (
 
         console.log(`[API Request] ${method.toUpperCase()} ${url}`, { data, headers });
 
-        const config = { headers };
         let response;
-
         switch (method) {
             case 'get':
-                response = await axios.get(url, config);
+                response = await axios.get(url, { headers });
                 break;
             case 'post':
-                response = await axios.post(url, data, config);
+                response = await axios.post(url, data, { headers });
                 break;
             case 'patch':
-                response = await axios.patch(url, data, config);
+                response = await axios.patch(url, data, { headers });
                 break;
             default:
                 throw new Error(`Unsupported method: ${method}`);
         }
 
-        if (onSuccessMessage) { toast.success(onSuccessMessage); }
+        if (onSuccessMessage) {
+            const msg = typeof onSuccessMessage === 'string'
+                ? onSuccessMessage
+                : response.data?.message || 'Request successful';
+            toast.success(msg);
+        }
 
         console.log('[API Response]', response.status, response.data);
         return response.data;
 
     } catch (error) {
-        const msg = error?.response?.data?.message || error.message || 'Request failed';
+        const status = error.response?.status;
+        const backendMessage = error.response?.data?.message;
+        const msg = typeof onErrorMessage === 'string'
+            ? onErrorMessage
+            : backendMessage || error.message || 'Request failed';
 
         console.error('[API Error]', {
-            url: endpoints[endpointKey],
+            url,
+            data,
             method,
-            status: error.response?.status,
-            message: msg,
-            data: data,
+            status,
+            message: backendMessage || error.message,
         });
 
-        if (onErrorMessage) { toast.error(typeof onErrorMessage === 'string' ? onErrorMessage : msg); }
+        if (onErrorMessage) { toast.error(msg); }
 
         throw error;
     }
