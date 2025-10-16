@@ -20,15 +20,15 @@ const KYCScreen = ({ navigation, route }) => {
   };
 
   const required = Object.keys(initialValues);
-
-  const [modalVisible, setModalVisible] = useState(false);
-  const [termsAccepted, setTermsAccepted] = useState(false);
+  
+  const { post, loading } = useApi();
   const [termsError, setTermsError] = useState('');
   const [selectedCTB, setSelectedCTB] = useState();
   const [selectedCAC, setSelectedCAC] = useState();
   const [selectedPhoto, setSelectedPhoto] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const { values, bind, validate, setField } = useForm(initialValues, required);
-  const { loading, call: callApi } = useApi('fetchpost');
 
   const onSubmit = async () => {
     // Handle KYC submission logic here
@@ -59,11 +59,11 @@ const KYCScreen = ({ navigation, route }) => {
     }
 
     try {
-      const response = await callApi({
+      const response = await post({
         data: formData,
-        endpoint: 'uploadKYC', // update to your endpoint
         dynamicId: user.id,
         requiresAuth: true,
+        endpoint: 'uploadKYC',
         onSuccessMessage: 'KYC submitted successfully',
       });
 

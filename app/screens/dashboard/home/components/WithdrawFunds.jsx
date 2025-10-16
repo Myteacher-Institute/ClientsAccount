@@ -16,7 +16,7 @@ const required = Object.keys(initialValues);
 const WithdrawFunds = ({navigation}) => {
   const {user, setUser} = useUser();
   const {bind, values, validate} = useForm(initialValues, required);
-  const {loading, call: callApi} = useApi('patch');
+  const { patch, loading } = useApi();
 
   const handleWithdraw = async () => {
     if (!validate()) {
@@ -24,12 +24,12 @@ const WithdrawFunds = ({navigation}) => {
     }
 
     try {
-      const response = await callApi({
+      const response = await patch({
         data: values,
-        endpoint: 'withdraw',
         dynamicId: user.id,
         requiresAuth: true,
-        onSuccessMessage: 'withdrawal successful',
+        endpoint: 'withdraw',
+        onSuccessMessage: 'Withdrawal successful',
       });
 
       console.log('Withdraw ', response);

@@ -7,7 +7,7 @@ const endpoints = {
   updateProfile: id => `users/${id}/update`,
   withdraw: id => `users/${id}/withdrawToBank`,
   updateAvatar: id => `users/${id}/avatar/upload`,
-  topUpWithCard: id => `users/${id}/topupWithCard`,
+  topUpWithCard: id => `users/${id}/topUpWithCard`,
 };
 
 export default endpoints;

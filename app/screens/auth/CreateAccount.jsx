@@ -17,7 +17,7 @@ const CreateAccount = ({ navigation }) => {
     enrolleeNumber: '',
   };
 
-  const { loading, call: callApi } = useApi('post');
+  const { post, loading } = useApi();
   const { bind, values, validate, setField } = useForm(
     initialValues,
     Object.keys(initialValues),
@@ -31,7 +31,7 @@ const CreateAccount = ({ navigation }) => {
     }
 
     try {
-      const response = await callApi({
+      const response = await post({
         requiresAuth: false,
         endpoint: 'register',
         onErrorMessage: 'Network error!',

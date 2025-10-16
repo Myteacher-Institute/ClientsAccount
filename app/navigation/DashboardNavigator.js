@@ -60,8 +60,6 @@ const screenOptions = ({ route }) => {
 };
 
 const DashboardNavigator = () => {
-    console.log('[DashboardNavigator] Mounted');
-
     return (
         <Tab.Navigator screenOptions={screenOptions}>
             <Tab.Screen name="Home" component={HomeNavigator} />

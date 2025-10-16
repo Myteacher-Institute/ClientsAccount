@@ -42,7 +42,7 @@ function PaymentScreen({ route, navigation }) {
 
       const data = await response.json();
       setUser(data.user);
-      setTopups(data.topups);
+      setTopups(data.topUps);
     } catch (error) {
       throw new Error('Failed to update user and top-ups:', error);
     }
@@ -61,11 +61,11 @@ function PaymentScreen({ route, navigation }) {
 
     const data = await response.json();
 
-    const topupInfo = data.data.paymentData;
+    const topUpInfo = data.data.paymentData;
 
     user.wallet.accountBalance = data.data.user.bankDetails.accountBal;
 
-    const userAndTopups = { user, topupInfo };
+    const userAndTopups = { user, topUpInfo };
     await updateUserAndTopups(userAndTopups);
     navigation.replace('Dashboard');
   };

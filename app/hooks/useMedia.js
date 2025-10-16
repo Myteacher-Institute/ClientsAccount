@@ -6,10 +6,10 @@ import { useUser } from '@/context/UserContext';
 export const useMedia = () => {
     const cropRef = useRef(null);
     const { user, setUser } = useUser();
+    const { patch, loading } = useApi();
     const [modal, setModal] = useState(null);
     const { showError, showSuccess } = useToast();
     const [tempImage, setTempImage] = useState(null);
-    const { loading, call: callApi } = useApi('patch');
     const [photoUri, setPhotoUri] = useState(user?.avatar || null);
 
     const closeModal = () => {
@@ -62,7 +62,7 @@ export const useMedia = () => {
 
             console.log('[Media] FormData built with normalized URI:', normalizedUri);
 
-            const res = await callApi({
+            const res = await patch({
                 data: formData,
                 requiresAuth: true,
                 dynamicId: user?._id,

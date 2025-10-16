@@ -1,7 +1,7 @@
 import { Get } from '@/api';
 import { jwtDecode } from 'jwt-decode';
 import { getToken, clearToken } from '@/auth/token';
-import { useState, useEffect, useContext, createContext, useCallback, useMemo } from 'react';
+import { useMemo, useState, useEffect, useContext, useCallback, createContext } from 'react';
 
 const UserContext = createContext(null);
 
@@ -31,14 +31,20 @@ export const UserProvider = ({ children }) => {
         return setUser(null);
       }
 
-      const data = await Get('userProfile', userId, true);
+      const data = await Get({
+        dynamicId: userId,
+        requiresAuth: true,
+        endpointKey: 'userProfile',
+      });
+
       if (data?.user) {
         setUser(data.user);
-        setTopUps(data.user.wallet?.topups || []);
+        setTopUps(data.user.wallet?.topUps || []);
       } else {
         await clearToken();
         setUser(null);
       }
+
       return data.user;
     } catch (err) {
       if (err.response?.status === 403) { await clearToken(); }
@@ -53,8 +59,8 @@ export const UserProvider = ({ children }) => {
     fetchUser();
   }, [fetchUser]);
 
-  const contextValue = useMemo(() =>
-    ({ user, topUps, loading, setUser, setTopUps, fetchUser }),
+  const contextValue = useMemo(
+    () => ({ user, topUps, loading, setUser, setTopUps, fetchUser }),
     [user, topUps, loading, fetchUser]
   );
 

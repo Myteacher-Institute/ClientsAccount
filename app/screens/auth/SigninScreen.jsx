@@ -9,8 +9,8 @@ const SigninScreen = ({ navigation }) => {
   const initialValues = { email: '', password: '' };
 
   const { fetchUser } = useUser();
+  const { post, loading } = useApi();
   const required = Object.keys(initialValues);
-  const { loading, call: callApi } = useApi('post');
   const { bind, values, validate } = useForm(initialValues, required);
 
   const onSubmit = async () => {
@@ -19,7 +19,7 @@ const SigninScreen = ({ navigation }) => {
     }
 
     try {
-      const response = await callApi({
+      const response = await post({
         data: values,
         endpoint: 'login',
         requiresAuth: false,

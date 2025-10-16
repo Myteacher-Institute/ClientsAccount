@@ -1,20 +1,31 @@
 import axios from 'axios';
-import { clearToken } from '@/auth/token';
 import { toast } from '@/utils/toast';
+import { Platform } from 'react-native';
+import { clearToken } from '@/auth/token';
 
-// ✅ Base URL
-const instance = axios.create({
-    baseURL: 'http://192.168.18.13:3000/api/v1',
-    timeout: 10000,
-});
+// 🧭 Dynamically pick correct base URL per platform
+const baseURL =
+    Platform.OS === 'android'
+        ? 'http://192.168.18.15:3000/api/v1'
+        : 'http://localhost:3000/api/v1';
 
-// 🟢 Log all requests for debugging
+// 🧱 Create axios instance
+const instance = axios.create({ baseURL, timeout: 10000 });
+
+// 🟢 Request interceptor: logs + JSON header management
 instance.interceptors.request.use(req => {
     console.log('[AXIOS REQUEST]', req.method?.toUpperCase(), req.url, req.data || '');
+
+    // Automatically handle JSON headers unless it's FormData
+    if (req.data && !(req.data instanceof FormData)) {
+        req.headers['Content-Type'] = 'application/json';
+        req.headers.Accept = 'application/json';
+    }
+
     return req;
 });
 
-// 🟢 Handle responses + reactive logout
+// 🟢 Response interceptor: logs + token invalidation handling
 instance.interceptors.response.use(
     res => {
         console.log('[AXIOS RESPONSE]', res.status, res.config.url, res.data);
@@ -27,12 +38,11 @@ instance.interceptors.response.use(
 
         console.warn('[AXIOS ERROR]', { url, status, message });
 
-        // 🔴 If backend explicitly says token invalid or expired → logout gracefully
+        // 🔴 Handle invalid token (auto logout)
         if (status === 403 && message?.toLowerCase().includes('invalid token')) {
             console.log('[Auth] ❌ Token rejected by backend → clearing');
             await clearToken();
             toast.error('Session expired. Please sign in again.');
-            // AppNavigator will react to cleared token automatically
         }
 
         return Promise.reject(err);
