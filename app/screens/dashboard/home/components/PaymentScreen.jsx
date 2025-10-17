@@ -21,9 +21,9 @@ function getQueryParams(url) {
 
 function PaymentScreen({ route, navigation }) {
   const { checkoutURL } = route.params;
-  const { user, setUser, setTopups } = useUser();
+  const { user, setUser, setTopUps } = useUser();
 
-  const updateUserAndTopups = async userAndTopups => {
+  const updateUserAndTopUps = async userAndTopUps => {
     const token = await getToken();
     console.log('token', token);
 
@@ -36,13 +36,13 @@ function PaymentScreen({ route, navigation }) {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(userAndTopups),
+          body: JSON.stringify(userAndTopUps),
         },
       );
 
       const data = await response.json();
       setUser(data.user);
-      setTopups(data.topUps);
+      setTopUps(data.topUps);
     } catch (error) {
       throw new Error('Failed to update user and top-ups:', error);
     }
@@ -65,8 +65,8 @@ function PaymentScreen({ route, navigation }) {
 
     user.wallet.accountBalance = data.data.user.bankDetails.accountBal;
 
-    const userAndTopups = { user, topUpInfo };
-    await updateUserAndTopups(userAndTopups);
+    const userAndTopUps = { user, topUpInfo };
+    await updateUserAndTopUps(userAndTopUps);
     navigation.replace('Dashboard');
   };
 

@@ -63,7 +63,7 @@ const WithdrawFunds = ({navigation}) => {
         />
         <ClientsInput darkLabel="Bank Name" {...bind('bankName')} />
 
-        <View siityle={styles.help}>
+        <View style={styles.help}>
           <Icon name="help-circle-outline" size={15} color={colors.black} />
           <Text
             style={styles.helpText}

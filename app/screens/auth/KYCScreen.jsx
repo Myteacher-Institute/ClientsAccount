@@ -64,6 +64,7 @@ const KYCScreen = ({ navigation, route }) => {
         dynamicId: user.id,
         requiresAuth: true,
         endpoint: 'uploadKYC',
+        onErrorMessage: 'KYC submission failed',
         onSuccessMessage: 'KYC submitted successfully',
       });
 
