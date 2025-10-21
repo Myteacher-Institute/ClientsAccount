@@ -3,17 +3,14 @@ import { fonts, colors } from '@/theme';
 import terms from '@/assets/texts/terms';
 import { useApi, useForm, useToast } from '@/hooks';
 import { FilePicker } from '@/components/FilePicker';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome6';
 import { Text, View, Pressable, StyleSheet } from 'react-native';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ClientsInput, ClientsModal, ClientsButton, ClientsLayout } from '@/components';
 
 const KYCScreen = ({ navigation, route }) => {
   const user = route.params.data;
-  const { post, loading } = useApi();
   const { showWarning } = useToast();
+  const { post, loading } = useApi();
 
   const initialValues = {
     cac: null,
@@ -29,7 +26,7 @@ const KYCScreen = ({ navigation, route }) => {
   const uploadOptions = [
     { key: 'cac', label: 'Upload CAC Certificate (PDF, JPG)', icon: 'upload' },
     { key: 'callToBar', label: 'Upload Call to Bar Certificate (PDF)', icon: 'upload' },
-    { key: 'photo', label: 'Upload Recent Photo (JPG, PNG)', icon: 'photo', isPhoto: true },
+    { key: 'photo', label: 'Upload Recent Photo (JPG, PNG)', icon: 'image', isPhoto: true },
   ];
 
   const handleFilePick = async (key) => {
@@ -89,7 +86,7 @@ const KYCScreen = ({ navigation, route }) => {
     <ClientsLayout title="KYC Verification">
       <View style={styles.section}>
         <View style={styles.header}>
-          <Ionicons name="briefcase" size={22} color={colors.yellow1} />
+          <Icon name="briefcase" size={22} color={colors.yellow1} />
           <Text style={styles.headerText}>Verify CAC Documents</Text>
         </View>
 
@@ -104,11 +101,7 @@ const KYCScreen = ({ navigation, route }) => {
             <Text style={styles.uploadText}>{label}</Text>
 
             <Pressable style={styles.button} onPress={() => handleFilePick(key)}>
-              {isPhoto ? (
-                <FontAwesome name={icon} size={15} color={colors.white} />
-              ) : (
-                <FontAwesome6 name={icon} size={15} color={colors.white} />
-              )}
+              <Icon name={icon} size={15} color={colors.white} />
               <Text style={styles.buttonText}>Choose File</Text>
             </Pressable>
 
@@ -122,7 +115,7 @@ const KYCScreen = ({ navigation, route }) => {
 
         <Pressable onPress={handleCheckboxPress} style={styles.terms}>
           <View style={[styles.termsCircle, termsAccepted && styles.termsChecked]}>
-            {termsAccepted && <Ionicons name="checkmark" size={12} color={colors.white} />}
+            {termsAccepted && <Icon name="check" size={12} color={colors.white} />}
           </View>
           <Text style={styles.termsText}>I accept the terms and privacy policy</Text>
         </Pressable>
@@ -138,7 +131,7 @@ const KYCScreen = ({ navigation, route }) => {
       <View style={styles.footer}>
         <Text style={styles.help}>Need help?</Text>
         <View style={styles.contact}>
-          <Icon name="comment-outline" size={15} color={colors.black} />
+          <Icon name="message" size={15} color={colors.black} />
           <Text style={styles.support}>Contact Support</Text>
         </View>
       </View>
@@ -214,6 +207,7 @@ const styles = StyleSheet.create({
     height: 15,
     borderWidth: 1,
     borderRadius: 10,
+    alignItems: 'center',
     borderColor: colors.grey2,
   },
   termsChecked: { borderColor: colors.yellow2, backgroundColor: colors.yellow2 },
