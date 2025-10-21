@@ -5,7 +5,8 @@ import { Text, View, Pressable, StyleSheet } from 'react-native';
 import { ClientsInput, ClientsButton, ClientsLayout } from '@/components';
 
 const CreateAccount = ({ navigation }) => {
-  const initialValues = {
+  const { post, loading } = useApi();
+  const { bind, values, validate, setField } = useForm({
     nin: '',
     email: '',
     phone: '',
@@ -15,13 +16,7 @@ const CreateAccount = ({ navigation }) => {
     hasChamber: '',
     chamberName: '',
     enrolleeNumber: '',
-  };
-
-  const { post, loading } = useApi();
-  const { bind, values, validate, setField } = useForm(
-    initialValues,
-    Object.keys(initialValues),
-  );
+  });
 
   const addChambers = name => name.trim() ? name.replace(/\s+and\s+/gi, ' & ').replace(/\s+Chambers?$/i, '').trim() + ' Chambers' : '';
 

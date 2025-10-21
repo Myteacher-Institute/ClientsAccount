@@ -6,7 +6,7 @@ import { clearToken } from '@/auth/token';
 // 🧭 Dynamically pick correct base URL per platform
 const baseURL =
     Platform.OS === 'android'
-        ? 'http://192.168.18.11:3000/api/v1'
+        ? 'http://192.168.18.8:3000/api/v1'
         : 'http://localhost:3000/api/v1';
 
 // 🧱 Create axios instance

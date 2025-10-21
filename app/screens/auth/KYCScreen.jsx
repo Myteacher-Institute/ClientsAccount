@@ -4,29 +4,31 @@ import terms from '@/assets/texts/terms';
 import { useApi, useForm, useToast } from '@/hooks';
 import { FilePicker } from '@/components/FilePicker';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import { Text, View, Pressable, StyleSheet } from 'react-native';
+import { Text, View, Linking, Pressable, StyleSheet } from 'react-native';
 import { ClientsInput, ClientsModal, ClientsButton, ClientsLayout } from '@/components';
 
-const KYCScreen = ({ navigation, route }) => {
+const KYCScreen = ({ route, navigation }) => {
   const user = route.params.data;
-  const { showWarning } = useToast();
   const { post, loading } = useApi();
+  const { showWarning } = useToast();
 
-  const initialValues = {
+  const { values, bind, validate, setField } = useForm({
     cac: null,
     photo: null,
     cacNumber: '',
     callToBar: null,
-  };
+  });
 
-  const [modalVisible, setModalVisible] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const { values, bind, validate, setField } = useForm(initialValues, Object.keys(initialValues));
+  const [modal, setModal] = useState({ visible: false, type: null });
+
+  const openModal = (type) => setModal({ visible: true, type });
+  const closeModal = () => setModal({ visible: false, type: null });
 
   const uploadOptions = [
     { key: 'cac', label: 'Upload CAC Certificate (PDF, JPG)', icon: 'upload' },
     { key: 'callToBar', label: 'Upload Call to Bar Certificate (PDF)', icon: 'upload' },
-    { key: 'photo', label: 'Upload Recent Photo (JPG, PNG)', icon: 'image', isPhoto: true },
+    { key: 'photo', label: 'Upload Recent Photo (JPG, PNG)', icon: 'image' },
   ];
 
   const handleFilePick = async (key) => {
@@ -40,21 +42,16 @@ const KYCScreen = ({ navigation, route }) => {
 
   const handleSubmit = async () => {
     if (!validate()) { return; }
-
-    if (!termsAccepted) {
-      showWarning('Accept terms to proceed');
-      return;
-    }
+    if (!termsAccepted) { return showWarning('Accept terms to proceed'); }
 
     const formData = new FormData();
     Object.entries(values).forEach(([key, val]) => {
-      if (val?.uri) {
-        formData.append(key, {
-          uri: val.uri,
-          name: val.name || `${key}.pdf`,
-          type: val.type || 'application/octet-stream',
-        });
-      } else { formData.append(key, val); }
+      formData.append(
+        key,
+        val?.uri
+          ? { uri: val.uri, name: val.name || `${key}.pdf`, type: val.type || 'application/octet-stream' }
+          : val
+      );
     });
 
     try {
@@ -66,20 +63,30 @@ const KYCScreen = ({ navigation, route }) => {
         onErrorMessage: 'KYC submission failed',
         onSuccessMessage: 'KYC submitted successfully',
       });
-
       navigation.navigate('Verification');
     } catch (error) {
       console.log('KYC submission failed:', error);
     }
   };
 
-  const handleCheckboxPress = () => {
-    termsAccepted ? setTermsAccepted(false) : setModalVisible(true);
-  };
+  const handleCheckboxPress = () =>
+    termsAccepted ? setTermsAccepted(false) : openModal('terms');
 
   const handleAcceptTerms = () => {
-    setModalVisible(false);
     setTermsAccepted(true);
+    closeModal();
+  };
+
+  const handleContactSupport = () => openModal('contact');
+
+  const handleWhatsAppSupport = () => {
+    const phone = '2348012345678';
+    const message = encodeURIComponent(
+      "Hello, I need help with my CAC registration. I don't have the required documents yet."
+    );
+    Linking.openURL(`https://wa.me/${phone}?text=${message}`).catch(() =>
+      showWarning('Unable to open WhatsApp')
+    );
   };
 
   return (
@@ -90,13 +97,9 @@ const KYCScreen = ({ navigation, route }) => {
           <Text style={styles.headerText}>Verify CAC Documents</Text>
         </View>
 
-        <ClientsInput
-          {...bind('cacNumber')}
-          placeholder="e.g. RC1234567"
-          darkLabel="CAC Registration Number"
-        />
+        <ClientsInput {...bind('cacNumber')} placeholder="e.g. RC1234567" darkLabel="CAC Registration Number" />
 
-        {uploadOptions.map(({ key, label, icon, isPhoto }) => (
+        {uploadOptions.map(({ key, label, icon }) => (
           <View key={key} style={styles.upload}>
             <Text style={styles.uploadText}>{label}</Text>
 
@@ -130,32 +133,54 @@ const KYCScreen = ({ navigation, route }) => {
 
       <View style={styles.footer}>
         <Text style={styles.help}>Need help?</Text>
-        <View style={styles.contact}>
+        <Pressable style={styles.contact} onPress={handleContactSupport}>
           <Icon name="message" size={15} color={colors.black} />
           <Text style={styles.support}>Contact Support</Text>
-        </View>
+        </Pressable>
       </View>
 
       <ClientsModal
         isLight
         scrollable
         mode="fullscreen"
-        visible={modalVisible}
-        title="Terms and Conditions"
-        onClose={() => setModalVisible(false)}
-        footer={<ClientsButton text="I Agree" onPress={handleAcceptTerms} />}
+        visible={modal.visible}
+        onClose={closeModal}
+        title={modal.type === 'terms' ? 'Terms and Conditions' : 'Contact Support'}
+        footer={modal.type === 'terms' && <ClientsButton text="I Agree" onPress={handleAcceptTerms} />}
       >
-        {terms.map((item, index) =>
-          item.type === 'section' ? (
+        {modal.type === 'terms' ? (
+          terms.map((item, index) => (
             <View key={index}>
-              <Text style={styles.modalSection}>{item.number}. {item.title}</Text>
-              {item.content.map((line, idx) => (
-                <Text key={idx} style={styles.modalText}>{line}</Text>
-              ))}
+              {item.type === 'section' ? (
+                <>
+                  <Text style={styles.modalSection}>{item.number}. {item.title}</Text>
+                  {item.content.map((line, idx) => (
+                    <Text key={idx} style={styles.modalText}>{line}</Text>
+                  ))}
+                </>
+              ) : (
+                <Text style={styles.modalText}>{item.text}</Text>
+              )}
             </View>
-          ) : (
-            <Text key={index} style={styles.modalText}>{item.text}</Text>
-          )
+          ))
+        ) : (
+          <View style={{ padding: 16, gap: 16 }}>
+            <Text style={{ ...fonts.medium(16), color: colors.grey3 }}>
+              Need help with your documents? You can chat with support or continue to your dashboard.
+            </Text>
+
+            <ClientsButton text="Chat on WhatsApp" leftIcon="logo-whatsapp" onPress={handleWhatsAppSupport} />
+
+            <ClientsButton
+              text="Continue to Dashboard"
+              leftIcon="home-outline"
+              onPress={() => {
+                closeModal();
+                navigation.navigate('Dashboard');
+              }}
+              style={{ backgroundColor: colors.grey6 }}
+            />
+          </View>
         )}
       </ClientsModal>
     </ClientsLayout>
@@ -180,11 +205,7 @@ const styles = StyleSheet.create({
   headerText: { ...fonts.medium(18), color: colors.grey3 },
   upload: { gap: 2, marginTop: 10 },
   uploadText: { ...fonts.medium(), color: colors.grey1 },
-  fileName: {
-    marginBottom: -10,
-    color: colors.grey2,
-    ...fonts.regular(12),
-  },
+  fileName: { marginBottom: -10, color: colors.grey2, ...fonts.regular(12) },
   button: {
     gap: 8,
     height: 45,
@@ -195,12 +216,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.grey6,
   },
   buttonText: { ...fonts.medium(), color: colors.white },
-  terms: {
-    gap: 6,
-    marginTop: 10,
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
+  terms: { gap: 6, marginTop: 10, alignItems: 'center', flexDirection: 'row' },
   termsText: { ...fonts.italic(), color: colors.grey3 },
   termsCircle: {
     width: 15,

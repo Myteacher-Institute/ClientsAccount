@@ -5,9 +5,6 @@ import { Text, View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import { ClientsInput, ClientsButton, ClientsLayout, ClientsSelect } from '@/components';
 
-const initialValues = { amount: 0.0 };
-const required = Object.keys(initialValues);
-
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   const day = date.getDate();
@@ -25,7 +22,7 @@ const formatDate = (dateString) => {
 const TopUpScreen = ({ navigation }) => {
   const { user, topUps } = useUser();
   const { post, loading } = useApi();
-  const { values, bind, validate } = useForm(initialValues, required);
+  const { values, bind, validate } = useForm({ amount: 0.0 });
 
   const handleTransfer = async () => {
     if (!validate()) { return; }

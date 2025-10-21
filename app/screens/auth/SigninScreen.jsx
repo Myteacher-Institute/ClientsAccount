@@ -6,12 +6,9 @@ import { ClientsInput, ClientsButton } from '@/components';
 import { Text, View, Image, Keyboard, Platform, ScrollView, StyleSheet, ImageBackground, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 
 const SigninScreen = ({ navigation }) => {
-  const initialValues = { email: '', password: '' };
-
   const { fetchUser } = useUser();
   const { post, loading } = useApi();
-  const required = Object.keys(initialValues);
-  const { bind, values, validate } = useForm(initialValues, required);
+  const { bind, values, validate } = useForm({ email: '', password: '' });
 
   const onSubmit = async () => {
     if (!validate()) {

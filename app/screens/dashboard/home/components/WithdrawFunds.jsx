@@ -1,22 +1,18 @@
-import {fonts, colors} from '@/theme';
-import {useUser} from '@/context/UserContext';
-import {useApi, useForm} from '@/hooks';
+import { fonts, colors } from '@/theme';
+import { useUser } from '@/context/UserContext';
+import { useApi, useForm } from '@/hooks';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {View, Text, StyleSheet} from 'react-native';
-import {ClientsInput, ClientsButton, ClientsLayout} from '@/components';
+import { View, Text, StyleSheet } from 'react-native';
+import { ClientsInput, ClientsButton, ClientsLayout } from '@/components';
 
-const initialValues = {
-  amount: 0.0,
-  accountNumber: '',
-  bankName: '',
-};
-
-const required = Object.keys(initialValues);
-
-const WithdrawFunds = ({navigation}) => {
-  const {user, setUser} = useUser();
-  const {bind, values, validate} = useForm(initialValues, required);
+const WithdrawFunds = ({ navigation }) => {
+  const { user, setUser } = useUser();
   const { patch, loading } = useApi();
+  const { bind, values, validate } = useForm({
+    amount: 0.0,
+    bankName: '',
+    accountNumber: '',
+  });
 
   const handleWithdraw = async () => {
     if (!validate()) {
@@ -68,7 +64,7 @@ const WithdrawFunds = ({navigation}) => {
           <Text
             style={styles.helpText}
             onPress={() =>
-              navigation.navigate('Account', {screen: 'SupportCenter'})
+              navigation.navigate('Account', { screen: 'SupportCenter' })
             }>
             Need help?
           </Text>
@@ -129,7 +125,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  helpText: {...fonts.regular()},
+  helpText: { ...fonts.regular() },
 });
 
 export default WithdrawFunds;
