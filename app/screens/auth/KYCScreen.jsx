@@ -80,9 +80,9 @@ const KYCScreen = ({ route, navigation }) => {
   const handleContactSupport = () => openModal('contact');
 
   const handleWhatsAppSupport = () => {
-    const phone = '2348012345678';
+    const phone = '2349033935712';
     const message = encodeURIComponent(
-      "Hello, I need help with my CAC registration. I don't have the required documents yet."
+      `Hello, My name is ${user?.fullName} and I need help with my CAC registration. I don't have the required documents yet.`
     );
     Linking.openURL(`https://wa.me/${phone}?text=${message}`).catch(() =>
       showWarning('Unable to open WhatsApp')
@@ -143,8 +143,8 @@ const KYCScreen = ({ route, navigation }) => {
         isLight
         scrollable
         mode="fullscreen"
-        visible={modal.visible}
         onClose={closeModal}
+        visible={modal.visible}
         title={modal.type === 'terms' ? 'Terms and Conditions' : 'Contact Support'}
         footer={modal.type === 'terms' && <ClientsButton text="I Agree" onPress={handleAcceptTerms} />}
       >
@@ -164,21 +164,22 @@ const KYCScreen = ({ route, navigation }) => {
             </View>
           ))
         ) : (
-          <View style={{ padding: 16, gap: 16 }}>
+          <View>
             <Text style={{ ...fonts.medium(16), color: colors.grey3 }}>
               Need help with your documents? You can chat with support or continue to your dashboard.
             </Text>
 
-            <ClientsButton text="Chat on WhatsApp" leftIcon="logo-whatsapp" onPress={handleWhatsAppSupport} />
+            <ClientsButton space={20} text="Chat on WhatsApp" leftIcon="logo-whatsapp" onPress={handleWhatsAppSupport} />
 
             <ClientsButton
-              text="Continue to Dashboard"
+              space={20}
               leftIcon="home-outline"
+              text="Continue to Dashboard"
+              style={{ backgroundColor: colors.grey6 }}
               onPress={() => {
                 closeModal();
-                navigation.navigate('Dashboard');
+                navigation.reset({ index: 0, routes: [{ name: 'Dashboard' }] });
               }}
-              style={{ backgroundColor: colors.grey6 }}
             />
           </View>
         )}
