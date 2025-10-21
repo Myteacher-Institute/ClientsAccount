@@ -12,7 +12,7 @@ const ClientsButton = ({
     textColor,
     textStyle,
     extraStyle,
-    iconSize = 20,
+    iconSize = 18,
     isLight = false,
     loading = false,
     outline = false,

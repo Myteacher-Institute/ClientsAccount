@@ -2,7 +2,7 @@ import { fonts, colors } from '@/theme';
 import { useState, forwardRef } from 'react';
 import { TextInputMask } from 'react-native-masked-text';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
+import { Text, View, TextInput, Pressable, StyleSheet } from 'react-native';
 
 const keyboardTypeMap = {
   url: 'url',
@@ -90,7 +90,7 @@ const ClientsInput = forwardRef(
             onChangeText={onChangeText}
             placeholderTextColor={colors.grey2}
             autoCorrect={props.autoCorrect ?? false}
-            textAlignVertical={props.multiline ? 'top' : 'center'}
+            textAlignVertical={props.multiline ? 'top' : 'center'} 
             keyboardType={masked ? 'numeric' : keyboardTypeMap[type]}
             style={[styles.input, props.multiline && styles.multiline]}
             autoCapitalize={getAutoCapitalize(type, props.autoCapitalize)}

@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import { fonts, colors } from '@/theme';
 import { Text, View, StyleSheet } from 'react-native';
 import ClientsLayout from '@/components/ClientsLayout';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Verification = ({ navigation }) => {
-  useEffect(() => {
-    setTimeout(() => {
-      navigation.reset({ index: 0, routes: [{ name: 'Dashboard' }] });
-    }, 10000);
-  }, [navigation]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     navigation.reset({ index: 0, routes: [{ name: 'Dashboard' }] });
+  //   }, 10000);
+  // }, [navigation]);
 
   return (
     <ClientsLayout
@@ -56,16 +56,9 @@ const Verification = ({ navigation }) => {
           </Text>
         </View>
       </View>
-      <View style={styles.footer}>
-        <Text style={styles.help}>Need help?</Text>
-        <View style={styles.contact}>
-          <Icon name="comment-outline" size={15} color={colors.black} />
-          <Text style={styles.support}>Contact Support</Text>
-        </View>
-        <Text style={styles.copyRight}>
-          © 2025 Clients Account. All rights reserved.
-        </Text>
-      </View>
+      <Text style={styles.copyRight}>
+        © 2025 Clients Account. All rights reserved.
+      </Text>
     </ClientsLayout>
   );
 };
@@ -149,29 +142,10 @@ const styles = StyleSheet.create({
     color: colors.grey7,
     ...fonts.regular(12),
   },
-  footer: {
-    marginTop: 30,
-    ...fonts.light(12),
-    color: colors.grey4,
-    alignItems: 'center',
-  },
-  help: {
-    ...fonts.light(),
-    color: colors.grey6,
-  },
-  contact: {
-    gap: 5,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  support: {
-    ...fonts.medium(),
-    color: colors.black,
-  },
   copyRight: {
     marginTop: 50,
     ...fonts.light(12),
+    textAlign: 'center',
     color: colors.grey4,
   },
 });

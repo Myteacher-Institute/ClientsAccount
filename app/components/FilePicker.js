@@ -3,7 +3,7 @@ import { pick } from '@react-native-documents/picker';
 export async function FilePicker(selectedOption) {
   let options = null;
 
-  selectedOption === 'call to bar'
+  selectedOption === 'callToBar'
     ? (options = {
       allowMultiSelection: false,
       type: ['application/pdf'], // MIME types
@@ -15,7 +15,7 @@ export async function FilePicker(selectedOption) {
       })
       : (options = {
         allowMultiSelection: false,
-        type: ['application/pdf', 'image/jpeg', 'image/png'], // MIME types
+        type: ['application/pdf', 'image/jpeg'], // MIME types
       });
 
   try {
