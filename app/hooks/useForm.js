@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useToast } from '@/hooks';
+import { useToast } from './useToast';
 
 export const useForm = (initialState = {}, requiredFields = Object.keys(initialState)) => {
     const { showWarning } = useToast();

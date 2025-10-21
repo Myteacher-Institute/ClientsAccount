@@ -1,15 +1,15 @@
-// import { useEffect } from 'react';
+import { useEffect } from 'react';
 import { fonts, colors } from '@/theme';
 import { Text, View, StyleSheet } from 'react-native';
 import ClientsLayout from '@/components/ClientsLayout';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Verification = ({ navigation }) => {
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     navigation.reset({ index: 0, routes: [{ name: 'Dashboard' }] });
-  //   }, 10000);
-  // }, [navigation]);
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.reset({ index: 0, routes: [{ name: 'Dashboard' }] });
+    }, 10000);
+  }, [navigation]);
 
   return (
     <ClientsLayout
