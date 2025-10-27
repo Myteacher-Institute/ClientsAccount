@@ -4,23 +4,21 @@ import terms from '@/assets/texts/terms';
 import { useApi, useForm, useToast } from '@/hooks';
 import { FilePicker } from '@/components/FilePicker';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import { Text, View, Linking, Pressable, StyleSheet } from 'react-native';
+import { Text, View, Image, Linking, Pressable, StyleSheet } from 'react-native';
 import { ClientsInput, ClientsModal, ClientsButton, ClientsLayout } from '@/components';
 
 const KYCScreen = ({ route, navigation }) => {
   const user = route.params.data;
-  const { post, loading } = useApi();
   const { showWarning } = useToast();
-
+  const { post, loading } = useApi();
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [modal, setModal] = useState({ visible: false, type: null });
   const { values, bind, validate, setField } = useForm({
     cac: null,
     photo: null,
     cacNumber: '',
     callToBar: null,
   });
-
-  const [termsAccepted, setTermsAccepted] = useState(false);
-  const [modal, setModal] = useState({ visible: false, type: null });
 
   const openModal = (type) => setModal({ visible: true, type });
   const closeModal = () => setModal({ visible: false, type: null });
@@ -165,6 +163,8 @@ const KYCScreen = ({ route, navigation }) => {
           ))
         ) : (
           <View>
+            <Image source={require('@/assets/images/support.png')} />
+          <View>
             <Text style={{ ...fonts.medium(16), color: colors.grey3 }}>
               Need help with your documents? You can chat with support or continue to your dashboard.
             </Text>
@@ -181,6 +181,7 @@ const KYCScreen = ({ route, navigation }) => {
                 navigation.reset({ index: 0, routes: [{ name: 'Dashboard' }] });
               }}
             />
+          </View>
           </View>
         )}
       </ClientsModal>
