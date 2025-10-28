@@ -1,8 +1,7 @@
 import { fonts, colors } from '@/theme';
 import HomeNavigator from './HomeNavigator';
-import StorageNavigator from './StorageNavigator';
 import AccountNavigator from './AccountNavigator';
-import ResourcesNavigator from './ResourcesNavigator';
+import SupportNavigator from './SupportNavigator';
 import DashboardHeader from '@/components/DashboardHeader';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
@@ -12,9 +11,8 @@ const Tab = createBottomTabNavigator();
 
 const rootScreens = {
     Home: 'HomeScreen',
-    Storage: 'StorageScreen',
     Account: 'AccountScreen',
-    Resources: 'ResourcesScreen',
+    Support: 'SupportScreen',
 };
 
 const screenOptions = ({ route }) => {
@@ -41,14 +39,11 @@ const screenOptions = ({ route }) => {
                 case 'Home':
                     iconName = focused ? 'home' : 'home-outline';
                     break;
-                case 'Storage':
-                    iconName = focused ? 'folder-open' : 'folder-open-outline';
-                    break;
-                case 'Resources':
-                    iconName = focused ? 'text-box' : 'text-box-outline';
-                    break;
                 case 'Account':
                     iconName = focused ? 'account' : 'account-outline';
+                    break;
+                case 'Support':
+                    iconName = focused ? 'help-network' : 'help-network-outline';
                     break;
                 default:
                     iconName = 'circle-half-full';
@@ -63,9 +58,8 @@ const DashboardNavigator = () => {
     return (
         <Tab.Navigator screenOptions={screenOptions}>
             <Tab.Screen name="Home" component={HomeNavigator} />
-            <Tab.Screen name="Storage" component={StorageNavigator} />
-            <Tab.Screen name="Resources" component={ResourcesNavigator} />
             <Tab.Screen name="Account" component={AccountNavigator} />
+            <Tab.Screen name="Support" component={SupportNavigator} />
         </Tab.Navigator>
     );
 };

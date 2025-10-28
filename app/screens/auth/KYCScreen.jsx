@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   support: { ...fonts.medium(), color: colors.black },
-  continue: { gap: 60 },
+  continue: { gap: 60, marginTop: 60 },
 });
 
 export default KYCScreen;
