@@ -129,13 +129,13 @@ const KYCScreen = ({ route, navigation }) => {
         />
       </View>
 
-      <View style={styles.footer}>
+      <Pressable style={styles.footer} onPress={handleContactSupport}>
         <Text style={styles.help}>Need help?</Text>
-        <Pressable style={styles.contact} onPress={handleContactSupport}>
+        <View style={styles.contact}>
           <Icon name="message" size={15} color={colors.black} />
           <Text style={styles.support}>Contact Support</Text>
-        </Pressable>
-      </View>
+        </View>
+      </Pressable>
 
       <ClientsModal
         isLight
@@ -162,26 +162,26 @@ const KYCScreen = ({ route, navigation }) => {
             </View>
           ))
         ) : (
-          <View>
+          <View style={styles.continue}>
             <Image source={require('@/assets/images/support.png')} />
-          <View>
-            <Text style={{ ...fonts.medium(16), color: colors.grey3 }}>
-              Need help with your documents? You can chat with support or continue to your dashboard.
-            </Text>
+            <View>
+              <Text style={{ ...fonts.medium(16), color: colors.grey3 }}>
+                Need help with your documents? You can chat with support or continue to your dashboard.
+              </Text>
 
-            <ClientsButton space={20} text="Chat on WhatsApp" leftIcon="logo-whatsapp" onPress={handleWhatsAppSupport} />
+              <ClientsButton space={20} text="Chat on WhatsApp" leftIcon="logo-whatsapp" onPress={handleWhatsAppSupport} />
 
-            <ClientsButton
-              space={20}
-              leftIcon="home-outline"
-              text="Continue to Dashboard"
-              style={{ backgroundColor: colors.grey6 }}
-              onPress={() => {
-                closeModal();
-                navigation.reset({ index: 0, routes: [{ name: 'Dashboard' }] });
-              }}
-            />
-          </View>
+              <ClientsButton
+                space={20}
+                leftIcon="home-outline"
+                text="Continue to Dashboard"
+                style={{ backgroundColor: colors.grey6 }}
+                onPress={() => {
+                  closeModal();
+                  navigation.reset({ index: 0, routes: [{ name: 'Dashboard' }] });
+                }}
+              />
+            </View>
           </View>
         )}
       </ClientsModal>
@@ -240,6 +240,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   support: { ...fonts.medium(), color: colors.black },
+  continue: { gap: 60 },
 });
 
 export default KYCScreen;
