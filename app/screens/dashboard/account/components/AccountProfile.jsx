@@ -24,7 +24,10 @@ const AccountProfile = () => {
   return (
     <View style={styles.container}>
       <View style={styles.imageWrapper}>
-        <Image style={styles.profileImg} source={photoUri ? { uri: photoUri } : require('@/assets/images/profile.png')} />
+        <Image
+          source={photoUri ? { uri: photoUri } : require('@/assets/images/profile.png')}
+          style={[styles.profileImg, { borderColor: (user?.kyc ? colors.green4 : colors.red4) }]}
+        />
         <Pressable style={styles.cameraIcon} onPress={openOptions}>
           <Icon name="camera" size={14} color={colors.white} />
         </Pressable>
@@ -99,7 +102,6 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderRadius: 50,
     resizeMode: 'cover',
-    borderColor: colors.blue3,
   },
   cameraIcon: {
     right: 3,

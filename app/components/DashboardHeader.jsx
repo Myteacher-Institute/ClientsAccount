@@ -11,8 +11,14 @@ const DashboardHeader = () => {
     return (
         <View style={styles.container}>
             <Pressable style={styles.profile} onPress={() => navigation.navigate('Account')}>
-                <Image style={styles.profileImg} source={user?.avatar ? { uri: user.avatar } : require('@/assets/images/profile.png')} />
-                <Text style={styles.profileName}>Hi, {user?.fullName?.split(' ')[0] || 'Guest'}</Text>
+                <Image
+                    source={user?.avatar ? { uri: user.avatar } : require('@/assets/images/profile.png')}
+                    style={[styles.profileImg, { borderColor: (user?.kyc ? colors.green4 : colors.red4) }]}
+                />
+                <Text style={styles.profileName}>
+                    Hi, {user?.fullName?.split(' ')[0] || 'Guest'}
+                    {user?.kyc && <Icon name="check-decagram" color={colors.green4} size={20} />}
+                </Text>
             </Pressable>
 
             <Pressable onPress={() => navigation.navigate('Account')}>
@@ -40,10 +46,9 @@ const styles = StyleSheet.create({
     profileImg: {
         width: 40,
         height: 40,
-        borderWidth: 2,
+        borderWidth: 3,
         borderRadius: 50,
         resizeMode: 'cover',
-        borderColor: colors.blue3,
     },
     profileName: {
         color: colors.grey5,
