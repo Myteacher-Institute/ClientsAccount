@@ -5,7 +5,7 @@ import { Text, Pressable, StyleSheet, ScrollView } from 'react-native';
 
 const tools = [
     { icon: 'folder-tree', label: 'Files', iconColor: colors.blue5, screen: 'Storage' },
-    { icon: 'briefcase', label: 'Client Funds', iconColor: colors.purple2, screen: 'Account' },
+    { icon: 'briefcase', label: 'Funds', iconColor: colors.purple2, screen: 'Account' },
     { icon: 'gavel', label: 'Resources', iconColor: colors.green4, screen: 'Resources' },
     { icon: 'headset', label: 'Support', iconColor: colors.brown2, screen: 'Account', nestedScreen: 'SupportCenter' },
 ];

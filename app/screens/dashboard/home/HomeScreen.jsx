@@ -1,7 +1,7 @@
-import QuickAccess from './components/QuickAccess';
 import ClientsLayout from '@/components/ClientsLayout';
 import AccountBalance from './components/AccountBalance';
 import AccountDetails from './components/AccountDetails';
+import AccountUpdates from './components/AccountUpdates';
 import RecentTransactions from './components/RecentTransactions';
 
 const HomeScreen = () => {
@@ -9,7 +9,7 @@ const HomeScreen = () => {
         <ClientsLayout>
             <AccountBalance />
             <AccountDetails />
-            <QuickAccess />
+            <AccountUpdates />
             <RecentTransactions />
         </ClientsLayout>
     );

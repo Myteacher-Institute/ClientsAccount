@@ -43,6 +43,7 @@ const colors = {
     brown6: '#FFEDD5',
 
     // green colors
+    green0: '#3FA13C',
     green1: '#34C759',
     green2: '#22C55E',
     green3: '#DCFCE7',
