@@ -14,8 +14,8 @@ const KYCScreen = ({ route, navigation }) => {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [modal, setModal] = useState({ visible: false, type: null });
   const { values, bind, validate, setField } = useForm({
-    cac: null,
     photo: null,
+    cacCert: null,
     cacNumber: '',
     callToBar: null,
   });
@@ -24,7 +24,7 @@ const KYCScreen = ({ route, navigation }) => {
   const closeModal = () => setModal({ visible: false, type: null });
 
   const uploadOptions = [
-    { key: 'cac', label: 'Upload CAC Certificate (PDF, JPG)', icon: 'upload' },
+    { key: 'cacCert', label: 'Upload CAC Certificate (PDF, JPG)', icon: 'upload' },
     { key: 'callToBar', label: 'Upload Call to Bar Certificate (PDF)', icon: 'upload' },
     { key: 'photo', label: 'Upload Recent Photo (JPG, PNG)', icon: 'image' },
   ];
@@ -44,12 +44,25 @@ const KYCScreen = ({ route, navigation }) => {
 
     const formData = new FormData();
     Object.entries(values).forEach(([key, val]) => {
-      formData.append(
-        key,
-        val?.uri
-          ? { uri: val.uri, name: val.name || `${key}.pdf`, type: val.type || 'application/octet-stream' }
-          : val
-      );
+      if (val?.uri) {
+        let mimeType = 'application/octet-stream';
+        let fileExt = '.pdf';
+
+        if (key === 'photo') {
+          mimeType = val.type || 'image/jpeg';
+          fileExt = '.jpg';
+        } else {
+          mimeType = val.type || 'application/pdf';
+        }
+
+        formData.append(key, {
+          uri: val.uri,
+          name: val.name || `${key}${fileExt}`,
+          type: mimeType,
+        });
+      } else {
+        formData.append(key, val || '');
+      }
     });
 
     try {

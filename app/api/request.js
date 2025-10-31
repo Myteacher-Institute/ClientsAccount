@@ -67,12 +67,17 @@ const handleRequest = async ({
                 response = await axios.get(url, config);
                 break;
             case 'post':
-                const cleanData =
-                    data && typeof data === 'object'
-                        ? Object.fromEntries(Object.entries(data).filter(([_, v]) => v !== undefined && v !== null))
-                        : data;
-                log('🧹 Sanitized Data', cleanData, '#8bc34a');
-                response = await axios.post(url, cleanData, config);
+                let postData = data;
+                if (!isFormData) {
+                    postData =
+                        data && typeof data === 'object'
+                            ? Object.fromEntries(Object.entries(data).filter(([_, v]) => v !== undefined && v !== null))
+                            : data;
+                    log('🧹 Sanitized Data', postData, '#8bc34a');
+                } else {
+                    log('📦 FormData detected, skipping sanitization', { fieldsCount: data._parts?.length || 'unknown' }, '#ff9800');
+                }
+                response = await axios.post(url, postData, config);
                 break;
             case 'patch':
                 response = await axios.patch(url, data, config);

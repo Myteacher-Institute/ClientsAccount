@@ -22,7 +22,14 @@ const AccountScreen = ({ navigation }) => {
         <ClientsLayout>
             <AccountProfile />
             <AccountInfo />
-            <ClientsButton text="Logout" bgColor={colors.red1} space={{ bottom: 40 }} onPress={handleLogout} textColor={colors.red4} />
+            <ClientsButton
+                text="Logout"
+                bgColor={colors.red1}
+                onPress={handleLogout}
+                textColor={colors.red4}
+                leftIcon="log-out-outline"
+                space={{ top: 20, bottom: 40 }}
+            />
         </ClientsLayout>
     );
 };

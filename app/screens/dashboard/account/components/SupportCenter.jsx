@@ -16,7 +16,7 @@ const contacts = [
 
 const SupportCenter = () => {
   return (
-    <ClientsLayout title="Support Center">
+    <ClientsLayout title="Help & Support">
       <View style={styles.support}>
         <Text style={styles.header}>How can we help you?</Text>
         <View style={styles.request}>

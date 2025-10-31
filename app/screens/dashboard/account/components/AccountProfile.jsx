@@ -25,8 +25,8 @@ const AccountProfile = () => {
     <View style={styles.container}>
       <View style={styles.imageWrapper}>
         <Image
+          style={styles.profileImg}
           source={photoUri ? { uri: photoUri } : require('@/assets/images/profile.png')}
-          style={[styles.profileImg, { borderColor: (user?.kyc ? colors.green4 : colors.red4) }]}
         />
         <Pressable style={styles.cameraIcon} onPress={openOptions}>
           <Icon name="camera" size={14} color={colors.white} />
@@ -36,6 +36,21 @@ const AccountProfile = () => {
       <Text style={styles.name}>{user?.fullName}</Text>
       <Text numberOfLines={1} style={styles.chamber}>{user?.chamberName}</Text>
 
+      <View style={styles.button}>
+        <View style={[styles.pill, styles.button, { backgroundColor: (user?.kyc ? colors.green5 : colors.red1) }]}>
+          <Icon name="circle-check" solid size={12} color={user?.kyc ? colors.green4 : colors.red4} />
+          <Text style={[styles.pillText, { color: (user?.kyc ? colors.green4 : colors.red4) }]}>
+            Verified Lawyer
+          </Text>
+        </View>
+        <View style={[styles.pill, styles.button, { backgroundColor: (user?.kyc ? colors.blue8 : colors.grey4) }]}>
+          <Icon name="wallet" size={12} color={user?.kyc ? colors.blue4 : colors.grey1} />
+          <Text style={[styles.pillText, { color: (user?.kyc ? colors.blue4 : colors.grey1) }]}>
+            Active Wallet
+          </Text>
+        </View>
+      </View>
+
       <ClientsModal
         visible={!!modal}
         onClose={closeModal}
@@ -44,8 +59,8 @@ const AccountProfile = () => {
         mode={modal === 'options' ? 'bottom' : modal === 'crop' ? 'fullscreen' : 'center'}
         footer={modal === 'crop' && (
           <>
-            <ClientsButton isLight text="Cancel" onPress={closeModal} extraStyle={styles.button} />
-            <ClientsButton text="Save" loading={loading} onPress={saveCrop} bgColor={colors.yellow1} extraStyle={styles.button} />
+            <ClientsButton isLight text="Cancel" onPress={closeModal} extraStyle={styles.modalBtn} />
+            <ClientsButton text="Save" loading={loading} onPress={saveCrop} bgColor={colors.yellow1} extraStyle={styles.modalBtn} />
           </>
         )}
       >
@@ -91,7 +106,7 @@ const styles = StyleSheet.create({
     gap: 10,
     padding: 24,
     borderRadius: 16,
-    marginBottom: 25,
+    marginBottom: 20,
     alignItems: 'center',
     backgroundColor: colors.white,
   },
@@ -102,6 +117,7 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderRadius: 50,
     resizeMode: 'cover',
+    borderColor: colors.blue3,
   },
   cameraIcon: {
     right: 3,
@@ -111,8 +127,23 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: colors.black,
   },
-  name: { color: colors.grey3, ...fonts.semiBold(20), marginBottom: -10 },
+  name: { color: colors.grey3, ...fonts.semiBold(20), marginBottom: -18 },
   chamber: { ...fonts.regular(), color: colors.grey6 },
+  button: {
+    gap: 8,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  pill: {
+    gap: 4,
+    borderRadius: 50,
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+  },
+  pillText: {
+    color: colors.grey6,
+    ...fonts.regular(12),
+  },
   modalItem: {
     paddingVertical: 14,
     alignItems: 'center',
@@ -127,7 +158,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  button: { flex: 1 },
+  modalBtn: { flex: 1 },
 });
 
 export default AccountProfile;

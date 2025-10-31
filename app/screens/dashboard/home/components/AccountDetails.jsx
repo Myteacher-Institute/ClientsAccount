@@ -27,7 +27,7 @@ const AccountDetails = () => {
                 {user?.kyc && <Text style={styles.name}>{user?.wallet?.accountName}</Text>}
                 {user?.kyc && <Text style={styles.name}>{user?.wallet?.bankName}</Text>}
                 {!user?.kyc && <Text style={[styles.account, { color: colors.white }]}>
-                    {'Please proceed to complete\nyour KYC to be verified.\nThank you!'}
+                    {'Proceed to complete\nyour KYC to be verified.\nThank you!'}
                 </Text>}
             </View>
             <ClientsButton
