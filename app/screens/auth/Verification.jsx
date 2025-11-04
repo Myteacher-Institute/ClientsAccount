@@ -52,7 +52,7 @@ const Verification = ({ navigation }) => {
         <View style={styles.notify}>
           <Icon name="clock-outline" size={18} color={colors.grey1} />
           <Text style={styles.email}>
-            We'll notify you by email when your account is ready.
+            We'll notify you via email when you've been verified.
           </Text>
         </View>
       </View>

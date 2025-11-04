@@ -13,11 +13,11 @@ const DashboardHeader = () => {
             <Pressable style={styles.profile} onPress={() => navigation.navigate('Account')}>
                 <Image
                     source={user?.avatar ? { uri: user.avatar } : require('@/assets/images/profile.png')}
-                    style={[styles.profileImg, { borderColor: (user?.kyc ? colors.green4 : colors.red4) }]}
+                    style={[styles.profileImg, { borderColor: (user?.kyc && user?.kyc?.verificationStatus === 'verified' ? colors.green4 : (user?.kyc ? colors.yellow3 : colors.red4)) }]}
                 />
                 <Text style={styles.profileName}>
                     Hi, {user?.fullName?.split(' ')[0] || 'Guest'}
-                    {user?.kyc && <Icon name="check-decagram" color={colors.green4} size={20} />}
+                    {user?.kyc && <Icon name="alert-decagram" color={colors.yellow3} size={20} />}
                 </Text>
             </Pressable>
 

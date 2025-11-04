@@ -38,6 +38,8 @@ export default function AccountUpdates() {
     const toast = useToast();
     const { user } = useUser();
     const [index, setIndex] = useState(0);
+    const isVerified = user?.kyc?.verificationStatus === 'verified'; // Adjust property as needed
+    const filteredUpdates = isVerified ? updates.slice(1) : updates;
 
     const handlePress = (key) => {
         const phone = '2349033935712';
@@ -71,7 +73,7 @@ export default function AccountUpdates() {
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.scrollView}
             >
-                {updates.map(({ key, icon, label, content, button, color }) => (
+                {filteredUpdates.map(({ key, icon, label, content, button, color }) => (
                     <View key={key} style={[styles.card, { backgroundColor: color }]}>
                         <View>
                             <Text style={styles.label}>{label}</Text>
@@ -80,7 +82,8 @@ export default function AccountUpdates() {
                         <ClientsButton
                             text={button}
                             leftIcon={icon}
-                            bgColor={colors.black}
+                            textColor={color}
+                            bgColor={colors.white}
                             onPress={() => handlePress(key)}
                         />
                     </View>
@@ -88,7 +91,7 @@ export default function AccountUpdates() {
             </ScrollView>
 
             <View style={styles.dots}>
-                {updates.map((_, i) => (
+                {filteredUpdates.map((_, i) => (
                     <View
                         key={i}
                         style={[styles.dot, i === index ? styles.activeDot : styles.inactiveDot]}
